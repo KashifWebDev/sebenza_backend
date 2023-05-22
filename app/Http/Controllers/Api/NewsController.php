@@ -49,7 +49,7 @@ class NewsController extends Controller
 
     public function getnewsbyid(Request $request, $slug)
     {
-        return $request;
+        return response()->json($request, 200, $headers);;
         $news =Newsupdate::where('slug',$request->slug)->where('status','Active')->first();
         $news->postImage=env('PROD_URL').$news->postImage;
 
