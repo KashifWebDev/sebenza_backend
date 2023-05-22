@@ -52,6 +52,7 @@ class NewsController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::where('token',$token)->first();
+        return $user_id;
         $news =Newsupdate::where('slug',$request->slug)->where('status','Active')->first();
         $news->postImage=env('PROD_URL').$news->postImage;
 
