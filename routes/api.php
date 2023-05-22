@@ -10,7 +10,9 @@ use App\Http\Controllers\Backend\Api\UserRolesController;
 use App\Http\Controllers\Backend\Api\UserController;
 use App\Http\Controllers\Backend\Api\BasicinfoController;
 use App\Http\Controllers\Backend\Api\NewsupdateController;
+use App\Http\Controllers\Backend\Api\AboutusController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Backend\Api\HelpcenterController;
 
 
 /*
@@ -33,11 +35,13 @@ Route::get('getpackages', [AccountpackageController::class, 'getpackage']);
 Route::get('newsupdates', [NewsController::class,'getpubnews']);
 Route::get('newsupdate/{slug}', [NewsController::class,'getpubnewsbyid']);
 
+Route::get('aboutus', [AboutusController::class,'getaboutinfo']);
+
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
     Route::get('/details/{id}', [UserauthController::class,'userdetails']);
     Route::get('newsupdates/{id}', [NewsController::class,'getnews']);
-    Route::post('newsupdate/view', [NewsController::class,'getnewsbyid']);
+    Route::post('newsupdate/view/{slug}', [NewsController::class,'getnewsbyid']);
     // createuser
     Route::post('import', [UserauthController::class, 'userImport']);
     Route::post('add-by/{slug}', [UserauthController::class, 'usercreate']);
@@ -79,5 +83,12 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     // news and updates
     Route::resource('newsupdates', NewsupdateController::class);
     Route::post('newsupdate/update/{id}', [NewsupdateController::class,'update']);
+
+    Route::resource('aboutus', AboutusController::class);
+    Route::post('aboutus/update', [AboutusController::class,'update']);
+
+    Route::resource('helpcenters', HelpcenterController::class);
+    Route::post('helpcenter/update', [HelpcenterController::class,'update']);
+
 
 });
