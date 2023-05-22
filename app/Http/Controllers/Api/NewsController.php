@@ -51,7 +51,7 @@ class NewsController extends Controller
     public function getnewsbyid(Request $request, $slug)
     {
         $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::where('token',$token)->first();
+        $user_id=PersonalAccessToken::findToken($token);
         return $user_id;
         $news =Newsupdate::where('slug',$request->slug)->where('status','Active')->first();
         $news->postImage=env('PROD_URL').$news->postImage;
