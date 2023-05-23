@@ -23,21 +23,21 @@ return new class extends Migration
             $table->text('banner_image')->nullable();
 
             //middle text
-            $table->string('m_title');
+            $table->string('m_title')->nullable();
             $table->text('m_text')->nullable();
             $table->text('m_text_two')->nullable();
 
             //text one
-            $table->string('title_one');
+            $table->string('title_one')->nullable();
             $table->text('text_one')->nullable();
             //text two
-            $table->string('title_two');
+            $table->string('title_two')->nullable();
             $table->text('text_two')->nullable();
             //text three
-            $table->string('title_three');
+            $table->string('title_three')->nullable();
             $table->text('text_three')->nullable();
             //text four
-            $table->string('title_four');
+            $table->string('title_four')->nullable();
             $table->text('text_four')->nullable();
             $table->timestamps();
         });

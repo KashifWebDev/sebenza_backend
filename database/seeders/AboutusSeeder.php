@@ -22,6 +22,12 @@ class AboutusSeeder extends Seeder
         $aboutus->banner_image='public/test.jpg';
         $aboutus->short_description='Test News And Updates all description';
         $aboutus->short_title='Test News And Updates all description';
+        $aboutus->m_title='Test News';
+        $aboutus->title_one='Test News';
+        $aboutus->title_two='Test News';
+        $aboutus->title_three='Test News';
+        $aboutus->title_four='Test News';
         $aboutus->save();
     }
 }
+
