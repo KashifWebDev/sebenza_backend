@@ -31,6 +31,7 @@ class NewsController extends Controller
                 }else{
                     $use->seen=false;
                 }
+                $use->total_view=Seennewsupdate::where('news_id',$use->id)->get()->count();
                 $news[]=$use;
             }
         }else{
@@ -67,6 +68,7 @@ class NewsController extends Controller
         }
 
         $news->seen=true;
+        $news->total_view=Seennewsupdate::where('news_id',$news->id)->get()->count();
 
         $response = [
             'status' => true,
@@ -86,6 +88,8 @@ class NewsController extends Controller
         foreach($uss as $us){
             $use=$us;
             $use->postImage=env('PROD_URL').$use->postImage;
+            $use->total_view=Seennewsupdate::where('news_id',$use->id)->get()->count();
+
             $news[]=$use;
         }
 
@@ -104,6 +108,8 @@ class NewsController extends Controller
     {
         $news =Newsupdate::where('slug',$slug)->where('status','Active')->first();
         $news->postImage=env('PROD_URL').$news->postImage;
+        $news->total_view=Seennewsupdate::where('news_id',$news->id)->get()->count();
+
         $response = [
             'status' => true,
             'message'=>'News & updates by id',
