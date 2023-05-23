@@ -55,7 +55,7 @@ class NewsupdateController extends Controller
         $time = microtime('.') * 10000;
         $news=new Newsupdate();
         $news->title=$request->title;
-        $news->news=$request->news;
+        $news->description=$request->description;
 
         $newsImg = $request->file('postImage');
         if($newsImg){
@@ -119,7 +119,7 @@ class NewsupdateController extends Controller
         $time = microtime('.') * 10000;
         $news=Newsupdate::where('id',$id)->first();;
         $news->title=$request->title;
-        $news->news=$request->news;
+        $news->description=$request->description;
         $news->status=$request->status;
         $news->slug=$request->slug;
 

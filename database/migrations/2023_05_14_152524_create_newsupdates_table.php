@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->string('slug');
-            $table->longText('news');
+            $table->longText('description');
             $table->boolean('seen')->nullable();
+            $table->integer('total_view')->default(0);
             $table->text('postImage')->nullable();
             $table->string('status')->default('Active');
             $table->timestamps();

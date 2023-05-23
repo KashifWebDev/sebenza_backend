@@ -17,7 +17,7 @@ class NewsupdateSeeder extends Seeder
     {
         $news=new Newsupdate();
         $news->title='Test News And Updates Title';
-        $news->news='Test News And Updates all description';
+        $news->description='Test News And Updates all description';
         $news->postImage='public/test.jpg';
         $news->slug='test-news-slug';
         $news->slug='Active';
