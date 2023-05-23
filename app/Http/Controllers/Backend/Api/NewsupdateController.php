@@ -17,21 +17,34 @@ class NewsupdateController extends Controller
     {
         $uss =Newsupdate::all();
 
-        foreach($uss as $us){
-            $use=$us;
-            $use->postImage=env('PROD_URL').$use->postImage;
-            $news[]=$use;
+
+        if(isset($uss)){
+            foreach($uss as $us){
+                $use=$us;
+                $use->postImage=env('PROD_URL').$use->postImage;
+                $news[]=$use;
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'List of news & updates',
+                "data"=> [
+                    'news'=> $news,
+                ]
+
+            ];
+            return response()->json($response,200);
+        }else{
+            $response = [
+                'status' => true,
+                'message'=>'List of news & updates',
+                "data"=> [
+                    'news'=> [],
+                ]
+
+            ];
+            return response()->json($response,200);
         }
-
-        $response = [
-            'status' => true,
-            'message'=>'List of news & updates',
-            "data"=> [
-                'news'=> $news,
-            ]
-
-        ];
-        return response()->json($response,200);
     }
 
     /**
