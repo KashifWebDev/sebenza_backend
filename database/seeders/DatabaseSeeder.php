@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
         //  $this->call(AccountpackageSeeder::class);
         //  $this->call(NewsupdateSeeder::class);
          $this->call(AboutusSeeder::class);
+         $this->call(HelpcenterSeeder::class);
+         $this->call(TeammemberSeeder::class);
+         $this->call(WhatsappSeeder::class);
 
     }
 }

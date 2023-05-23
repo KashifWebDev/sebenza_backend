@@ -17,6 +17,8 @@ class AboutusController extends Controller
     public function index()
     {
         $aboutus=Aboutus::first();
+        $aboutus->image=env('PROD_URL').$aboutus->image;
+        $aboutus->banner_image=env('PROD_URL').$aboutus->banner_image;
         $response = [
             'status' => true,
             'message'=>'About Us data',
@@ -30,6 +32,8 @@ class AboutusController extends Controller
     public function getaboutinfo()
     {
         $aboutus=Aboutus::first();
+        $aboutus->image=env('PROD_URL').$aboutus->image;
+        $aboutus->banner_image=env('PROD_URL').$aboutus->banner_image;
         $response = [
             'status' => true,
             'message'=>'About Us data',
@@ -145,6 +149,8 @@ class AboutusController extends Controller
         $aboutus->text_four=$request->text_four;
 
         $aboutus->save();
+        $aboutus->image=env('PROD_URL').$aboutus->image;
+        $aboutus->banner_image=env('PROD_URL').$aboutus->banner_image;
 
         $response=[
             "status"=>true,

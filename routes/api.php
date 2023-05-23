@@ -13,7 +13,9 @@ use App\Http\Controllers\Backend\Api\NewsupdateController;
 use App\Http\Controllers\Backend\Api\AboutusController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Backend\Api\HelpcenterController;
-
+use App\Http\Controllers\Backend\Api\TeammemberController;
+use App\Http\Controllers\Backend\Api\TicketController;
+use App\Http\Controllers\Backend\Api\WhatsappController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,10 @@ Route::get('newsupdates', [NewsController::class,'getpubnews']);
 Route::get('newsupdate/{slug}', [NewsController::class,'getpubnewsbyid']);
 
 Route::get('aboutus', [AboutusController::class,'getaboutinfo']);
+Route::get('helpcenter', [HelpcenterController::class,'gethelpcenterinfo']);
+Route::get('teammembers', [TeammemberController::class,'getteammembersinfo']);
+Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
+
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
@@ -45,6 +51,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // createuser
     Route::post('import', [UserauthController::class, 'userImport']);
     Route::post('add-by/{slug}', [UserauthController::class, 'usercreate']);
+
+    // supporttikits
+    Route::resource('supporttickets', TicketController::class);
+    Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
 
 });
 
@@ -84,11 +94,23 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::resource('newsupdates', NewsupdateController::class);
     Route::post('newsupdate/update/{id}', [NewsupdateController::class,'update']);
 
+    // About us
     Route::resource('aboutus', AboutusController::class);
     Route::post('aboutus/update', [AboutusController::class,'update']);
-
+    // Helpcenter
     Route::resource('helpcenters', HelpcenterController::class);
     Route::post('helpcenter/update', [HelpcenterController::class,'update']);
+    // teammember
+    Route::resource('teammembers', TeammemberController::class);
+    Route::post('teammember/update/{id}', [TeammemberController::class,'update']);
+    // whatsapp
+    Route::resource('whatsapps', WhatsappController::class);
+    Route::post('whatsapp/update/{id}', [WhatsappController::class,'update']);
 
+    // supportticket
+    Route::get('supporttickets', [TikitController::class, 'admindex']);
+    Route::get('supportticket/edit/{id}', [TikitController::class, 'edit']);
+    Route::post('supportticket/update/{id}', [TikitController::class, 'update']);
+    Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
 
 });
