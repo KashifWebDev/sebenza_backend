@@ -9,6 +9,7 @@ use App\Models\Replay;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class TicketController extends Controller
 {
