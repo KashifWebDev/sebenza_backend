@@ -125,7 +125,9 @@ class AdminauthController extends Controller
     public function adminlogout(Request $request){
         $token = request()->bearerToken();
         $usertoken=PersonalAccessToken::findToken($token);
-        $usertoken->delete();
+
+        $utoken = PersonalAccessToken::where('name',$usertoken->name)->where('tokenable_id', $usertoken->tokenable_id);
+        $utoken->delete();
 
         $error = [
             "status"=>true,
