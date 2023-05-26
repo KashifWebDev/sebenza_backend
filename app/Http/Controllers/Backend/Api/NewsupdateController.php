@@ -122,14 +122,25 @@ class NewsupdateController extends Controller
         }else{
 
         }
-        $response=[
-            "status"=>true,
-            'message' => "News & updates By ID",
-            "data"=> [
-                'news'=> $news,
-            ]
-        ];
-        return response()->json($response, 200);
+        if(isset($news)){
+            $response=[
+                "status"=>true,
+                'message' => "News & updates By ID",
+                "data"=> [
+                    'news'=> $news,
+                ]
+            ];
+            return response()->json($response, 200);
+        }else{
+            $response=[
+                "status"=>true,
+                'message' => "No news found With this ID",
+                "data"=> [
+                    'news'=> [],
+                ]
+            ];
+            return response()->json($response, 200);
+        }
     }
 
     /**
