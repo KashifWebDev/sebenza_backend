@@ -117,12 +117,13 @@ class NewsupdateController extends Controller
     public function edit($id)
     {
         $news=Newsupdate::where('id',$id)->first();
-        if(isset($news->postImage)){
-            $news->postImage=env('PROD_URL').$news->postImage;
-        }else{
 
-        }
         if(isset($news)){
+            if(isset($news->postImage)){
+                $news->postImage=env('PROD_URL').$news->postImage;
+            }else{
+
+            }
             $response=[
                 "status"=>true,
                 'message' => "News & updates By ID",
@@ -133,7 +134,7 @@ class NewsupdateController extends Controller
             return response()->json($response, 200);
         }else{
             $response=[
-                "status"=>true,
+                "status"=>false,
                 'message' => "No news found With this ID",
                 "data"=> [
                     'news'=> [],
