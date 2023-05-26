@@ -123,8 +123,10 @@ class AdminauthController extends Controller
     }
 
     public function adminlogout(Request $request){
-        $token = PersonalAccessToken::where('name','admin')->where('tokenable_id', $request->admin_id);
-        $token->delete();
+        $token = request()->bearerToken();
+        $usertoken=PersonalAccessToken::findToken($token);
+        $usertoken->delete();
+
         $error = [
             "status"=>true,
             "message" => 'Logout Successfully',

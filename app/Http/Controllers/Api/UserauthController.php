@@ -209,8 +209,9 @@ class UserauthController extends Controller
     }
 
     public function userlogout(Request $request){
-        $token = PersonalAccessToken::where('name','user')->where('tokenable_id', $request->user_id);
-        $token->delete();
+        $token = request()->bearerToken();
+        $usertoken=PersonalAccessToken::findToken($token);
+        $usertoken->delete();
         $error = [
             'status'=>true,
             'message' => 'Logout Successfully',
