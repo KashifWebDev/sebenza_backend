@@ -21,7 +21,11 @@ class NewsupdateController extends Controller
         if(isset($uss)){
             foreach($uss as $us){
                 $use=$us;
-                $use->postImage=env('PROD_URL').$use->postImage;
+                if(isset($use->postImage)){
+                    $use->postImage=env('PROD_URL').$use->postImage;
+                }else{
+
+                }
                 $news[]=$use;
             }
 
@@ -88,7 +92,11 @@ class NewsupdateController extends Controller
         //     $news->postImage = json_encode($imageData);
         // };
         $news->save();
-        $news->postImage=env('PROD_URL').$news->postImage;
+        if(isset($news->postImage)){
+            $news->postImage=env('PROD_URL').$news->postImage;
+        }else{
+
+        }
 
         $response=[
             "status"=>true,
@@ -109,7 +117,11 @@ class NewsupdateController extends Controller
     public function edit($id)
     {
         $news=Newsupdate::where('id',$id)->first();
-        $news->postImage=env('PROD_URL').$news->postImage;
+        if(isset($news->postImage)){
+            $news->postImage=env('PROD_URL').$news->postImage;
+        }else{
+
+        }
         $response=[
             "status"=>true,
             'message' => "News & updates By ID",
@@ -142,7 +154,11 @@ class NewsupdateController extends Controller
             if($news->postImage=='public/test.jpg'){
 
             }else{
-                unlink($news->postImage);
+                if(isset($news->postImage)){
+                    unlink($news->postImage);
+                }else{
+
+                }
             }
             $imgname = $time . $newsImg->getClientOriginalName();
             $imguploadPath = ('public/images/news/image/');
@@ -165,7 +181,11 @@ class NewsupdateController extends Controller
         //     $news->postImage = json_encode($imageData);
         // }
         $news->save();
-        $news->postImage=env('PROD_URL').$news->postImage;
+        if(isset($news->postImage)){
+            $news->postImage=env('PROD_URL').$news->postImage;
+        }else{
+
+        }
 
         $response=[
             "status"=>true,

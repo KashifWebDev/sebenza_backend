@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('message')->nullable();
             $table->text('attachment')->nullable();
             $table->string('status')->default('Processing');
-            $table->string('solved_By');
+            $table->string('solved_By')->nullable();
             $table->timestamps();
         });
     }

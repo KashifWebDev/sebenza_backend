@@ -20,7 +20,11 @@ class NewsController extends Controller
         if(count($uss)>0){
             foreach($uss as $us){
                 $use=$us;
-                $use->postImage=env('PROD_URL').$use->postImage;
+                if(isset($use->postImage)){
+                    $use->postImage=env('PROD_URL').$use->postImage;
+                }else{
+
+                }
                 $se=Seennewsupdate::where('news_id',$use->id)->where('user_id',$id)->first();
                 if(isset($se)){
                     if($se->seen==1){
@@ -55,7 +59,11 @@ class NewsController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         $news =Newsupdate::where('slug',$request->slug)->where('status','Active')->first();
-        $news->postImage=env('PROD_URL').$news->postImage;
+        if(isset($news->postImage)){
+            $news->postImage=env('PROD_URL').$news->postImage;
+        }else{
+
+        }
 
         $se=Seennewsupdate::where('news_id',$news->id)->where('user_id',$user_id->tokenable_id)->first();
         if(isset($se)){
@@ -87,7 +95,11 @@ class NewsController extends Controller
         $uss =Newsupdate::where('status','Active')->get();
         foreach($uss as $us){
             $use=$us;
-            $use->postImage=env('PROD_URL').$use->postImage;
+            if(isset($use->postImage)){
+                $use->postImage=env('PROD_URL').$use->postImage;
+            }else{
+
+            }
             $use->total_view=Seennewsupdate::where('news_id',$use->id)->get()->count();
 
             $news[]=$use;
@@ -107,7 +119,11 @@ class NewsController extends Controller
     public function getpubnewsbyid($slug)
     {
         $news =Newsupdate::where('slug',$slug)->where('status','Active')->first();
-        $news->postImage=env('PROD_URL').$news->postImage;
+        if(isset($news->postImage)){
+            $news->postImage=env('PROD_URL').$news->postImage;
+        }else{
+
+        }
         $news->total_view=Seennewsupdate::where('news_id',$news->id)->get()->count();
 
         $response = [
