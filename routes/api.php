@@ -43,7 +43,7 @@ Route::get('teammembers', [TeammemberController::class,'getteammembersinfo']);
 Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
 
-Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
+Route::group(['prefix'=>'user','middleware' => ['auth:web:sanctum']], function () {
 
     Route::get('/details/{id}', [UserauthController::class,'userdetails']);
     Route::get('newsupdates/{id}', [NewsController::class,'getnews']);
@@ -59,12 +59,12 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 });
 
 // admin login api
-Route::post('admin/register', [AdminauthController::class, 'c']);
+Route::post('admin/register', [AdminauthController::class, 'adminstore']);
 Route::post('admin/login', [AdminauthController::class, 'adminlogin']);
 Route::post('admin/logout', [AdminauthController::class, 'adminlogout']);
 
 
-Route::group(['prefix'=>'admin','middleware' => ['auth.admin:sanctum']], function () {
+Route::group(['prefix'=>'admin','middleware' => ['auth.admin:admin:sanctum']], function () {
 
     Route::get('/details/{id}', [AdminauthController::class,'admindetails']);
     Route::get('getadminroles', [AdminauthController::class,'getroles']);
