@@ -123,7 +123,7 @@ class AdminauthController extends Controller
     }
 
     public function adminlogout(Request $request){
-        $token = request()->bearerToken();
+        $token = $request->token;
         $usertoken=PersonalAccessToken::findToken($token);
 
         $utoken = PersonalAccessToken::where('name',$usertoken->name)->where('tokenable_id', $usertoken->tokenable_id);
