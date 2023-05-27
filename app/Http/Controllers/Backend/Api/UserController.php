@@ -75,6 +75,9 @@ class UserController extends Controller
             $user->password=Hash::make($request->password);
             $user->phone=$request->phone;
             $user->membership_code=$this->uniqueID();
+            $user->country=$request->country;
+            $user->city=$request->city;
+            $user->address=$request->address;
             $user->save();
             if($request->roles){
                 $user->assignRole($request->roles);
@@ -173,11 +176,15 @@ class UserController extends Controller
                 $user->password=Hash::make($request->password);
             }
             $user->phone=$request->phone;
+            $user->country=$request->country;
+            $user->city=$request->city;
+            $user->address=$request->address;
             $user->update();
             $user->roles()->detach();
             if($request->roles){
                 $user->assignRole($request->roles);
             }
+
 
             $response=[
                 "status"=>true,
