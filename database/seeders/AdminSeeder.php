@@ -20,10 +20,10 @@ class AdminSeeder extends Seeder
         $checkadmin =Admin::where('email','md.muraiem@gmail.com')->first();
         if(is_null($checkadmin)){
             $user = new Admin();
-            $user->first_name= 'Abdullah';
-            $user->last_name= 'Md. Muraiem';
-            $user->phone= '01928558628';
-            $user->email= 'md.muraiem@gmail.com';
+            $user->first_name= 'Sebenza';
+            $user->last_name= 'System';
+            $user->phone= '+32i4298234';
+            $user->email= 'sebenza@gmail.com';
             $user->status= 'Active';
             $user->password= Hash::make('password');
             $user->assignRole(1);
