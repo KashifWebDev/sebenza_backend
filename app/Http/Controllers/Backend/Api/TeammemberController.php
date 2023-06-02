@@ -32,7 +32,7 @@ class TeammemberController extends Controller
         return response()->json($response,200);
     }
 
-    public function getteammemberinfo()
+    public function getteammembersinfo()
     {
         $uss=Teammember::where('status','Active')->get();
         foreach($uss as $us){
