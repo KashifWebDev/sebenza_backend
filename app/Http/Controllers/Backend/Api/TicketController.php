@@ -210,6 +210,10 @@ class TicketController extends Controller
             $replay->from_user_id=$user_id->tokenable_id;
             $replay->status='Customer-Replay';
         }else{
+            if(isset($token)){
+                $user_id=PersonalAccessToken::findToken($token);
+            }
+            $replay->from_user_id=$user_id->tokenable_id;
             $replay->type='Admin';
             $replay->status='Answered';
         }
