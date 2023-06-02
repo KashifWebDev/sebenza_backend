@@ -36,12 +36,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (QueryException  $e) {
-            return response()->json([
-                    "status"=>false,
-                    'message' => "No query found for this url",
-                ], 404);
-        });
+        // $this->renderable(function (QueryException  $e) {
+        //     return response()->json([
+        //             "status"=>false,
+        //             'message' => "No query found for this url",
+        //         ], 404);
+        // });
 
         $this->renderable(function (MissingAppKeyException  $e) {
             return response()->json([
