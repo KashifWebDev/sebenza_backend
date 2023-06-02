@@ -108,9 +108,9 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::post('whatsapp/update/{id}', [WhatsappController::class,'update']);
 
     // supportticket
-    Route::get('supporttickets', [TikitController::class, 'admindex']);
-    Route::get('supportticket/edit/{id}', [TikitController::class, 'edit']);
-    Route::post('supportticket/update/{id}', [TikitController::class, 'update']);
+    Route::get('supporttickets', [TicketController::class, 'admindex']);
+    Route::get('supportticket/edit/{id}', [TicketController::class, 'edit']);
+    Route::post('supportticket/update/{id}', [TicketController::class, 'update']);
     Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
 
 });

@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        $checkadmin =Admin::where('email','md.muraiem@gmail.com')->first();
+        $checkadmin =Admin::where('email','sebenza@gmail.com')->first();
         if(is_null($checkadmin)){
             $user = new Admin();
             $user->first_name= 'Sebenza';
