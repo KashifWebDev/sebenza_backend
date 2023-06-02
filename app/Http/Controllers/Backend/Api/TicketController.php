@@ -232,7 +232,7 @@ class TicketController extends Controller
             'status' => true,
             'message'=>'Ticket replaed Successfully',
             "data"=> [
-                'supporttickets'=> $tickets,
+                'supporttickets'=> $ticket,
             ]
         ];
         return response()->json($response,200);
