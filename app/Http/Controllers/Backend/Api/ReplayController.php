@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend\Api;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Replay;
 use Illuminate\Http\Request;
