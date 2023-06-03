@@ -137,7 +137,7 @@ class TicketController extends Controller
 
     public function admindex()
     {
-        $tickets=Ticket::get()->reverse();
+        $tickets=Ticket::get();
         $response = [
             'status' => true,
             'message'=>'All Supporttickets List',
