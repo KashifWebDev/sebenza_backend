@@ -68,10 +68,10 @@ class UserauthController extends Controller
             $user->address=$request->address;
 
             $user->user_limit_id=$request->user_limit_id;
-            if(isset($request->user_limit_id)){
-                $package=Accountpackage::where('id',$request->user_limit_id)->first();
-                $user->user_limit=$package->account_package;
-            }
+            // if(isset($request->user_limit_id)){
+            //     $package=Accountpackage::where('id',$request->user_limit_id)->first();
+            //     $user->user_limit=$package->account_package;
+            // }
             $user->assignRole(5);
             $user->save();
 

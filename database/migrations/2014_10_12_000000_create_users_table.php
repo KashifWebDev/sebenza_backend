@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('country')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();
-            $table->string('user_limit')->nullable();
+            // $table->string('user_limit')->nullable();
             $table->integer('user_limit_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
