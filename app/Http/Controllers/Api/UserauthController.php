@@ -77,7 +77,7 @@ class UserauthController extends Controller
 
             $token = $user->createToken('user')->plainTextToken;
 
-            $user->profile=env('PROD_URL').'public/backend/img/user.jpg';
+
 
             $response=[
                 "status"=>true,
@@ -130,7 +130,6 @@ class UserauthController extends Controller
             $user->assignRole($request->role);
             $user->save();
 
-            $user->profile=env('PROD_URL').'public/backend/img/user.jpg';
 
             $response=[
                 "status"=>true,
@@ -180,7 +179,7 @@ class UserauthController extends Controller
         $user = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('id', $user->id)->first();
 
         $token = $user->createToken('user')->plainTextToken;
-        $user->profile=env('PROD_URL').$user->profile;
+
         $response = [
             "status"=>true,
             "message"=>"Login Successfully",
@@ -196,7 +195,7 @@ class UserauthController extends Controller
     public function userdetails($id){
 
         $user = User::with('roles')->where('id', $id)->first();
-        $user->profile=env('PROD_URL').$user->profile;
+
         $response = [
             "status"=>true,
             "message"=>"User Details",

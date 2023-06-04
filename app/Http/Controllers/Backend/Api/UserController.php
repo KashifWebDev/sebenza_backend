@@ -82,7 +82,7 @@ class UserController extends Controller
             if($request->roles){
                 $user->assignRole($request->roles);
             }
-            $user->profile=env('PROD_URL').'public/backend/img/user.jpg';
+
             $response=[
                 "status"=>true,
                 'message' => "User created successfully",
@@ -142,7 +142,7 @@ class UserController extends Controller
     {
         $roles =Role::where('guard_name','web')->get();
         $user =User::with('roles')->where('id',$id)->first();
-        $user->profile=env('PROD_URL').$user->profile;
+
 
         $response = [
             'status' => true,
@@ -166,7 +166,7 @@ class UserController extends Controller
     public function update(Request $request,$id)
     {
         $user=User::where('id',$id)->first();
-        $user->profile=env('PROD_URL').$user->profile;
+
 
         if(isset($user)){
             $user->first_name=$request->first_name;
