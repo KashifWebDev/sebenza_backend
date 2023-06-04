@@ -78,7 +78,7 @@ class User extends Authenticatable
 
     public function getProfileAttribute($value)
     {
-       return env('PROD_URL').$this->profile;
+       return env('PROD_URL').$value;
     }
 
 
