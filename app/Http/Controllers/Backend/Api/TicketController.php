@@ -23,7 +23,7 @@ class TicketController extends Controller
         $token = request()->bearerToken();
         if(isset($token)){
             $user_id=PersonalAccessToken::findToken($token);
-          	$tickets=Ticket::where('from_id',$user_id->tokenable_id)->get();
+          	$tickets=Ticket::with('users')->where('from_id',$user_id->tokenable_id)->get();
         	$response = [
                 'status' => true,
                 'message'=>'Supporttickets by user id',
@@ -62,7 +62,7 @@ class TicketController extends Controller
         $token = request()->bearerToken();
         if(isset($token)){
             $user_id=PersonalAccessToken::findToken($token);
-            $tts=Ticket::where('from_id',$user_id->tokenable_id)->get();
+            $tts=Ticket::with('users')->where('from_id',$user_id->tokenable_id)->get();
             foreach($tts as $tt){
                 $t=Ticket::where('id',$tt->id)->first();
                 $t->status='Closed';
@@ -115,7 +115,7 @@ class TicketController extends Controller
      */
     public function show($id)
     {
-        $ticket=Ticket::findOrfail($id);
+        $ticket=Ticket::with('users')->where('id',$id)->first();
         $replays=Replay::with('users')->where('ticket_id',$id)->get();
         $response = [
             'status' => true,
@@ -137,7 +137,7 @@ class TicketController extends Controller
 
     public function admindex()
     {
-        $tickets=Ticket::get();
+        $tickets=Ticket::with('users')->get();
         $response = [
             'status' => true,
             'message'=>'All Supporttickets List',
@@ -150,7 +150,7 @@ class TicketController extends Controller
 
     public function edit($id)
     {
-        $ticket=Ticket::findOrfail($id);
+        $ticket=Ticket::with('users')->where('id',$id)->first();
         $replays=Replay::with('users')->where('ticket_id',$id)->get();
         $response = [
             'status' => true,

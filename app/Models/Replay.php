@@ -13,4 +13,10 @@ class Replay extends Model
     {
         return $this->belongsTo(User::class, 'from_user_id');
     }
+
+    public function getReplayattAttribute($value)
+    {
+       return env('PROD_URL').$value;
+    }
+
 }

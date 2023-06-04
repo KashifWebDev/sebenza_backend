@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
+
+    public function getAttachmentAttribute($value)
+    {
+       return env('PROD_URL').$value;
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'from_id');
+    }
+
 }
