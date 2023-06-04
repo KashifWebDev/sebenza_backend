@@ -19,12 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $uss =User::with('roles')->get();
-        foreach($uss as $us){
-            $use=$us;
-            $use->profile=env('PROD_URL').$use->profile;
-            $users[]=$use;
-        }
+        $users =User::with('roles')->get();
         $response = [
             'status' => true,
             'message'=>'List of users',
