@@ -33,7 +33,6 @@ class User extends Authenticatable
         'city',
         'address',
         'password',
-        'profile',
     ];
 
     /**
@@ -77,10 +76,10 @@ class User extends Authenticatable
 
 
 
-    public function getProfileAttribute($value)
-    {
-       return $this->attributes['profile'] = env('PROD_URL').$value;
-    }
+    // public function getProfileAttribute($value)
+    // {
+    //    return $this->attributes['profile'] = env('PROD_URL').$value;
+    // }
 
 
 
