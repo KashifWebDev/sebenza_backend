@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('priority');
             $table->string('message')->nullable();
             $table->text('attachment')->nullable();
-            $table->string('status')->default('Processing');
+            $table->string('status')->default('Pending');
             $table->string('solved_By')->nullable();
             $table->timestamps();
         });

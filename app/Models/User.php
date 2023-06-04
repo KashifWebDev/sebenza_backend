@@ -75,6 +75,11 @@ class User extends Authenticatable
     }
 
 
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['profile'] = env('PROD_URL')+$value;
+    }
+
+
 
 }
-
