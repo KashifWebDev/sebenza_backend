@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accountpackages', function (Blueprint $table) {
+        Schema::create('promocodes', function (Blueprint $table) {
             $table->id();
-            $table->string('account_package');
-            $table->integer('max_user');
-            $table->string('status')->default('Inactive');
+            $table->string('title');
+            $table->string('promocode')->unique();
+            $table->string('expired_date');
+            $table->decimal('discount_percent')->default(0);
+            $table->string('status')->default('Active');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accountpackages');
+        Schema::dropIfExists('promocodes');
     }
 };

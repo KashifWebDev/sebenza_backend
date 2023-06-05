@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\Api\HelpcenterController;
 use App\Http\Controllers\Backend\Api\TeammemberController;
 use App\Http\Controllers\Backend\Api\TicketController;
 use App\Http\Controllers\Backend\Api\WhatsappController;
+use App\Http\Controllers\Backend\Api\PromocodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,6 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // createuser
     Route::post('import', [UserauthController::class, 'userImport']);
     Route::post('add-by/{slug}', [UserauthController::class, 'usercreate']);
-
     // supporttikits
     Route::resource('supporttickets', TicketController::class);
     Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
@@ -112,5 +112,13 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::get('supportticket/edit/{id}', [TicketController::class, 'edit']);
     Route::post('supportticket/update/{id}', [TicketController::class, 'update']);
     Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
+    // promocodes
+    Route::resource('promocodes', PromocodeController::class);
+    Route::post('promocode/update/{id}', [PromocodeController::class,'update']);
+
+
+
+
+
 
 });
