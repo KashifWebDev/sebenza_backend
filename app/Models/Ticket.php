@@ -16,15 +16,11 @@ class Ticket extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        $date = strtotime($value);
-        $d=date('Y-m-d H:i:s', $date);
-        return $d;
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
     }
 
     public function getUpdatedAtAttribute($value)
     {
-        $date = strtotime($value);
-        $d=date('d/M/Y H:i:s', $date);
         return \Carbon\Carbon::parse($value)->diffForhumans() ;
     }
 
