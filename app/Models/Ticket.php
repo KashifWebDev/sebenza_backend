@@ -17,7 +17,7 @@ class Ticket extends Model
     public function getCreatedAtAttribute($value)
     {
         $date = strtotime($value);
-        $d=date('d/M/Y H:i:s', $date);
+        $d=date('Y-m-d H:i:s', $date);
         return $d;
     }
 
@@ -25,7 +25,7 @@ class Ticket extends Model
     {
         $date = strtotime($value);
         $d=date('d/M/Y H:i:s', $date);
-        return \Carbon\Carbon::parse($d)->diffForhumans() ;
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
     }
 
     public function users()
