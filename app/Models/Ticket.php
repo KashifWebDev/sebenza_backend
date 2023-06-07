@@ -16,12 +16,12 @@ class Ticket extends Model
 
     public function getCreatedAtAttribute($value)
     {
-       return 'd'.$value;
+       return $value->diffForHumans();
     }
 
     public function getUpdatedAtAttribute($value)
     {
-       return "a".$value;
+       return $value->diffForHumans();
     }
 
     public function users()
