@@ -9,4 +9,13 @@ class Task extends Model
 {
     use HasFactory;
 
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
+    }
 }

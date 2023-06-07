@@ -19,4 +19,15 @@ class Replay extends Model
        return env('PROD_URL').$value;
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForhumans() ;
+    }
+
+
 }
