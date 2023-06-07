@@ -14,7 +14,7 @@ class Task extends Model
        return $value->diffForHumans();
     }
 
-    public function getUpdatedatAttribute($value)
+    public function getUpdatedAtAttribute($value)
     {
        return $value->diffForHumans();
     }
