@@ -19,7 +19,7 @@ class Ticket extends Model
        return 'd'.$value;
     }
 
-    public function getUpdated_atAttribute($value)
+    public function getUpdatedAtAttribute($value)
     {
        return "a".$value;
     }
