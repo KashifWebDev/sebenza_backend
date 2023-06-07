@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
+
+    public function getCreatedAtAttribute($value)
+    {
+       return $value->diffForHumans();
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+       return $value->diffForHumans();
+    }
 }
