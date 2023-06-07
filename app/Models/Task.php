@@ -9,9 +9,9 @@ class Task extends Model
 {
     use HasFactory;
 
-    public function getcreated_atAttribute($value)
+    public function getSubjectAttribute($value)
     {
-       return 'test'.$value->diffForHumans();
+       return 'testsssssss'.$value;
     }
 
     public function getUpdatedAtAttribute($value)
