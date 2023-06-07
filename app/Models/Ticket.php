@@ -17,13 +17,15 @@ class Ticket extends Model
     public function getCreatedAtAttribute($value)
     {
         $date = strtotime($value);
-        return $date;
+        $d=date('d/M/Y H:i:s', $date);
+        return $d->diffForHumans();
     }
 
     public function getUpdatedAtAttribute($value)
     {
         $date = strtotime($value);
-        return $date;
+        $d=date('d/M/Y H:i:s', $date);
+        return $d->diffForHumans();
     }
 
     public function users()
