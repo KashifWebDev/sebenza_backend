@@ -18,14 +18,14 @@ class Ticket extends Model
     {
         $date = strtotime($value);
         $d=date('d/M/Y H:i:s', $date);
-        return $d->diffForHumans();
+        return diffForHumans($d);
     }
 
     public function getUpdatedAtAttribute($value)
     {
         $date = strtotime($value);
         $d=date('d/M/Y H:i:s', $date);
-        return $d->diffForHumans();
+        return diffForHumans($d);
     }
 
     public function users()
