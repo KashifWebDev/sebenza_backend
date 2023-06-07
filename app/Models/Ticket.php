@@ -14,6 +14,16 @@ class Ticket extends Model
        return env('PROD_URL').$value;
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+       return $value->diffForHumans();
+    }
+
+    public function getUpdatedatAttribute($value)
+    {
+       return $value->diffForHumans();
+    }
+
     public function users()
     {
         return $this->belongsTo(User::class, 'from_id');
