@@ -9,12 +9,12 @@ class Task extends Model
 {
     use HasFactory;
 
-    public function getCreated_atAttribute($value)
+    public function getCreatedAtAttribute($value)
     {
        return $value->diffForHumans();
     }
 
-    public function getUpdated_atAttribute($value)
+    public function getUpdatedatAttribute($value)
     {
        return $value->diffForHumans();
     }
