@@ -17,6 +17,8 @@ use App\Http\Controllers\Backend\Api\TeammemberController;
 use App\Http\Controllers\Backend\Api\TicketController;
 use App\Http\Controllers\Backend\Api\WhatsappController;
 use App\Http\Controllers\Backend\Api\PromocodeController;
+use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\MetingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +57,12 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // supporttikits
     Route::resource('supporttickets', TicketController::class);
     Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);
+    // tasks
+    Route::resource('tasks', TaskController::class);
+    Route::post('task/update/{id}', [TaskController::class,'update']);
+    // meting
+    Route::resource('metings', MetingController::class);
+    Route::post('meting/update/{id}', [MetingController::class,'update']);
 
 });
 
