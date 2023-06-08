@@ -78,7 +78,11 @@ class User extends Authenticatable
 
     public function getProfileAttribute($value)
     {
-       return env('PROD_URL').$value;
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
     }
 
 
