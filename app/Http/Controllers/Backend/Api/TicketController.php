@@ -233,6 +233,7 @@ class TicketController extends Controller
             'message'=>'Ticket replaed Successfully',
             "data"=> [
                 'supporttickets'=> $ticket,
+                'replay'=>$replay,
             ]
         ];
         return response()->json($response,200);
