@@ -16,7 +16,11 @@ class Replay extends Model
 
     public function getReplayattAttribute($value)
     {
-       return env('PROD_URL').$value;
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
     }
 
     public function getCreatedAtAttribute($value)
