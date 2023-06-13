@@ -117,7 +117,7 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $replays=Replay::with('users')->where('ticket_id',$id)->get();
-        $adm=Replay::where('ticket_id',$id)->latest()->take(1);
+        $adm=Replay::where('ticket_id',$id)->latest()->take(1)->first();
         $response = [
             'status' => true,
             'message'=>'View support tikit by id',
