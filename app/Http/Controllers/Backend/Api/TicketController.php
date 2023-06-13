@@ -124,6 +124,7 @@ class TicketController extends Controller
                 $user='';
             }else{
                 $user=Admin::where('id',$adm->from_user_id)->first();
+                $user['profile']=env('PROD_URL').$user->profile;
                 $user['from']='Admin';
             }
         }else{
