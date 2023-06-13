@@ -152,12 +152,14 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $replays=Replay::with('users')->where('ticket_id',$id)->get();
+        $adm=Replay::where('ticket_id',$id)->latest()->take(1);
         $response = [
             'status' => true,
             'message'=>'View support tikit by id',
             "data"=> [
                 'supporttickets'=> $ticket,
                 'replays'=> $replays,
+                'replied_from'=> $adm,
             ]
         ];
         return response()->json($response,200);
