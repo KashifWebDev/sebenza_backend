@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use App\Models\Replay;
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -118,13 +119,24 @@ class TicketController extends Controller
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $replays=Replay::with('users')->where('ticket_id',$id)->get();
         $adm=Replay::where('ticket_id',$id)->latest()->take(1)->first();
+        if(isset($adm)){
+            if($adm->type=='User'){
+                $user=User::where('id',$adm->from_user_id)->first();
+                $user['from']='User';
+            }else{
+                $user=Admin::where('id',$adm->from_user_id)->first();
+                $user['from']='Admin';
+            }
+        }else{
+            $user='';
+        }
         $response = [
             'status' => true,
             'message'=>'View support tikit by id',
             "data"=> [
                 'supporttickets'=> $ticket,
                 'replays'=> $replays,
-                'replied_from'=> $adm,
+                'replied_from'=> $user,
             ]
         ];
         return response()->json($response,200);
