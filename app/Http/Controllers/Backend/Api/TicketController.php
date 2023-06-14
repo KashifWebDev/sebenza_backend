@@ -117,18 +117,27 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
-        $replays=Replay::with('users')->where('ticket_id',$id)->get();
+        $res=Replay::where('ticket_id',$id)->get();
+        foreach($res as $re){
+            $r=Replay::where('id',$re->id)->first();
+            if($r->type=='User'){
+                $r['users']=User::where('id',$r->from_user_id)->first();
+            }else{
+                $r['users']=Admin::where('id',$r->from_user_id)->first();
+            }
+            $replays[]=$r;
+        }
         $adm=Replay::where('ticket_id',$id)->latest()->take(1)->first();
         if(isset($adm)){
             if($adm->type=='User'){
-                $user='';
+                $user=[];
             }else{
                 $user=Admin::where('id',$adm->from_user_id)->first();
                 $user['profile']=env('PROD_URL').$user->profile;
                 $user['from']='Admin';
             }
         }else{
-            $user='';
+            $user=[];
         }
         $response = [
             'status' => true,
@@ -165,7 +174,16 @@ class TicketController extends Controller
     public function edit($id)
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
-        $replays=Replay::with('users')->where('ticket_id',$id)->get();
+        $res=Replay::where('ticket_id',$id)->get();
+        foreach($res as $re){
+            $r=Replay::where('id',$re->id)->first();
+            if($r->type=='User'){
+                $r['users']=User::where('id',$r->from_user_id)->first();
+            }else{
+                $r['users']=Admin::where('id',$r->from_user_id)->first();
+            }
+            $replays[]=$r;
+        }
         $response = [
             'status' => true,
             'message'=>'View support tikit by id',
