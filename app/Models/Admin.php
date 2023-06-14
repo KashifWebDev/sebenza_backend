@@ -64,4 +64,13 @@ class Admin extends Authenticatable
         return $hasPermission;
     }
 
+    public function getProfileAttribute($value)
+    {
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
+    }
+
 }
