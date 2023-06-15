@@ -221,7 +221,7 @@ class TicketController extends Controller
     {
         $ticket=Ticket::where('id',$id)->first();
         if($request->type=='User'){
-            $ticket->status='Customer-Replay';
+            $ticket->status='Answered';
             $ticket->update();
         }else{
             $ticket->status='Answered';
