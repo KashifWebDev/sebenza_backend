@@ -118,7 +118,7 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $res=Replay::where('ticket_id',$id)->get();
-        if(isset($res)){
+        if(count($res)>0){
             foreach($res as $re){
                 $r=Replay::where('id',$re->id)->first();
                 if($r->type=='User'){
@@ -179,7 +179,7 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $res=Replay::where('ticket_id',$id)->get();
-        if(isset($res)){
+        if(count($res)>0){
             foreach($res as $re){
                 $r=Replay::where('id',$re->id)->first();
                 if($r->type=='User'){
