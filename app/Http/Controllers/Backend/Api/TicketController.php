@@ -118,14 +118,18 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $res=Replay::where('ticket_id',$id)->get();
-        foreach($res as $re){
-            $r=Replay::where('id',$re->id)->first();
-            if($r->type=='User'){
-                $r['users']=User::where('id',$r->from_user_id)->first();
-            }else{
-                $r['users']=Admin::where('id',$r->from_user_id)->first();
+        if(isset($res)){
+            foreach($res as $re){
+                $r=Replay::where('id',$re->id)->first();
+                if($r->type=='User'){
+                    $r['users']=User::where('id',$r->from_user_id)->first();
+                }else{
+                    $r['users']=Admin::where('id',$r->from_user_id)->first();
+                }
+                $replays[]=$r;
             }
-            $replays[]=$r;
+        }else{
+            $replays=[];
         }
         $adm=Replay::where('ticket_id',$id)->latest()->take(1)->first();
         if(isset($adm)){
@@ -175,14 +179,18 @@ class TicketController extends Controller
     {
         $ticket=Ticket::with('users')->where('id',$id)->first();
         $res=Replay::where('ticket_id',$id)->get();
-        foreach($res as $re){
-            $r=Replay::where('id',$re->id)->first();
-            if($r->type=='User'){
-                $r['users']=User::where('id',$r->from_user_id)->first();
-            }else{
-                $r['users']=Admin::where('id',$r->from_user_id)->first();
+        if(isset($res)){
+            foreach($res as $re){
+                $r=Replay::where('id',$re->id)->first();
+                if($r->type=='User'){
+                    $r['users']=User::where('id',$r->from_user_id)->first();
+                }else{
+                    $r['users']=Admin::where('id',$r->from_user_id)->first();
+                }
+                $replays[]=$r;
             }
-            $replays[]=$r;
+        }else{
+            $replays=[];
         }
         $response = [
             'status' => true,
