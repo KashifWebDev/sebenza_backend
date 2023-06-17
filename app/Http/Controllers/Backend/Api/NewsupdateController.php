@@ -21,7 +21,7 @@ class NewsupdateController extends Controller
             $uss =Newsupdate::all();
         }
 
-        if(isset($uss)){
+        if(count($uss)>0){
             foreach($uss as $us){
                 $use=$us;
                 if(isset($use->postImage)){
