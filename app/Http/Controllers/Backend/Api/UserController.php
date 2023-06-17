@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if(isset($request->search)){
-            $users =User::with('roles')->where('first_name',$request->search)->orWhere('last_name',$request->search)->get();
+            $users =User::with('roles')->where('first_name','LIKE', "%$request->search%")->orWhere('last_name','LIKE', "%$request->search%")->get();
         }else{
             $users =User::with('roles')->get();
         }

@@ -17,7 +17,7 @@ class AccounttypeController extends Controller
     public function index(Request $request)
     {
         if(isset($request->search)){
-            $accounttypes=Accounttype::where('account_type',$request->search)->get();
+            $accounttypes=Accounttype::where('account_type','LIKE', "%$request->search%")->get();
         }else{
             $accounttypes=Accounttype::all();
         }

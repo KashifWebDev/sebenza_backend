@@ -16,7 +16,7 @@ class NewsupdateController extends Controller
     public function index(Request $request)
     {
         if(isset($request->search)){
-            $uss =Newsupdate::where('title',$request->search)->get();
+            $uss =Newsupdate::where('title','LIKE', "%$request->search%")->get();
         }else{
             $uss =Newsupdate::all();
         }

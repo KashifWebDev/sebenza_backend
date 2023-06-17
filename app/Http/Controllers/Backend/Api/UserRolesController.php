@@ -19,7 +19,7 @@ class UserRolesController extends Controller
     public function index(Request $request)
     {
         if(isset($request->search)){
-            $roles =Role::where('guard_name','web')->where('name',$request->search)->get();
+            $roles =Role::where('guard_name','web')->where('name','LIKE', "%$request->search%")->get();
         }else{
             $roles =Role::where('guard_name','web')->get();
         }
