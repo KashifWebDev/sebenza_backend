@@ -17,9 +17,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users =User::with('roles')->get();
+        if(isset($request->search)){
+            $users =User::with('roles')->where('first_name',$request->search)->orWhere('last_name',$request->search)->get();
+        }else{
+            $users =User::with('roles')->get();
+        }
+
         $response = [
             'status' => true,
             'message'=>'List of users',
