@@ -14,9 +14,14 @@ class AccounttypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $accounttypes=Accounttype::all();
+        if(isset($request->search)){
+            $accounttypes=Accounttype::where('account_type',$request->search)->get();
+        }else{
+            $accounttypes=Accounttype::all();
+        }
+
         $response = [
             'status' => true,
             'message'=>'List of account types',

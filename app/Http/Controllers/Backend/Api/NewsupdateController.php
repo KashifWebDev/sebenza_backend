@@ -13,10 +13,13 @@ class NewsupdateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $uss =Newsupdate::all();
-
+        if(isset($request->search)){
+            $uss =Newsupdate::where('title',$request->search)->get();
+        }else{
+            $uss =Newsupdate::all();
+        }
 
         if(isset($uss)){
             foreach($uss as $us){

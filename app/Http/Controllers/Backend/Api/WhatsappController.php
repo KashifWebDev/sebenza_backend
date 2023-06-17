@@ -16,7 +16,12 @@ class WhatsappController extends Controller
      */
     public function index()
     {
-        $whatsapp=Whatsapp::all();
+        if(isset($request->search)){
+            $whatsapp=Whatsapp::where('user_name',$request->search)->orWhere('whatsapp_number',$request->search)->get();
+        }else{
+            $whatsapp=Whatsapp::all();
+        }
+
         $response = [
             'status' => true,
             'message'=>'All whatsapp number infos',
