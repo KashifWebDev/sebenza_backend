@@ -16,7 +16,7 @@ class UserRolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if(isset($request->search)){
             $roles =Role::where('guard_name','web')->where('name',$request->search)->get();

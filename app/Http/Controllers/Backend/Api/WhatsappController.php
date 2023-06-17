@@ -14,7 +14,7 @@ class WhatsappController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $requests)
     {
         if(isset($request->search)){
             $whatsapp=Whatsapp::where('user_name',$request->search)->orWhere('whatsapp_number',$request->search)->get();
