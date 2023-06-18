@@ -131,15 +131,11 @@ class TicketController extends Controller
         }else{
             $replays=[];
         }
-        $adm=Replay::where('ticket_id',$id)->latest()->take(1)->first();
+        $adm=Replay::where('ticket_id',$id)->where('type','Admin')->first();
         if(isset($adm)){
-            if($adm->type=='User'){
-                $user=[];
-            }else{
-                $user=Admin::where('id',$adm->from_user_id)->first();
-                $user['profile']=env('PROD_URL').$user->profile;
-                $user['from']='Admin';
-            }
+            $user=Admin::where('id',$adm->from_user_id)->first();
+            $user['profile']=env('PROD_URL').$user->profile;
+            $user['from']='Admin';
         }else{
             $user=[];
         }
