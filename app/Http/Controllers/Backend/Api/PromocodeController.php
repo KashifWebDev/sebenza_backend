@@ -128,7 +128,7 @@ class PromocodeController extends Controller
      * @param  \App\Models\Promocode  $promocode
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Promocode $promocode)
+    public function destroy($id)
     {
         $promocode= Promocode::where('id',$id)->first();
         $promocode->delete();
