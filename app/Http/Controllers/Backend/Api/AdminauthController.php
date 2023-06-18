@@ -47,7 +47,7 @@ class AdminauthController extends Controller
                 $admin->assignRole($request->roles);
             }
             $token = $admin->createToken('admin')->plainTextToken;
-            $admin->profile=env('PROD_URL').'public/backend/img/user.jpg';
+            $admin->profile='public/backend/img/user.jpg';
 
             $response=[
                 "status"=>true,
@@ -92,7 +92,6 @@ class AdminauthController extends Controller
         $admin = Admin::with('roles')->where('id', $admin->id)->first();
 
         $token = $admin->createToken('admin')->plainTextToken;
-        $admin->profile=env('PROD_URL').$admin->profile;
 
         $response = [
             "status"=>true,
@@ -109,7 +108,6 @@ class AdminauthController extends Controller
     public function admindetails($id){
 
         $admin = Admin::with('roles')->where('id', $id)->first();
-        $admin->profile=env('PROD_URL').$admin->profile;
 
         $response = [
             "status"=>true,
