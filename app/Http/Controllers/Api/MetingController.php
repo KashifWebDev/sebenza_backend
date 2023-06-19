@@ -133,7 +133,7 @@ class MetingController extends Controller
      * @param  \App\Models\Meting  $meting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Meting $meting)
+    public function destroy($id)
     {
         $metings =Meting::where('id',$id)->first();
         $metings->delete();
