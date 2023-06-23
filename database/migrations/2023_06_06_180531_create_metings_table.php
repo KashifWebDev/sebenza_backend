@@ -18,7 +18,9 @@ return new class extends Migration
             $table->integer('form_id');
             $table->text('title');
             $table->text('place')->nullable();
-            $table->text('subject')->nullable();
+            $table->text('description')->nullable();
+            $table->text('link')->nullable();
+            $table->text('recipients')->nullable();
             $table->date('date');
             $table->time('time');
             $table->string('status')->default('Pending');

@@ -49,11 +49,15 @@ class MetingController extends Controller
      */
     public function store(Request $request)
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
         $metings=new Meting();
-        $metings->form_id=$request->form_id;
+        $metings->form_id=$user_id->tokenable_id;
         $metings->title=$request->title;
         $metings->place=$request->place;
-        $metings->subject=$request->subject;
+        $metings->description=$request->description;
+        $metings->link=$request->link;
+        $metings->recipients=$request->recipients;
         $metings->date=$request->date;
         $metings->time=$request->time;
         $metings->save();
@@ -108,11 +112,15 @@ class MetingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
         $metings =Meting::where('id',$id)->first();
-        $metings->form_id=$request->form_id;
+        $metings->form_id=$user_id->tokenable_id;
         $metings->title=$request->title;
         $metings->place=$request->place;
-        $metings->subject=$request->subject;
+        $metings->description=$request->description;
+        $metings->link=$request->link;
+        $metings->recipients=$request->recipients;
         $metings->date=$request->date;
         $metings->time=$request->time;
         $metings->status=$request->status;

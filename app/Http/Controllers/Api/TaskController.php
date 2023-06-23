@@ -51,8 +51,10 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
         $tasks=new Task();
-        $tasks->form_id=$request->form_id;
+        $tasks->form_id=$user_id->tokenable_id;
         $tasks->name=$request->name;
         $tasks->details=$request->details;
         $tasks->date=$request->date;
@@ -109,8 +111,11 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+
         $tasks =Task::where('id',$id)->first();
-        $tasks->form_id=$request->form_id;
+        $tasks->form_id=$user_id->tokenable_id;
         $tasks->name=$request->name;
         $tasks->details=$request->details;
         $tasks->date=$request->date;
