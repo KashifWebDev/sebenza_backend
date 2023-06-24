@@ -24,7 +24,11 @@ class TicketController extends Controller
         $token = request()->bearerToken();
         if(isset($token)){
             $user_id=PersonalAccessToken::findToken($token);
-          	$tickets=Ticket::with('users')->get();
+            if($user_id->name=='admin'){
+          	    $tickets=Ticket::with('users')->get();
+            }else{
+          	    $tickets=Ticket::with('users')->where('from_id',$user_id->tokenable_id)->get();
+            }
         	$response = [
                 'status' => true,
                 'message'=>'Supporttickets by user id',
