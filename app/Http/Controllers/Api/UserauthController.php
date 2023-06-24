@@ -72,7 +72,7 @@ class UserauthController extends Controller
             //     $package=Accountpackage::where('id',$request->user_limit_id)->first();
             //     $user->user_limit=$package->account_package;
             // }
-            $user->assignRole(6);
+            $user->assignRole(5);
             $user->save();
 
             $token = $user->createToken('user')->plainTextToken;
