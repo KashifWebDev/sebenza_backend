@@ -47,7 +47,7 @@ Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
-    Route::resource('get-list', [UserController::class,'index']);
+    Route::get('get-list', [UserController::class,'index']);
 
     Route::get('/details/{id}', [UserauthController::class,'userdetails']);
     Route::get('newsupdates/{id}', [NewsController::class,'getnews']);
