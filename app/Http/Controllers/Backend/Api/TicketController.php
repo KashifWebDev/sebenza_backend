@@ -75,7 +75,7 @@ class TicketController extends Controller
             }
             $ticket=new Ticket();
             $ticket->from_id=$user_id->tokenable_id;
-            $ticket->name=User::where('id',$user_id->tokenable_id)->first()->first_name . User::where('id',$user_id->tokenable_id)->first()->last_name;
+            $ticket->name=User::where('id',$user_id->tokenable_id)->first()->first_name .''. User::where('id',$user_id->tokenable_id)->first()->last_name;
             $ticket->email=User::where('id',$user_id->tokenable_id)->first()->email;
             $ticket->subject=$request->subject;
             $ticket->department=$request->department;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Models\Task;
+use App\Models\Tasknote;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class TaskController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $tasks =Task::where('form_id',$user_id->tokenable_id)->get();
+        $tasks =Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->get();
 
         $response = [
             'status' => true,
@@ -76,9 +77,20 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function tasknote(Request $request ,$id)
     {
-        //
+        $tn=new Tasknote();
+        $tn->task_id=$id;
+        $tn->description=$request->description;
+        $tn->save();
+        $response=[
+            "status"=>true,
+            'message' => "Task Note create successful",
+            "data"=> [
+                'tasknotes'=> $tn,
+            ]
+        ];
+        return response()->json($response, 200);
     }
 
     /**
@@ -89,7 +101,7 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $tasks =Task::where('id',$id)->first();
+        $tasks =Task::with('tasknotes')->where('id',$id)->first();
 
         $response = [
             'status' => true,
@@ -114,7 +126,7 @@ class TaskController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
-        $tasks =Task::where('id',$id)->first();
+        $tasks =Task::with('tasknotes')->where('id',$id)->first();
         $tasks->form_id=$user_id->tokenable_id;
         $tasks->name=$request->name;
         $tasks->details=$request->details;
@@ -140,8 +152,14 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
+        $tns=Tasknote::where('task_id',$id)->get();
+        foreach($tns as $tn){
+            $tn->delete();
+        }
+
         $tasks =Task::where('id',$id)->first();
         $tasks->delete();
+
         $response = [
             'status' => true,
             'message'=> 'Task delete successfully',

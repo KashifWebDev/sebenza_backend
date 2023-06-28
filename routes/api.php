@@ -61,6 +61,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // tasks
     Route::resource('tasks', TaskController::class);
     Route::post('task/update/{id}', [TaskController::class,'update']);
+    Route::post('task/{id}/addnote', [TaskController::class,'tasknote']);
     // meting
     Route::resource('metings', MetingController::class);
     Route::post('meting/update/{id}', [MetingController::class,'update']);

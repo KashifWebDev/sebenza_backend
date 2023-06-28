@@ -18,4 +18,12 @@ class Task extends Model
     {
         return \Carbon\Carbon::parse($value)->diffForhumans() ;
     }
+
+
+    public function tasknotes()
+    {
+        return $this->hasMany(Tasknote::class, 'task_id');
+    }
+
+
 }
