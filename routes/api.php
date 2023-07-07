@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\Api\WhatsappController;
 use App\Http\Controllers\Backend\Api\PromocodeController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\MetingController;
+use App\Http\Controllers\Api\CalenderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,9 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // meting
     Route::resource('metings', MetingController::class);
     Route::post('meting/update/{id}', [MetingController::class,'update']);
+    // calender
+    Route::resource('calenders', CalenderController::class);
+    Route::post('calender/update/{id}', [CalenderController::class,'update']);
 
 });
 
