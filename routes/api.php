@@ -66,6 +66,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // meting
     Route::resource('metings', MetingController::class);
     Route::post('meting/update/{id}', [MetingController::class,'update']);
+    Route::post('meting/{id}/addnote', [MetingController::class,'metingnote']);
     // calender
     Route::resource('calenders', CalenderController::class);
     Route::post('calender/update/{id}', [CalenderController::class,'update']);

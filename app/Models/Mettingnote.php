@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Meting extends Model
+class Mettingnote extends Model
 {
     use HasFactory;
 
-    public function metingnotes()
+    public function mettings()
     {
-        return $this->hasMany(Mettingnote::class, 'meting_id');
+        return $this->belongsTo(Metting::class, 'meting_id');
     }
 
 }

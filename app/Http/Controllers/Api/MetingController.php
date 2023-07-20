@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Models\Meting;
+use App\Models\Mettingnote;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class MetingController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $metings =Meting::where('form_id',$user_id->tokenable_id)->get();
+        $metings =Meting::with('metingnotes')->where('form_id',$user_id->tokenable_id)->get();
 
         $response = [
             'status' => true,
@@ -135,6 +136,23 @@ class MetingController extends Controller
         return response()->json($response, 200);
     }
 
+    public function metingnote(Request $request ,$id)
+    {
+        $tn=new Mettingnote();
+        $tn->meting_id=$id;
+        $tn->description=$request->description;
+        $tn->save();
+        $response=[
+            "status"=>true,
+            'message' => "Meting note create successful",
+            "data"=> [
+                'metingnotes'=> $tn,
+            ]
+        ];
+        return response()->json($response, 200);
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -154,4 +172,6 @@ class MetingController extends Controller
         ];
         return response()->json($response,200);
     }
+
+
 }
