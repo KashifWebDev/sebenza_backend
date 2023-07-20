@@ -11,7 +11,7 @@ class Mettingnote extends Model
 
     public function mettings()
     {
-        return $this->belongsTo(Metting::class, 'meting_id');
+        return $this->belongsTo(Meting::class, 'meting_id');
     }
 
 }
