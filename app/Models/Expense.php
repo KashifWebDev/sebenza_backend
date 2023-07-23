@@ -11,7 +11,7 @@ class Expense extends Model
 
     public function expensetypes()
     {
-        return $this->belongsTo(Expensetype::class, 'expense_type_id');
+        return $this->belongsTo(Expensetype::class, 'expensetype_id');
     }
 
     public function getProfileAttribute($value)

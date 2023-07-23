@@ -11,7 +11,7 @@ class Expensetype extends Model
 
     public function expense()
     {
-        return $this->hasMany(Expense::class, 'expense_type_id');
+        return $this->hasMany(Expense::class, 'expensetype_id');
     }
 
 
