@@ -14,7 +14,7 @@ class Expense extends Model
         return $this->belongsTo(Expensetype::class, 'expensetype_id');
     }
 
-    public function getProfileAttribute($value)
+    public function getImageAttribute($value)
     {
        if($value==''){
         return $value;
