@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Meting;
-use App\Models\Mettingnote;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Expensetype;
 
-class MetingController extends Controller
+class ExpensetypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,25 +20,39 @@ class MetingController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $metings =Meting::with('notes')->where('form_id',$user_id->tokenable_id)->get();
+        $expensetypes =Expensetype::where('membership_id',$user_id->tokenable_id)->get();
 
         $response = [
             'status' => true,
-            'message'=>'List of Metings',
+            'message'=>'List of Expensetypes',
             "data"=> [
-                'metings'=> $metings,
+                'expensetypes'=> $expensetypes,
             ]
 
         ];
         return response()->json($response,200);
     }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getexpencetype()
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $expensetypes =Expensetype::where('membership_id',$user_id->tokenable_id)->where('status','Active')->get();
+
+        $response = [
+            'status' => true,
+            'message'=>'List of Expensetypes',
+            "data"=> [
+                'expensetypes'=> $expensetypes,
+            ]
+
+        ];
+        return response()->json($response,200);
     }
 
     /**
@@ -52,21 +65,16 @@ class MetingController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $metings=new Meting();
-        $metings->form_id=$user_id->tokenable_id;
-        $metings->title=$request->title;
-        $metings->place=$request->place;
-        $metings->description=$request->description;
-        $metings->link=$request->link;
-        $metings->recipients=$request->recipients;
-        $metings->date=$request->date;
-        $metings->time=$request->time;
-        $metings->save();
+        $expensetypes=new Expensetype();
+        $expensetypes->membership_id=$user_id->tokenable_id;
+        $expensetypes->expence_type=$request->expence_type;
+        $expensetypes->status=$request->status;
+        $expensetypes->save();
         $response=[
             "status"=>true,
-            'message' => "Meting create successful",
+            'message' => "Expensetypes create successful",
             "data"=> [
-                'metings'=> $metings,
+                'expensetypes'=> $expensetypes,
             ]
         ];
         return response()->json($response, 200);
@@ -75,10 +83,10 @@ class MetingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Meting  $meting
+     * @param  \App\Models\Expensetype  $expensetype
      * @return \Illuminate\Http\Response
      */
-    public function show(Meting $meting)
+    public function show(Expensetype $expensetype)
     {
         //
     }
@@ -86,18 +94,18 @@ class MetingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Meting  $meting
+     * @param  \App\Models\Expensetype  $expensetype
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $metings =Meting::with('notes')->where('id',$id)->first();
+        $expensetypes =Expensetype::where('id',$id)->first();
 
         $response = [
             'status' => true,
-            'message'=>'Meting By ID',
+            'message'=>'Expensetype By ID',
             "data"=> [
-                'metings'=> $metings,
+                'expensetypes'=> $expensetypes,
             ]
 
         ];
@@ -108,70 +116,47 @@ class MetingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Meting  $meting
+     * @param  \App\Models\Expensetype  $expensetype
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $metings =Meting::where('id',$id)->first();
-        $metings->form_id=$user_id->tokenable_id;
-        $metings->title=$request->title;
-        $metings->place=$request->place;
-        $metings->description=$request->description;
-        $metings->link=$request->link;
-        $metings->recipients=$request->recipients;
-        $metings->date=$request->date;
-        $metings->time=$request->time;
-        $metings->status=$request->status;
-        $metings->save();
+
+        $expensetypes =Expensetype::where('id',$id)->first();
+        $expensetypes->membership_id=$user_id->tokenable_id;
+        $expensetypes->expence_type=$request->expence_type;
+        $expensetypes->status=$request->status;
+        $expensetypes->update();
         $response=[
             "status"=>true,
-            'message' => "Meting update successful",
+            'message' => "Expensetype update successfully",
             "data"=> [
-                'metings'=> $metings,
+                'expensetypes'=> $expensetypes,
             ]
         ];
         return response()->json($response, 200);
     }
-
-    public function metingnote(Request $request ,$id)
-    {
-        $tn=new Mettingnote();
-        $tn->meting_id=$id;
-        $tn->description=$request->description;
-        $tn->save();
-        $response=[
-            "status"=>true,
-            'message' => "Meting note create successful",
-            "data"=> [
-                'metingnotes'=> $tn,
-            ]
-        ];
-        return response()->json($response, 200);
-    }
-
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Meting  $meting
+     * @param  \App\Models\Expensetype  $expensetype
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $metings =Meting::where('id',$id)->first();
-        $metings->delete();
+        $expensetypes =Expensetype::where('id',$id)->first();
+        $expensetypes->delete();
+
         $response = [
             'status' => true,
-            'message'=> 'Meting delete successfully',
+            'message'=> 'Expensetype delete successfully',
             "data"=> [
-                'metings'=> [],
+                'tasks'=> [],
             ]
         ];
         return response()->json($response,200);
     }
-
-
 }

@@ -20,6 +20,8 @@ use App\Http\Controllers\Backend\Api\PromocodeController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\MetingController;
 use App\Http\Controllers\Api\CalenderController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExpensetypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +72,13 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // calender
     Route::resource('calenders', CalenderController::class);
     Route::post('calender/update/{id}', [CalenderController::class,'update']);
+    // expence type
+    Route::resource('expensetypes', ExpensetypeController::class);
+    Route::post('expense/update/{id}', [ExpensetypeController::class,'update']);
+    // expece
+    Route::get('getexpensetype', [ExpensetypeController::class,'getexpencetype']);
+    Route::resource('expenses', ExpenseController::class);
+    Route::post('expense/update/{id}', [ExpenseController::class,'update']);
 
 });
 

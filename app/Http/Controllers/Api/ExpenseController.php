@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-
-use App\Models\Task;
-use App\Models\Tasknote;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class ExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,13 +18,13 @@ class TaskController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $tasks =Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->get();
+        $expenses =Expense::where('membership_id',$user_id->tokenable_id)->get();
 
         $response = [
             'status' => true,
-            'message'=>'List of Tasks',
+            'message'=>'List of Expense',
             "data"=> [
-                'tasks'=> $tasks,
+                'expenses'=> $expenses,
             ]
 
         ];
@@ -54,18 +51,27 @@ class TaskController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $tasks=new Task();
-        $tasks->form_id=$user_id->tokenable_id;
-        $tasks->name=$request->name;
-        $tasks->details=$request->details;
-        $tasks->date=$request->date;
-        $tasks->time=$request->time;
-        $tasks->save();
+        $expense=new Expense();
+        $expense->membership_id=$user_id->tokenable_id;
+        $expense->expensetype_id=$user_id->expensetype_id;
+        $expense->amount=$request->amount;
+        $expense->notes=$request->notes;
+
+        if($request->image){
+            $logo = $request->file('image');
+            $name = time() . "_" . $logo->getClientOriginalName();
+            $uploadPath = ('public/images/expense/');
+            $logo->move($uploadPath, $name);
+            $logoImgUrl = $uploadPath . $name;
+            $expense->image = $logoImgUrl;
+        }
+
+        $expense->save();
         $response=[
             "status"=>true,
-            'message' => "Task create successful",
+            'message' => "Expenses create successful",
             "data"=> [
-                'tasks'=> $tasks,
+                'expense'=> $expense,
             ]
         ];
         return response()->json($response, 200);
@@ -74,40 +80,29 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function tasknote(Request $request ,$id)
+    public function show(Expense $expense)
     {
-        $tn=new Tasknote();
-        $tn->task_id=$id;
-        $tn->description=$request->description;
-        $tn->save();
-        $response=[
-            "status"=>true,
-            'message' => "Task Note create successful",
-            "data"=> [
-                'tasknotes'=> $tn,
-            ]
-        ];
-        return response()->json($response, 200);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $tasks =Task::with('tasknotes')->where('id',$id)->first();
+        $expense =Expense::where('id',$id)->first();
 
         $response = [
             'status' => true,
-            'message'=>'Task By ID',
+            'message'=>'Expense By ID',
             "data"=> [
-                'tasks'=> $tasks,
+                'expense'=> $expense,
             ]
 
         ];
@@ -118,7 +113,7 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -126,19 +121,27 @@ class TaskController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
-        $tasks =Task::with('tasknotes')->where('id',$id)->first();
-        $tasks->form_id=$user_id->tokenable_id;
-        $tasks->name=$request->name;
-        $tasks->details=$request->details;
-        $tasks->date=$request->date;
-        $tasks->time=$request->time;
-        $tasks->status=$request->status;
-        $tasks->save();
+        $expense =Expense::where('id',$id)->first();
+        $expense->membership_id=$user_id->tokenable_id;
+        $expense->expensetype_id=$user_id->expensetype_id;
+        $expense->amount=$request->amount;
+        $expense->notes=$request->notes;
+
+        if($request->image){
+            unlink($expense->image);
+            $logo = $request->file('image');
+            $name = time() . "_" . $logo->getClientOriginalName();
+            $uploadPath = ('public/images/expense/');
+            $logo->move($uploadPath, $name);
+            $logoImgUrl = $uploadPath . $name;
+            $expense->image = $logoImgUrl;
+        }
+        $expense->update();
         $response=[
             "status"=>true,
-            'message' => "Task update successfully",
+            'message' => "Expense update successfully",
             "data"=> [
-                'tasks'=> $tasks,
+                'expense'=> $expense,
             ]
         ];
         return response()->json($response, 200);
@@ -147,22 +150,17 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $tns=Tasknote::where('task_id',$id)->get();
-        foreach($tns as $tn){
-            $tn->delete();
-        }
-
-        $tasks =Task::where('id',$id)->first();
-        $tasks->delete();
+        $expense =Expense::where('id',$id)->first();
+        $expense->delete();
 
         $response = [
             'status' => true,
-            'message'=> 'Task delete successfully',
+            'message'=> 'Expense delete successfully',
             "data"=> [
                 'tasks'=> [],
             ]
