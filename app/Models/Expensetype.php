@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Expensetype extends Model
 {
     use HasFactory;
+
+    public function expense()
+    {
+        return $this->hasMany(Expense::class, 'expense_type_id');
+    }
+
+
 }

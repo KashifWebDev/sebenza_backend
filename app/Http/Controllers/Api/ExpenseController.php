@@ -20,7 +20,7 @@ class ExpenseController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $expenses =Expense::where('membership_id',$user_id->tokenable_id)->get();
+        $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->tokenable_id)->get();
 
         $response = [
             'status' => true,
@@ -98,7 +98,7 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
-        $expenses =Expense::where('id',$id)->first();
+        $expenses =Expense::with('expensetypes')->where('id',$id)->first();
 
         $response = [
             'status' => true,
