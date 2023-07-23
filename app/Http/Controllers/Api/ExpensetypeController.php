@@ -154,7 +154,7 @@ class ExpensetypeController extends Controller
             'status' => true,
             'message'=> 'Expensetype delete successfully',
             "data"=> [
-                'tasks'=> [],
+                'expensetypes'=> [],
             ]
         ];
         return response()->json($response,200);

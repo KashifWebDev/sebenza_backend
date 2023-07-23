@@ -51,27 +51,27 @@ class ExpenseController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $expense=new Expense();
-        $expense->membership_id=$user_id->tokenable_id;
-        $expense->expensetype_id=$user_id->expensetype_id;
-        $expense->amount=$request->amount;
-        $expense->notes=$request->notes;
+        $expenses=new Expense();
+        $expenses->membership_id=$user_id->tokenable_id;
+        $expenses->expensestype_id=$user_id->expensestype_id;
+        $expenses->amount=$request->amount;
+        $expenses->notes=$request->notes;
 
         if($request->image){
             $logo = $request->file('image');
             $name = time() . "_" . $logo->getClientOriginalName();
-            $uploadPath = ('public/images/expense/');
+            $uploadPath = ('public/images/expenses/');
             $logo->move($uploadPath, $name);
             $logoImgUrl = $uploadPath . $name;
-            $expense->image = $logoImgUrl;
+            $expenses->image = $logoImgUrl;
         }
 
-        $expense->save();
+        $expenses->save();
         $response=[
             "status"=>true,
             'message' => "Expenses create successful",
             "data"=> [
-                'expense'=> $expense,
+                'expenses'=> $expenses,
             ]
         ];
         return response()->json($response, 200);
@@ -80,10 +80,10 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Expense  $expense
+     * @param  \App\Models\Expense  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function show(Expense $expense)
+    public function show(Expense $expenses)
     {
         //
     }
@@ -91,18 +91,18 @@ class ExpenseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Expense  $expense
+     * @param  \App\Models\Expense  $expenses
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $expense =Expense::where('id',$id)->first();
+        $expenses =Expense::where('id',$id)->first();
 
         $response = [
             'status' => true,
             'message'=>'Expense By ID',
             "data"=> [
-                'expense'=> $expense,
+                'expenses'=> $expenses,
             ]
 
         ];
@@ -113,7 +113,7 @@ class ExpenseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Expense  $expense
+     * @param  \App\Models\Expense  $expenses
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -121,27 +121,27 @@ class ExpenseController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
-        $expense =Expense::where('id',$id)->first();
-        $expense->membership_id=$user_id->tokenable_id;
-        $expense->expensetype_id=$user_id->expensetype_id;
-        $expense->amount=$request->amount;
-        $expense->notes=$request->notes;
+        $expenses =Expense::where('id',$id)->first();
+        $expenses->membership_id=$user_id->tokenable_id;
+        $expenses->expensestype_id=$user_id->expensestype_id;
+        $expenses->amount=$request->amount;
+        $expenses->notes=$request->notes;
 
         if($request->image){
-            unlink($expense->image);
+            unlink($expenses->image);
             $logo = $request->file('image');
             $name = time() . "_" . $logo->getClientOriginalName();
-            $uploadPath = ('public/images/expense/');
+            $uploadPath = ('public/images/expenses/');
             $logo->move($uploadPath, $name);
             $logoImgUrl = $uploadPath . $name;
-            $expense->image = $logoImgUrl;
+            $expenses->image = $logoImgUrl;
         }
-        $expense->update();
+        $expenses->update();
         $response=[
             "status"=>true,
             'message' => "Expense update successfully",
             "data"=> [
-                'expense'=> $expense,
+                'expenses'=> $expenses,
             ]
         ];
         return response()->json($response, 200);
@@ -150,19 +150,19 @@ class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Expense  $expense
+     * @param  \App\Models\Expense  $expenses
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $expense =Expense::where('id',$id)->first();
-        $expense->delete();
+        $expenses =Expense::where('id',$id)->first();
+        $expenses->delete();
 
         $response = [
             'status' => true,
             'message'=> 'Expense delete successfully',
             "data"=> [
-                'tasks'=> [],
+                'expenses'=> [],
             ]
         ];
         return response()->json($response,200);
