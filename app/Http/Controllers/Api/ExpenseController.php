@@ -55,7 +55,7 @@ class ExpenseController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $expenses=new Expense();
         $expenses->membership_id=$user_id->tokenable_id;
-        $expenses->expensestype_id=$user_id->expensestype_id;
+        $expenses->expensetype_id=$user_id->expensetype_id;
         $expenses->amount=$request->amount;
         $expenses->notes=$request->notes;
 
@@ -125,7 +125,7 @@ class ExpenseController extends Controller
 
         $expenses =Expense::where('id',$id)->first();
         $expenses->membership_id=$user_id->tokenable_id;
-        $expenses->expensestype_id=$user_id->expensestype_id;
+        $expenses->expensetype_id=$user_id->expensetype_id;
         $expenses->amount=$request->amount;
         $expenses->notes=$request->notes;
 
