@@ -9,7 +9,7 @@ class Expense extends Model
 {
     use HasFactory;
 
-    public function expenseypes()
+    public function expensetypes()
     {
         return $this->belongsTo(Expensetype::class, 'expense_type_id');
     }
