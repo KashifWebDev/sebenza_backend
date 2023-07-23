@@ -74,7 +74,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('calender/update/{id}', [CalenderController::class,'update']);
     // expence type
     Route::resource('expensetypes', ExpensetypeController::class);
-    Route::post('expense/update/{id}', [ExpensetypeController::class,'update']);
+    Route::post('expensetype/update/{id}', [ExpensetypeController::class,'update']);
     // expece
     Route::get('getexpensetype', [ExpensetypeController::class,'getexpencetype']);
     Route::resource('expenses', ExpenseController::class);
