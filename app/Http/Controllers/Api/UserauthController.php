@@ -78,7 +78,7 @@ class UserauthController extends Controller
                 $webinfo =Basicinfo::first();
                 $order=new Order();
                 $order->user_id=$user->id;
-                $order->membership_id=$user->membership_id;
+                $order->membership_id=$user->membership_code;
                 $order->account_total_user=$request->user_limit_id;
                 $order->cost_per_user=$webinfo->cost_per_user;
                 $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
