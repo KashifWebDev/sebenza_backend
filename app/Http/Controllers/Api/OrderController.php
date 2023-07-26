@@ -73,8 +73,8 @@ class OrderController extends Controller
             $fdate=$order->expireDate;
             $tdate=date('Y-m-d');
 
-            $start = Carbon::parse($fdate)->format('Y/m/d');
-            $end =  Carbon::parse($tdate)->format('Y/m/d');
+            $start = Carbon::parse($fdate);
+            $end =  Carbon::parse($tdate);
 
             $days = $end->diffInDays($start);
 
