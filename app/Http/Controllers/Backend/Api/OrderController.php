@@ -105,21 +105,17 @@ class OrderController extends Controller
             $fdate=$order->expireDate;
             $tdate=date('Y-m-d');
 
-            $start = Carbon::parse($fdate)->format('Y/m/d');
-            $end =  Carbon::parse($tdate)->format('Y/m/d');
-
+            $start = Carbon::parse($fdate);
+            $end =  Carbon::parse($tdate);
             $days = $end->diffInDays($start);
-
 
             $invoice=new Invoice();
             $invoice->invoiceID=$this->invoiceID();
             $invoice->order_id=$order->id;
             $invoice->account_total_user=$request->new_user;
             $invoice->cost_per_user=$webinfo->cost_per_user;
-
             $everydaypayment=$webinfo->cost_per_user/30;
-            $availabledayamount=($everydaypayment*$days)*$request->new_user;
-
+            $availabledayamount=($everydaypayment*($day-1))*$request->new_user;
             $amounttotal=$availabledayamount;
             $invoice->amount_total=$amounttotal;
             $invoice->payable_amount=$amounttotal;
