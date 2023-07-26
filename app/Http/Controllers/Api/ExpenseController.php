@@ -130,7 +130,6 @@ class ExpenseController extends Controller
         $expenses->notes=$request->notes;
 
         if($request->image){
-
             $logo = $request->file('image');
             $name = time() . "_" . $logo->getClientOriginalName();
             $uploadPath = ('public/images/expenses/');

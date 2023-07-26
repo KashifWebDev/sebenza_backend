@@ -43,6 +43,7 @@ class BasicinfoController extends Controller
         $webinfo->title=$request->title;
         $webinfo->email=$request->email;
         $webinfo->contact=$request->contact;
+        $webinfo->cost_per_user=$request->cost_per_user;
         $webinfo->address=$request->address;
         if($request->logo){
             if($webinfo->logo =='public/webview/assets/images/logo.png'){

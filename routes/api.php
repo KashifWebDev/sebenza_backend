@@ -43,6 +43,8 @@ Route::get('getpackages', [AccountpackageController::class, 'getpackage']);
 Route::get('newsupdates', [NewsController::class,'getpubnews']);
 Route::get('newsupdate/{slug}', [NewsController::class,'getpubnewsbyid']);
 
+Route::post('update/subuser/{slug}', [UserauthController::class, 'updatesubuser']);
+
 Route::get('aboutus', [AboutusController::class,'getaboutinfo']);
 Route::get('helpcenter', [HelpcenterController::class,'gethelpcenterinfo']);
 Route::get('teammembers', [TeammemberController::class,'getteammembersinfo']);
@@ -79,6 +81,11 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('getexpensetype', [ExpensetypeController::class,'getexpencetype']);
     Route::resource('expenses', ExpenseController::class);
     Route::post('expense/update/{id}', [ExpenseController::class,'update']);
+
+    // orders & invoices
+    Route::resource('orders', App\Http\Controllers\Api\OrderController::class);
+    Route::post('order/update/{id}', [App\Http\Controllers\Api\OrderController::class,'update']);
+    Route::resource('invoices', App\Http\Controllers\Api\InvoiceController::class);
 
 });
 
@@ -140,7 +147,11 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::resource('promocodes', PromocodeController::class);
     Route::post('promocode/update/{id}', [PromocodeController::class,'update']);
 
-
+    // orders & invoices
+    Route::resource('orders', App\Http\Controllers\Backend\Api\OrderController::class);
+    Route::post('order/update/{id}', [App\Http\Controllers\Backend\Api\OrderController::class,'update']);
+    Route::resource('invoices', App\Http\Controllers\Backend\Api\InvoiceController::class);
+    Route::post('invoice/update/{id}', [App\Http\Controllers\Backend\Api\OrderController::class,'update']);
 
 
 

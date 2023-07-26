@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Accounttype;
+use App\Models\Basicinfo;
+use App\Models\Order;
+use App\Models\Invoice;
 use App\Models\Accountpackage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +24,7 @@ class UserauthController extends Controller
         Excel::import(new UserImport, $request->file);
         $response = [
             'status' =>true,
-            'message' => "Unique user Import Successfull",
+            'message' => "Unique user Import Successful",
         ];
         return response()->json($response,201);
     }
@@ -66,28 +69,51 @@ class UserauthController extends Controller
             $user->country=$request->country;
             $user->city=$request->city;
             $user->address=$request->address;
-
             $user->user_limit_id=$request->user_limit_id;
-            // if(isset($request->user_limit_id)){
-            //     $package=Accountpackage::where('id',$request->user_limit_id)->first();
-            //     $user->user_limit=$package->account_package;
-            // }
+
             $user->assignRole(5);
-            $user->save();
+            $result=$user->save();
 
-            $token = $user->createToken('user')->plainTextToken;
+            if($result){
+                $webinfo =Basicinfo::first();
+                $order=new Order();
+                $order->user_id=$user->id;
+                $order->membership_id=$user->membership_id;
+                $order->account_total_user=$request->user_limit_id;
+                $order->cost_per_user=$webinfo->cost_per_user;
+                $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
+                $order->amount_total=$amounttotal;
+                $order->orderDate=date('Y-m-d');
+                $successorder=$order->save();
+
+                if($successorder){
+                    $invoice=new Invoice();
+                    $invoice->invoiceID=$this->invoiceID();
+                    $invoice->order_id=$order->id;
+                    $invoice->account_total_user=$request->user_limit_id;
+                    $invoice->cost_per_user=$webinfo->cost_per_user;
+                    $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
+                    $invoice->amount_total=$amounttotal;
+                    $invoice->payable_amount=$amounttotal;
+                    $invoice->paid_amount=0;
+                    $invoice->invoiceDate=date('Y-m-d');
+                    $invoice->save();
+                }
+
+                $token = $user->createToken('user')->plainTextToken;
 
 
 
-            $response=[
-                "status"=>true,
-                "message"=>"User Create Successfully",
-                "data"=> [
-                    "token"=> $token,
-                    "user"=>$user,
-                ]
-            ];
-            return response()->json($response, 200);
+                $response=[
+                    "status"=>true,
+                    "message"=>"User Create Successfully",
+                    "data"=> [
+                        "token"=> $token,
+                        "user"=>$user,
+                    ]
+                ];
+                return response()->json($response, 200);
+            }
         }
     }
 
@@ -113,22 +139,27 @@ class UserauthController extends Controller
                         "user"=>[],
                     ]
                 ];
-            return response()->json($response,201);
+                return response()->json($response,201);
         }else{
             $memby=User::where('membership_code', $code)->first();
-            $user=new User();
-            $user->first_name=$request->first_name;
-            $user->last_name=$request->last_name;
-            $user->phone=$request->phone;
-            $user->email=$request->email;
-            $user->password=Hash::make($request->password);
-            $user->member_by=$code;
-            $user->company_name=$memby->company_name;
-            $user->country=$request->country;
-            $user->city=$request->city;
-            $user->address=$request->address;
-            $user->assignRole($request->role);
-            $user->save();
+            $count=User::where('member_by', $code)->get()->count();
+            if($count<$memby->user_limit_id){
+                $user=new User();
+                $user->email=$request->email;
+                $user->member_by=$code;
+                $user->company_name=$memby->company_name;
+                $user->assignRole($request->role);
+                $user->save();
+            }else{
+                $response = [
+                    'status' =>false,
+                    'message' => "You don not have limit to add user. Please update your limit.",
+                    "data"=> [
+                        "user"=>[],
+                    ]
+                ];
+                return response()->json($response,201);
+            }
 
 
             $response=[
@@ -140,6 +171,18 @@ class UserauthController extends Controller
             ];
             return response()->json($response, 200);
         }
+    }
+
+    public function invoiceID()
+    {
+        $lastmember = Order::first();
+        if ($lastmember) {
+            $menberID = $lastmember->id + 1;
+        } else {
+            $menberID = 1;
+        }
+
+        return '#INV00' . $menberID;
     }
 
 

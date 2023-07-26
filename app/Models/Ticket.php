@@ -12,9 +12,9 @@ class Ticket extends Model
     public function getAttachmentAttribute($value)
     {
        if($value==''){
-        return $value;
+            return $value;
        }else{
-        return env('PROD_URL').$value;
+            return env('PROD_URL').$value;
        }
     }
 

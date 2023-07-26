@@ -138,7 +138,6 @@ class TicketController extends Controller
         $adm=Replay::where('ticket_id',$id)->where('type','Admin')->first();
         if(isset($adm)){
             $user=Admin::where('id',$adm->from_user_id)->first();
-            $user['profile']=env('PROD_URL').$user->profile;
             $user['from']='Admin';
         }else{
             $user=[];
