@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class InvoiceController extends Controller
 {

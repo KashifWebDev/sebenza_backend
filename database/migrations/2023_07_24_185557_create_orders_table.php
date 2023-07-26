@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('membership_id');
+            $table->string('membership_id');
             $table->integer('account_total_user');  // Total
             $table->integer('new_user')->default(0);  // Total
             $table->decimal('cost_per_user')->default(0);
