@@ -86,7 +86,7 @@ class OrderController extends Controller
             $invoice->cost_per_user=$webinfo->cost_per_user;
 
             $everydaypayment=$webinfo->cost_per_user/30;
-            $availabledayamount=($everydaypayment*$days)*$request->new_user;
+            $availabledayamount=($everydaypayment*($days-1))*$request->new_user;
 
             $amounttotal=$availabledayamount;
             $invoice->amount_total=$amounttotal;
