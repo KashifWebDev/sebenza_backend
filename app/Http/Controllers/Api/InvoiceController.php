@@ -122,7 +122,7 @@ class InvoiceController extends Controller
             'status' => true,
             'message'=>'Payment Give Successfully',
             "data"=> [
-                'invoices'=> $invoices,
+                'invoices'=> $invoice,
             ]
         ];
 
