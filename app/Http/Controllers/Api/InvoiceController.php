@@ -97,7 +97,7 @@ class InvoiceController extends Controller
      */
     public function updatepayment(Request $request)
     {
-        $invoice =Invoice::where('id',$request->invoice_id)->first();
+        $invoice =Invoice::where('invoiceID',$request->invoice_id)->first();
         $invoice->paid_amount=$invoice->payable_amount;
         $invoice->payable_amount=0;
         $invoice->paymentDate=date('Y-m-d');
