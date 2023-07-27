@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h4> <b>Dear {{ $details['user']['name'] }}</b></h4>
+    <h4> <b>Dear {{ $details['user']['first_name'] }} {{ $details['user']['last_name'] }}</b></h4>
     <br>
     <br>
     <p>We hope this email finds you well. This is to confirm that we have received your payment for the recent invoice
