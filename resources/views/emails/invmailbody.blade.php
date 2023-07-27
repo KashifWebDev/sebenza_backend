@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h4> <b>Dear {{ $invdetails['user']['name'] }}</b></h4>
+    <h4> <b>Dear {{ $details['user']['name'] }}</b></h4>
     <br>
     <br>
     <p>We hope this email finds you well. We are delighted to present your invoice from Sebenza, your all-in-one
@@ -15,16 +15,16 @@
     <br>
     <br>
     <p>
-        <b>Invoice Number: {{ $invdetails['invoice']['invoiceID'] }}</b>
+        <b>Invoice Number: {{ $details['invoice']['invoiceID'] }}</b>
     </p>
     <br>
     <p>
-        <b>Invoice Date: {{ $invdetails['invoice']['invoiceDate'] }}</b>
+        <b>Invoice Date: {{ $details['invoice']['invoiceDate'] }}</b>
     </p>
     <br>
     <br>
     <p>
-        <b>Total Amount: {{ $invdetails['invoice']['payable_amount'] }}</b>
+        <b>Total Amount: {{ $details['invoice']['payable_amount'] }}</b>
     </p>
     <br>
     <p>

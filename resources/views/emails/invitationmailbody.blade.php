@@ -9,7 +9,7 @@
     <h4> <b>Dear Team Member,</b></h4>
     <br>
     <br>
-    <p>I trust this email finds you well. As the proud owner of {{ $invdetails['user']['company_name'] }}, I am thrilled
+    <p>I trust this email finds you well. As the proud owner of {{ $details['user']['company_name'] }}, I am thrilled
         to inform you about
         an exciting opportunity to enhance our business operations through Sebenza, our all-in-one business management
         platform.</p>
@@ -51,7 +51,7 @@
     </p>
     <br>
     <p>We look forward to having you on board and witnessing the positive impact Sebenza will bring to
-        {{ $invdetails['user']['company_name'] }}. Together, let's take our business to new horizons.</p>
+        {{ $details['user']['company_name'] }}. Together, let's take our business to new horizons.</p>
     <br>
     <br>
     <br>
