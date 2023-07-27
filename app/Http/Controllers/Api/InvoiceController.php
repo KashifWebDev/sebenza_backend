@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Models\Invoice;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Basicinfo;
 use Illuminate\Http\Request;
