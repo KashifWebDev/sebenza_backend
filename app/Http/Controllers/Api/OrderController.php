@@ -96,6 +96,16 @@ class OrderController extends Controller
             $invoice->save();
         }
 
+        $user = User::where('id', $order->user_id)->first();
+        $invdetails = [
+            'title' => env('APP_NAME') . 'Subscription Invoice',
+            "user"=>$user,
+            "invoice"=>$invoice,
+        ];
+
+        \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
+
+
         $response = [
             'status' => true,
             'message'=>'New invoice created successfully',
