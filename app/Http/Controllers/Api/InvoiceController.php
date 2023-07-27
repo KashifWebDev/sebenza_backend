@@ -105,7 +105,7 @@ class InvoiceController extends Controller
         $success=$invoice->update();
         if($success){
             $order=Order::where('id',$invoice->order_id)->first();
-            if(isset($order->expireDate)){
+            if($order->expireDate!=''){
                 if($order->new_user>0){
                     $order->account_total_user=$order->account_total_user+$order->new_user;
                 }else{

@@ -175,7 +175,7 @@ class UserauthController extends Controller
 
     public function invoiceID()
     {
-        $lastmember = Order::first();
+        $lastmember = Invoice::first();
         if ($lastmember) {
             $menberID = $lastmember->id + 1;
         } else {
