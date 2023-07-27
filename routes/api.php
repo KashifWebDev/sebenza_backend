@@ -59,7 +59,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('newsupdate/view/{slug}', [NewsController::class,'getnewsbyid']);
     // createuser
     Route::post('import', [UserauthController::class, 'userImport']);
-    Route::post('add-by/{slug}', [UserauthController::class, 'usercreate']);
+    Route::post('add-by', [UserauthController::class, 'usercreate']);
     // supporttikits
     Route::resource('supporttickets', TicketController::class);
     Route::post('replay/ticket/{id}', [TicketController::class, 'replay']);

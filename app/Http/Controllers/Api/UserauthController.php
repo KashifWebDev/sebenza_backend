@@ -103,6 +103,20 @@ class UserauthController extends Controller
                 $token = $user->createToken('user')->plainTextToken;
 
 
+                $details = [
+                    'title' => env('APP_NAME') . 'Registration Successful !',
+                    "user"=>$user,
+                ];
+
+                \Mail::to($user->email)->send(new \App\Mail\SendMailReg($details));
+
+                $invdetails = [
+                    'title' => env('APP_NAME') . 'Subscription Invoice',
+                    "user"=>$user,
+                    "invoice"=>$invoice,
+                ];
+
+                \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
 
                 $response=[
                     "status"=>true,
@@ -117,7 +131,7 @@ class UserauthController extends Controller
         }
     }
 
-    public function usercreate(Request $request,$code){
+    public function usercreate(Request $request){
         $email=User::where('email', $request->email)->first();
         $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
@@ -141,15 +155,26 @@ class UserauthController extends Controller
                 ];
                 return response()->json($response,201);
         }else{
-            $memby=User::where('membership_code', $code)->first();
-            $count=User::where('member_by', $code)->get()->count();
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+
+            $memby=User::where('id', $user_id->tokenable_id)->first();
+            $count=User::where('member_by', $memby->membership_code)->get()->count();
             if($count<$memby->user_limit_id){
                 $user=new User();
                 $user->email=$request->email;
-                $user->member_by=$code;
+                $user->member_by=$memby->membership_code;
                 $user->company_name=$memby->company_name;
                 $user->assignRole($request->role);
                 $user->save();
+
+                $details = [
+                    'title' => 'Join '.env('APP_NAME').' - Empower Your Business Together',
+                    "user"=>$user,
+                ];
+
+                \Mail::to($user->email)->send(new \App\Mail\SendMailInvitation($details));
+
             }else{
                 $response = [
                     'status' =>false,

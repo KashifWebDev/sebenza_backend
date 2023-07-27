@@ -108,6 +108,7 @@ class InvoiceController extends Controller
             if($order->expireDate!=''){
                 if($order->new_user>0){
                     $order->account_total_user=$order->account_total_user+$order->new_user;
+                    $order->new_user==0;
                 }else{
                     $order->expireDate=date('Y-m-d', strtotime('+1 month'));
                 }
@@ -117,6 +118,14 @@ class InvoiceController extends Controller
             }
             $order->update();
         }
+        $user=User::where('id',$order->user_id)->first();
+        $details = [
+            'title' => 'Payment Confirmation -'. env('APP_NAME'),
+            "user"=>$user,
+            'invoice'=>$invoice,
+        ];
+
+        \Mail::to($user->email)->send(new \App\Mail\SendMailPayment($details));
 
         $response = [
             'status' => true,
