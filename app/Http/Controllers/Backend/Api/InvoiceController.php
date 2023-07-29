@@ -17,7 +17,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices =Invoice::with(['orders','orders.users'])->get();
+        $invoices =Invoice::with(['orders','orders.users.roles'])->get();
 
         $response = [
             'status' => true,
@@ -70,7 +70,7 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        $invoices =Invoice::with(['orders','orders.users'])->where('id',$id)->first();
+        $invoices =Invoice::with(['orders','orders.users.roles'])->where('id',$id)->first();
 
         $response = [
             'status' => true,

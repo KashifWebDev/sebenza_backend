@@ -20,7 +20,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders =Order::with('users')->get();
+        $orders =Order::with('users.roles')->get();
 
         $response = [
             'status' => true,
@@ -73,7 +73,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order =Order::with('users')->where('id',$id)->first();
+        $order =Order::with('users.roles')->where('id',$id)->first();
 
         $response = [
             'status' => true,
@@ -96,7 +96,7 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $webinfo =Basicinfo::first();
-        $order =Order::with('users')->where('id',$id)->first();
+        $order =Order::with('users.roles')->where('id',$id)->first();
         $order->new_user=$request->new_user;
         $successorder=$order->update();
 
@@ -134,6 +134,18 @@ class OrderController extends Controller
 
         return response()->json($response,200);
 
+    }
+
+    public function invoiceID()
+    {
+        $lastmember = Invoice::first();
+        if ($lastmember) {
+            $menberID = $lastmember->id + 1;
+        } else {
+            $menberID = 1;
+        }
+
+        return '#INV00' . $menberID;
     }
 
     /**

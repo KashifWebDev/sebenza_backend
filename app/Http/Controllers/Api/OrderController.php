@@ -43,7 +43,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order =Order::with('users')->where('id',$id)->first();
+        $order =Order::with('users.roles')->where('id',$id)->first();
 
         $response = [
             'status' => true,

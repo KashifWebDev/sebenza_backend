@@ -23,7 +23,7 @@ class InvoiceController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
-        $invoices =Invoice::with(['orders','orders.users'])->where('order_id',$order->id)->get();
+        $invoices =Invoice::with(['orders','orders.users.roles'])->where('order_id',$order->id)->get();
 
         $response = [
             'status' => true,
@@ -109,7 +109,8 @@ class InvoiceController extends Controller
             if($order->expireDate!=''){
                 if($order->new_user>0){
                     $order->account_total_user=$order->account_total_user+$order->new_user;
-                    $order->new_user==0;
+                    $order->amount_total=$order->account_total_user*$order->cost_per_user;
+                    $order->new_user=0;
                 }else{
                     $order->expireDate=date('Y-m-d', strtotime('+1 month'));
                 }
