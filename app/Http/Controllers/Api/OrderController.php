@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
+        $order =Order::with(['users.roles'])->where('user_id',$user_id->tokenable_id)->first();
 
         $response = [
             'status' => true,
