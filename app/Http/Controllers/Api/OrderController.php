@@ -73,7 +73,7 @@ class OrderController extends Controller
         if($order->expireDate==''){
             $response = [
                 'status' => true,
-                'message'=>'Please paid your previous invoice.',
+                'message'=>'Please paid your previous invoice.Then try to update',
                 "data"=> [
                     'order'=> $order,
                 ]
@@ -81,57 +81,70 @@ class OrderController extends Controller
 
             return response()->json($response,200);
         }else{
+            $invo =Invoice::where('order_id',$order->id)->where('status','Unpaid')->first();
 
-        $order->new_user=$request->new_user;
-        $successorder=$order->update();
+            if(isset($invo)){
+                $response = [
+                    'status' => true,
+                    'message'=>'Please paid your previous invoice.Then try to update',
+                    "data"=> [
+                        'order'=> $order,
+                    ]
+                ];
 
-        if($successorder){
+                return response()->json($response,200);
+            }else{
+                $order->new_user=$request->new_user;
+                $successorder=$order->update();
 
-            $fdate=$order->expireDate;
-            $tdate=date('Y-m-d');
+                if($successorder){
 
-            $start = Carbon::parse($fdate);
-            $end =  Carbon::parse($tdate);
+                    $fdate=$order->expireDate;
+                    $tdate=date('Y-m-d');
 
-            $days = $end->diffInDays($start);
+                    $start = Carbon::parse($fdate);
+                    $end =  Carbon::parse($tdate);
 
-
-            $invoice=new Invoice();
-            $invoice->invoiceID=$this->invoiceID();
-            $invoice->order_id=$order->id;
-            $invoice->account_total_user=$request->new_user;
-            $invoice->cost_per_user=$webinfo->cost_per_user;
-
-            $everydaypayment=$webinfo->cost_per_user/30;
-            $availabledayamount=($everydaypayment*($days-1))*$request->new_user;
-
-            $amounttotal=$availabledayamount;
-            $invoice->amount_total=$amounttotal;
-            $invoice->payable_amount=$amounttotal;
-            $invoice->paid_amount=0;
-            $invoice->invoiceDate=date('Y-m-d');
-            $invoice->save();
-        }
-
-        $user = User::where('id', $order->user_id)->first();
-        $invdetails = [
-            'title' => env('APP_NAME') . 'Subscription Invoice',
-            "user"=>$user,
-            "invoice"=>$invoice,
-        ];
-
-        \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
+                    $days = $end->diffInDays($start);
 
 
-        $response = [
-            'status' => true,
-            'message'=>'New invoice created successfully',
-            "data"=> [
-                'invoice'=> $invoice,
-            ]
-        ];
+                    $invoice=new Invoice();
+                    $invoice->invoiceID=$this->invoiceID();
+                    $invoice->order_id=$order->id;
+                    $invoice->account_total_user=$request->new_user;
+                    $invoice->cost_per_user=$webinfo->cost_per_user;
 
-        return response()->json($response,200);
+                    $everydaypayment=$webinfo->cost_per_user/30;
+                    $availabledayamount=($everydaypayment*($days-1))*$request->new_user;
+
+                    $amounttotal=$availabledayamount;
+                    $invoice->amount_total=$amounttotal;
+                    $invoice->payable_amount=$amounttotal;
+                    $invoice->paid_amount=0;
+                    $invoice->invoiceDate=date('Y-m-d');
+                    $invoice->save();
+                }
+
+                $user = User::where('id', $order->user_id)->first();
+                $invdetails = [
+                    'title' => env('APP_NAME') . 'Subscription Invoice',
+                    "user"=>$user,
+                    "invoice"=>$invoice,
+                ];
+
+                \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
+
+
+                $response = [
+                    'status' => true,
+                    'message'=>'New invoice created successfully',
+                    "data"=> [
+                        'invoice'=> $invoice,
+                    ]
+                ];
+
+                return response()->json($response,200);
+            }
         }
 
 
