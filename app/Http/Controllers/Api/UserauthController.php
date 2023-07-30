@@ -133,7 +133,6 @@ class UserauthController extends Controller
 
     public function usercreate(Request $request){
         $email=User::where('email', $request->email)->first();
-        $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
             $response = [
                 'status' =>false,
@@ -144,16 +143,6 @@ class UserauthController extends Controller
                 ]
             ];
             return response()->json($response,201);
-        }elseif($phonenumber){
-                $response = [
-                    'status' =>false,
-                    'message' => "Phone number has Already Taken",
-                    "data"=> [
-                        "token"=> '',
-                        "user"=>[],
-                    ]
-                ];
-                return response()->json($response,201);
         }else{
             $token = request()->bearerToken();
             $user_id=PersonalAccessToken::findToken($token);
