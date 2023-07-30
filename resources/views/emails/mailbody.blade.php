@@ -130,7 +130,7 @@
                             style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                             <h1
                                 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                                Dear {{ $details['user']['name'] }}</h1>
+                                Dear {{ $details['user']['first_name'] }} {{ $details['user']['last_name'] }}</h1>
                         </td>
                     </tr>
                 </table>
@@ -244,11 +244,10 @@
                             <p style="margin: 0;">Welcome aboard!
                                 <br>Thank you<br>
                                 <b>{{ env('APP_NAME') }} Platform</b>
-                                <br>
-                            <p>Email: {{ App\Models\Basicinfo::first()->email }}</p>
-                            <br>
-                            <p>Website: {{ env('APP_URL') }}</p>
+                                <br>Email: {{ App\Models\Basicinfo::first()->email }}<br>
+                                Website: {{ env('APP_URL') }}
                             </p>
+
                         </td>
                     </tr>
                     <!-- end copy -->
