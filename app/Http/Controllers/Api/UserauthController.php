@@ -217,7 +217,7 @@ class UserauthController extends Controller
                 'roles', function($q){
                     $q->where('name', 'superuser');
                 }
-            )->first();
+            )->latest()->first();
         if ($lastmember) {
             $menberID = $lastmember->id + 1;
         } else {
