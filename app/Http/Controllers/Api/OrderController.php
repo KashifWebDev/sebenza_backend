@@ -62,10 +62,13 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+
         $webinfo =Basicinfo::first();
-        $order =Order::with('users')->where('id',$id)->first();
+        $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
         $order->new_user=$request->new_user;
         $successorder=$order->update();
 
@@ -138,7 +141,7 @@ class OrderController extends Controller
      */
     public function invoiceID()
     {
-        $lastmember = Invoice::first();
+        $lastmember = Invoice::latest()->first();
         if ($lastmember) {
             $menberID = $lastmember->id + 1;
         } else {

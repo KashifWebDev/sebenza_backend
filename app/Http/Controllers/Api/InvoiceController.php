@@ -112,6 +112,7 @@ class InvoiceController extends Controller
                     $order->amount_total=$order->account_total_user*$order->cost_per_user;
                     $order->new_user=0;
                 }else{
+                    $order->status='Active';
                     $order->expireDate=date('Y-m-d', strtotime('+1 month'));
                 }
             }else{

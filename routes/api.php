@@ -84,7 +84,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
     // orders & invoices
     Route::resource('orders', App\Http\Controllers\Api\OrderController::class);
-    Route::post('order/update/{id}', [App\Http\Controllers\Api\OrderController::class,'update']);
+    Route::post('order/update', [App\Http\Controllers\Api\OrderController::class,'update']);
     Route::resource('invoices', App\Http\Controllers\Api\InvoiceController::class);
     Route::post('order/update-payment', [App\Http\Controllers\Api\InvoiceController::class,'updatepayment']);
 
