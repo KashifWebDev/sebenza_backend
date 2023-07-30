@@ -64,11 +64,24 @@ class OrderController extends Controller
      */
     public function update(Request $request)
     {
+
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
         $webinfo =Basicinfo::first();
         $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
+        if($order->expireDate==''){
+            $response = [
+                'status' => true,
+                'message'=>'Please paid your previous invoice.',
+                "data"=> [
+                    'order'=> $order,
+                ]
+            ];
+
+            return response()->json($response,200);
+        }else{
+
         $order->new_user=$request->new_user;
         $successorder=$order->update();
 
@@ -119,6 +132,8 @@ class OrderController extends Controller
         ];
 
         return response()->json($response,200);
+        }
+
 
     }
 
