@@ -44,14 +44,7 @@ class UserImport implements ToModel
                     \Mail::to($user->email)->send(new \App\Mail\SendMailInvitation($details));
 
                 }else{
-                    $response = [
-                        'status' =>false,
-                        'message' => "You don not have limit to add user. Please update your limit.",
-                        "data"=> [
-                            "user"=>[],
-                        ]
-                    ];
-                    return response()->json($response,201);
+                    return $user;
                 }
 
                 return $user;
