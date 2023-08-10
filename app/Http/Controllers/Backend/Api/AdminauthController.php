@@ -145,6 +145,7 @@ class AdminauthController extends Controller
         $admin->first_name=$request->firstName;
         $admin->last_name=$request->lastName;
         $admin->phone=$request->mobile;
+        $time = microtime('.') * 10000;
         $productImg = $request->file('img');
         if($productImg){
             $imgname = $time . $productImg->getClientOriginalName();
