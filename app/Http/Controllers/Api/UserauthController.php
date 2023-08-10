@@ -21,12 +21,38 @@ class UserauthController extends Controller
 {
 
     public function userImport(Request $request){
-        Excel::import(new UserImport, $request->file);
-        $response = [
-            'status' =>true,
-            'message' => "Unique user Import Successful",
-        ];
-        return response()->json($response,201);
+
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $memberof=User::where('id', $user_id->tokenable_id)->first();
+        $count=User::where('member_by', $memberof->membership_code)->get()->count();
+
+        $event=$request->file;
+        $totalRows = $event->getReader()->getTotalRows();
+
+        if($count<$memberof->user_limit_id){
+            if($totalRows<($memberof->user_limit_id-$count)){
+                Excel::import(new UserImport, $request->file);
+                $response = [
+                    'status' =>true,
+                    'message' => "Unique user Import Successful",
+                ];
+                return response()->json($response,201);
+            }else{
+                $response = [
+                    'status' =>true,
+                    'message' => "You do not have user limit. Please remove some user from file.",
+                ];
+                return response()->json($response,201);
+            }
+        }else{
+            $response = [
+                'status' =>true,
+                'message' => "You do not have user limit. Please remove some user from file.",
+            ];
+            return response()->json($response,201);
+        }
+
     }
 
     public function userstore(Request $request){
