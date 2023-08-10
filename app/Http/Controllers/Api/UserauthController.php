@@ -264,6 +264,61 @@ class UserauthController extends Controller
         return response($response, 201);
     }
 
+    public function userprofile(Request $request){
+
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+
+        $user=User::where('id', $user_id->tokenable_id)->first();
+
+        $response = [
+            "status"=>true,
+            "message"=>"My Profile Details",
+            "data"=> [
+                "user"=>$user,
+            ]
+        ];
+
+        return response($response, 201);
+    }
+
+    public function userprofileupdate(Request $request){
+
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+
+        $user=User::where('id', $user_id->tokenable_id)->first();
+        $user->first_name=$request->firstName;
+        $user->last_name=$request->lastName;
+        $user->phone=$request->mobile;
+        $user->address=$request->address;
+        $user->postcode=$request->postcode;
+        $user->state=$request->state;
+        $user->country=$request->country;
+        $user->city=$request->city;
+        $time = microtime('.') * 10000;
+        $productImg = $request->file('img');
+        if($productImg){
+            $imgname = $time . $productImg->getClientOriginalName();
+            $imguploadPath = ('public/backend/profile/');
+            $productImg->move($imguploadPath, $imgname);
+            $productImgUrl = $imguploadPath . $imgname;
+            $user->profile = $productImgUrl;
+        }
+
+        $user->update();
+
+        $response = [
+            "status"=>true,
+            "message"=>"Profile update successfully",
+            "data"=> [
+                "user"=>$user,
+            ]
+        ];
+
+        return response($response, 201);
+    }
+
     public function userlogout(Request $request){
         $token = $request->token;
         $usertoken=PersonalAccessToken::findToken($token);

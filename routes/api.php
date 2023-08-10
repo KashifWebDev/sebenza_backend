@@ -54,6 +54,8 @@ Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('get-list', [UserController::class,'index']);
 
+    Route::get('/view-profile', [UserauthController::class,'userprofile']);
+    Route::post('/update-profile', [UserauthController::class,'userprofileupdate']);
     Route::get('/details/{id}', [UserauthController::class,'userdetails']);
     Route::get('newsupdates/{id}', [NewsController::class,'getnews']);
     Route::post('newsupdate/view/{slug}', [NewsController::class,'getnewsbyid']);
