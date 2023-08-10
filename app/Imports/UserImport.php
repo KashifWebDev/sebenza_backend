@@ -20,16 +20,42 @@ class UserImport implements ToModel
         if($email){
 
         }else{
-            $token = request()->bearerToken();
-            $user_id=PersonalAccessToken::findToken($token);
-            $memberof=User::where('id', $user_id->tokenable_id)->first();
+            if($row[0]=='Email'){
 
-            $user=new User();
-            $user->email=$row[0];
-            $user->member_by=$memberof->membership_code;
-            $user->assignRole('user');
-            $user->save();
-            return $user;
+            }else{
+                $token = request()->bearerToken();
+                $user_id=PersonalAccessToken::findToken($token);
+                $memberof=User::where('id', $user_id->tokenable_id)->first();
+                $count=User::where('member_by', $memby->membership_code)->get()->count();
+
+                if($count<$memberof->user_limit_id){
+
+                    $user=new User();
+                    $user->email=$row[0];
+                    $user->member_by=$memberof->membership_code;
+                    $user->assignRole('user');
+                    $user->save();
+
+                    $details = [
+                        'title' => 'Join '.env('APP_NAME').' - Empower Your Business Together',
+                        "user"=>$user,
+                    ];
+
+                    \Mail::to($user->email)->send(new \App\Mail\SendMailInvitation($details));
+
+                }else{
+                    $response = [
+                        'status' =>false,
+                        'message' => "You don not have limit to add user. Please update your limit.",
+                        "data"=> [
+                            "user"=>[],
+                        ]
+                    ];
+                    return response()->json($response,201);
+                }
+
+                return $user;
+            }
         }
 
     }
