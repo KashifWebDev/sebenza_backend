@@ -44,9 +44,10 @@ class UserImport implements ToModel
                     \Mail::to($user->email)->send(new \App\Mail\SendMailInvitation($details));
 
                 }else{
+                    $user=[];
                     return $user;
                 }
-
+                $user=[];
                 return $user;
             }
         }
