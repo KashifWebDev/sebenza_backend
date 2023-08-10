@@ -120,6 +120,52 @@ class AdminauthController extends Controller
         return response($response, 201);
     }
 
+    public function adminprofile(Request $request){
+
+        $token = request()->bearerToken();
+        $admin_id=PersonalAccessToken::findToken($token);
+        $admin=Admin::where('id', $admin_id->tokenable_id)->first();
+
+        $response = [
+            "status"=>true,
+            "message"=>"My Profile Details",
+            "data"=> [
+                "user"=>$admin,
+            ]
+        ];
+
+        return response($response, 201);
+    }
+
+    public function adminprofileupdate(Request $request){
+
+        $token = request()->bearerToken();
+        $admin_id=PersonalAccessToken::findToken($token);
+        $admin=Admin::where('id', $admin_id->tokenable_id)->first();
+        $admin->first_name=$request->firstName;
+        $admin->last_name=$request->lastName;
+        $admin->phone=$request->mobile;
+        $productImg = $request->file('img');
+        if($productImg){
+            $imgname = $time . $productImg->getClientOriginalName();
+            $imguploadPath = ('public/backend/profile/');
+            $productImg->move($imguploadPath, $imgname);
+            $productImgUrl = $imguploadPath . $imgname;
+            $admin->profile = $productImgUrl;
+        }
+        $admin->update();
+
+        $response = [
+            "status"=>true,
+            "message"=>"My Profile Details",
+            "data"=> [
+                "user"=>$admin,
+            ]
+        ];
+
+        return response($response, 201);
+    }
+
     public function adminlogout(Request $request){
         $token = $request->token;
         $usertoken=PersonalAccessToken::findToken($token);

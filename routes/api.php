@@ -100,6 +100,8 @@ Route::post('admin/logout', [AdminauthController::class, 'adminlogout']);
 
 Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
 
+    Route::get('/view-profile', [AdminauthController::class,'adminprofile']);
+    Route::post('/update-profile', [AdminauthController::class,'adminprofileupdate']);
     Route::get('/details/{id}', [AdminauthController::class,'admindetails']);
     Route::get('getadminroles', [AdminauthController::class,'getroles']);
 
