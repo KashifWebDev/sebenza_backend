@@ -16,6 +16,7 @@ class UserImport implements ToModel
     */
     public function model(array $row)
     {
+        $rows= ++$this->currentRow;
         $email=User::where('email', $row[0])->first();
         if($email){
 
@@ -28,7 +29,7 @@ class UserImport implements ToModel
                 $memberof=User::where('id', $user_id->tokenable_id)->first();
                 $count=User::where('member_by', $memberof->membership_code)->get()->count();
 
-                if($count<$memberof->user_limit_id){
+                if(($memberof->user_limit_id-$count)>=$rows){
 
                     $user=new User();
                     $user->email=$row[0];

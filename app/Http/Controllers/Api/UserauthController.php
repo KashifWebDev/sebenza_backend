@@ -27,26 +27,13 @@ class UserauthController extends Controller
         $memberof=User::where('id', $user_id->tokenable_id)->first();
         $count=User::where('member_by', $memberof->membership_code)->get()->count();
 
-        $event=$request->file;
-        $totalRows = Excel::import($event, function($reader) {
-                        $lastrow = $reader->getActiveSheet()->getHighestRow();
-                    });
-
         if($count<$memberof->user_limit_id){
-            if($totalRows<($memberof->user_limit_id-$count)){
-                Excel::import(new UserImport, $request->file);
-                $response = [
-                    'status' =>true,
-                    'message' => "Unique user Import Successful",
-                ];
-                return response()->json($response,201);
-            }else{
-                $response = [
-                    'status' =>true,
-                    'message' => "You do not have user limit. Please remove some user from file.",
-                ];
-                return response()->json($response,201);
-            }
+            Excel::import(new UserImport, $request->file);
+            $response = [
+                'status' =>true,
+                'message' => "Unique user Import Successful",
+            ];
+            return response()->json($response,201);
         }else{
             $response = [
                 'status' =>true,
