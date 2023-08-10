@@ -28,7 +28,7 @@ class UserauthController extends Controller
         $count=User::where('member_by', $memberof->membership_code)->get()->count();
 
         $event=$request->file;
-        $totalRows = Excel::load($event, function($reader) {
+        $totalRows = Excel::import($event, function($reader) {
                         $lastrow = $reader->getActiveSheet()->getHighestRow();
                     });
 
