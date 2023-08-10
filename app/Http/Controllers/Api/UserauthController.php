@@ -27,7 +27,7 @@ class UserauthController extends Controller
         $memberof=User::where('id', $user_id->tokenable_id)->first();
         $count=User::where('member_by', $memberof->membership_code)->get()->count();
 
-        $totalRows = Excel::load($request->file)->getSheet()->count();
+        $totalRows = Excel::import($request->file)->getSheet()->count();
 
         if($count<$memberof->user_limit_id){
             if($totalRows<($memberof->user_limit_id-$count)){
