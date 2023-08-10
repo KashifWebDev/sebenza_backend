@@ -26,7 +26,7 @@ class UserImport implements ToModel
                 $token = request()->bearerToken();
                 $user_id=PersonalAccessToken::findToken($token);
                 $memberof=User::where('id', $user_id->tokenable_id)->first();
-                $count=User::where('member_by', $memby->membership_code)->get()->count();
+                $count=User::where('member_by', $memberof->membership_code)->get()->count();
 
                 if($count<$memberof->user_limit_id){
 
