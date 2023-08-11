@@ -99,6 +99,11 @@ class UserauthController extends Controller
                 $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
                 $order->amount_total=$amounttotal;
                 $order->orderDate=date('Y-m-d');
+                $order->account_type_id=$request->account_type_id;
+                if(isset($request->account_type_id)){
+                    $type=Accounttype::where('id',$request->account_type_id)->first();
+                    $order->account_type=$type->account_type;
+                }
                 $successorder=$order->save();
 
                 if($successorder){
@@ -214,7 +219,6 @@ class UserauthController extends Controller
         return '#INV00' . $menberID;
     }
 
-
     public function uniqueID()
     {
         $lastmember = User::whereHas(
@@ -230,7 +234,6 @@ class UserauthController extends Controller
 
         return 'SEBENZA00' . $menberID;
     }
-
 
     public function userlogin(Request $request){
         $user = User::where('email', $request->email)
@@ -348,6 +351,5 @@ class UserauthController extends Controller
         ];
         return response()->json($error);
     }
-
 
 }
