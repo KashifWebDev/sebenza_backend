@@ -157,14 +157,14 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
 
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
         $webinfo =Basicinfo::first();
-        $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
+        $order =Order::with('users')->where('id',$id)->where('user_id',$user_id->tokenable_id)->first();
         if($order->expireDate==''){
             $response = [
                 'status' => true,
