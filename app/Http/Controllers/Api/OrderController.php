@@ -94,7 +94,7 @@ class OrderController extends Controller
     public function usepromo(Request $request){
 
         $disc= Promocode::where('promocode',$request->promocode)->where('status','Active')->first();
-        $invo =Invoice::where('id',$request->invoice_id)->where('status','Unpaid')->first();
+        $invo =Invoice::where('invoiceID',$request->invoiceID)->where('status','Unpaid')->first();
         if(isset($disc)){
             $discountamount =$invo->payable_amount*($disc->discount_percent/100);
             $invo->discount=$discountamount;
