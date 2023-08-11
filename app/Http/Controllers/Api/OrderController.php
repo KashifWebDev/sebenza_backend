@@ -96,18 +96,29 @@ class OrderController extends Controller
         $disc= Promocode::where('promocode',$request->promocode)->where('status','Active')->first();
         $invo =Invoice::where('invoiceID',$request->invoiceID)->where('status','Unpaid')->first();
         if(isset($disc)){
-            $discountamount =$invo->payable_amount*($disc->discount_percent/100);
-            $invo->discount=$discountamount;
-            $invo->payable_amount=$invo->payable_amount-$discountamount;
-            $invo->update();
-            $response=[
-                "status"=>true,
-                "message"=>"Promocode apply successfully.",
-                "data"=> [
-                    "invoice"=>$invo,
-                ]
-            ];
-            return response()->json($response, 200);
+            if($invo->discount>0){
+                $response=[
+                    "status"=>true,
+                    "message"=>"Already Have discount. Promo can not apply",
+                    "data"=> [
+                        "invoice"=>$invo,
+                    ]
+                ];
+                return response()->json($response, 200);
+            }else{
+                $discountamount =$invo->payable_amount*($disc->discount_percent/100);
+                $invo->discount=$discountamount;
+                $invo->payable_amount=$invo->payable_amount-$discountamount;
+                $invo->update();
+                $response=[
+                    "status"=>true,
+                    "message"=>"Promocode apply successfully.",
+                    "data"=> [
+                        "invoice"=>$invo,
+                    ]
+                ];
+                return response()->json($response, 200);
+            }
         }else{
             $response=[
                 "status"=>true,
