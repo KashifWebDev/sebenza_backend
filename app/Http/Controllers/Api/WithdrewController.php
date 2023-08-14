@@ -46,9 +46,9 @@ class WithdrewController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
         if(isset($user->membership_code)){
-            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->membership_code)->first();
+            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->membership_code)->get();
         }else{
-            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->member_by)->first();
+            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->member_by)->get();
         }
 
         $response = [
