@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\MetingController;
 use App\Http\Controllers\Api\CalenderController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpensetypeController;
+use App\Http\Controllers\Api\PaymentfrequencyController;
+use App\Http\Controllers\Api\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +92,15 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('invoices', App\Http\Controllers\Api\InvoiceController::class);
     Route::post('order/update-payment', [App\Http\Controllers\Api\InvoiceController::class,'updatepayment']);
     Route::post('order/use-promo', [App\Http\Controllers\Api\OrderController::class,'usepromo']);
+
+    // payment frequency
+    Route::resource('paymentfrequencys', PaymentfrequencyController::class);
+    Route::post('paymentfrequency/update/{id}', [PaymentfrequencyController::class,'update']);
+    // salarys
+    Route::resource('salaries', SalaryController::class);
+    Route::post('salary/update/{id}', [SalaryController::class,'update']);
+    Route::get('my/salary', [SalaryController::class,'getMySalary']);
+
 
 });
 

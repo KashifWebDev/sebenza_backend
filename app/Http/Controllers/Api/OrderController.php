@@ -271,8 +271,6 @@ class OrderController extends Controller
         return '#INV00' . $menberID;
     }
 
-
-
     /**
      * Remove the specified resource from storage.
      *
