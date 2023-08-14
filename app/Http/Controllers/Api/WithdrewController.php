@@ -92,7 +92,7 @@ class WithdrewController extends Controller
             $withdrews->membership_id=$user->member_by;
         }
         $withdrews->amount=$request->amount;
-        $salay=Salary::where('user_id',$user->id)->first();
+        $salary=Salary::where('user_id',$user->id)->first();
         if($salary->account_balance>$request->amount){
             $success=$withdrews->save();
         }else{
@@ -178,7 +178,7 @@ class WithdrewController extends Controller
 
         if($request->status=='Paid'){
             $withdrews->status=$request->status;
-            $salay=Salary::where('user_id',$user->id)->first();
+            $salary=Salary::where('user_id',$user->id)->first();
             $salary->withdrew_balance=$salary->withdrew_balance+$withdrews->amount;
             $salary->pending_withdrew=$salary->pending_withdrew-$withdrews->amount;
             $salary->update();
@@ -194,7 +194,7 @@ class WithdrewController extends Controller
         }else{
             $withdrews->status=$request->status;
 
-            $salay=Salary::where('user_id',$user->id)->first();
+            $salary=Salary::where('user_id',$user->id)->first();
             $salary->account_balance=$salary->account_balance+$withdrews->amount;
             $salary->pending_withdrew=$salary->pending_withdrew-$withdrews->amount;
             $salary->update();
