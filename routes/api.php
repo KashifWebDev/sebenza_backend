@@ -104,7 +104,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // payment reports
     Route::resource('withdrews', WithdrewController::class);
     Route::post('withdrew/update/{id}', [WithdrewController::class,'update']);
-    Route::get('my/withdrew', [SalaryController::class,'getMywithdrew']);
+    Route::get('my/withdrew', [WithdrewController::class,'getMywithdrew']);
 
 });
 
