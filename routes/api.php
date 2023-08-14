@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpensetypeController;
 use App\Http\Controllers\Api\PaymentfrequencyController;
 use App\Http\Controllers\Api\SalaryController;
+use App\Http\Controllers\Api\WithdrewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +101,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('salaries', SalaryController::class);
     Route::post('salary/update/{id}', [SalaryController::class,'update']);
     Route::get('my/salary', [SalaryController::class,'getMySalary']);
-
+    // payment reports
+    Route::resource('withdrews', WithdrewController::class);
+    Route::post('withdrew/update/{id}', [WithdrewController::class,'update']);
+    Route::get('my/withdrew', [SalaryController::class,'getMywithdrew']);
 
 });
 

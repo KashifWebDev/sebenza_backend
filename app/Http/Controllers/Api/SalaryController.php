@@ -80,31 +80,45 @@ class SalaryController extends Controller
      */
     public function store(Request $request)
     {
-        $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::findToken($token);
-        $salarys=new Salary();
-        $user=User::where('id',$user_id->tokenable_id)->first();
-        $salarys->created_by=$user->id;
-        $salarys->user_id=$request->user_id;
-        $salarys->payment_frequency_id=$request->payment_frequency_id;
-        $salarys->payment_frequency=Paymentfrequency::where('id',$request->payment_frequency_id)->first()->frequecy_name;
-            if(isset($user->membership_code)){
-                $salarys->membership_id=$user->membership_code;
-            }else{
-                $salarys->membership_id=$user->member_by;
-            }
-        $salarys->basic_salaray=$request->basic_salaray;
-        $salarys->hourly_rate=$request->hourly_rate;
-        $salarys->working_hour=$request->working_hour;
-        $salarys->save();
-        $response=[
-            "status"=>true,
-            'message' => "Salary create successful",
-            "data"=> [
-                'salarys'=> $salarys,
-            ]
-        ];
-        return response()->json($response, 200);
+        $exist =Salary::where('user_id',$request->user_id)->first();
+
+        if(isset($exist)){
+            $response = [
+                'status' => true,
+                'message'=>'Already have a salary with this account. Please change user or update its salary.',
+                "data"=> [
+                    'salarys'=> '',
+                ]
+            ];
+            return response()->json($response,200);
+        }else{
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $salarys=new Salary();
+            $user=User::where('id',$user_id->tokenable_id)->first();
+            $salarys->created_by=$user->id;
+            $salarys->user_id=$request->user_id;
+            $salarys->payment_frequency_id=$request->payment_frequency_id;
+            $salarys->payment_frequency=Paymentfrequency::where('id',$request->payment_frequency_id)->first()->frequecy_name;
+                if(isset($user->membership_code)){
+                    $salarys->membership_id=$user->membership_code;
+                }else{
+                    $salarys->membership_id=$user->member_by;
+                }
+            $salarys->basic_salaray=$request->basic_salaray;
+            $salarys->hourly_rate=$request->hourly_rate;
+            $salarys->working_hour=$request->working_hour;
+            $salarys->save();
+            $response=[
+                "status"=>true,
+                'message' => "Salary create successful",
+                "data"=> [
+                    'salarys'=> $salarys,
+                ]
+            ];
+            return response()->json($response, 200);
+        }
+
     }
 
     /**

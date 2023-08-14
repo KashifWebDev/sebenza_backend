@@ -23,6 +23,9 @@ return new class extends Migration
             $table->decimal('basic_salaray')->default(0);
             $table->decimal('hourly_rate')->default(0);
             $table->decimal('working_hour')->default(0);
+            $table->decimal('account_balance')->default(0);
+            $table->decimal('pending_withdrew')->default(0);
+            $table->decimal('withdrew_balance')->default(0);
             $table->string('status')->default('Active');
             $table->timestamps();
         });
