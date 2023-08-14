@@ -45,9 +45,9 @@ class SalaryController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
         if(isset($user->membership_code)){
-            $salarys=Salary::where('user_id',$user->id)->where('membership_code',$user->membership_code)->first();
+            $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->membership_code)->first();
         }else{
-            $salarys=Salary::where('user_id',$user->id)->where('membership_code',$user->member_by)->first();
+            $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->member_by)->first();
         }
 
         $response = [
