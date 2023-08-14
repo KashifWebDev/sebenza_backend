@@ -93,7 +93,7 @@ class WithdrewController extends Controller
         }
         $withdrews->amount=$request->amount;
         $salary=Salary::where('user_id',$user->id)->first();
-        if($salary->account_balance>$request->amount){
+        if($salary->account_balance>=$request->amount){
             $success=$withdrews->save();
         }else{
             $response=[
