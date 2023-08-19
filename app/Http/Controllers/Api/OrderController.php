@@ -25,7 +25,7 @@ class OrderController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $order =Order::with(['users.roles'])->where('user_id',$user_id->tokenable_id)->get();
+        $order =Order::with(['users.roles'])->where('user_id',$user_id->tokenable_id)->get()->reverse();
 
         $response = [
             'status' => true,
@@ -44,51 +44,63 @@ class OrderController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id', $user_id->tokenable_id)->first();
         $webinfo =Basicinfo::first();
-        $order=new Order();
-        $order->user_id=$user->id;
-        $order->membership_id=$user->membership_code;
-        $order->account_total_user=$request->user_limit_id;
-        $order->cost_per_user=$webinfo->cost_per_user;
-        $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
-        $order->amount_total=$amounttotal;
-        $order->orderDate=date('Y-m-d');
-        $order->account_type_id=$request->account_type_id;
-        if(isset($request->account_type_id)){
-            $type=Accounttype::where('id',$request->account_type_id)->first();
-            $order->account_type=$type->account_type;
-        }
-        $successorder=$order->save();
-
-        if($successorder){
-            $invoice=new Invoice();
-            $invoice->invoiceID=$this->invoiceID();
-            $invoice->order_id=$order->id;
-            $invoice->account_total_user=$request->user_limit_id;
-            $invoice->cost_per_user=$webinfo->cost_per_user;
+        $exist=Order::where('account_type_id',$request->account_type_id)->where('user_id',$user->id)->first();
+        if(isset($exist)){
+            $response=[
+                "status"=>true,
+                "message"=>"You have already purchese this package please update it.",
+                "data"=> [
+                    "invoice"=>[],
+                ]
+            ];
+            return response()->json($response, 200);
+        }else{
+            $order=new Order();
+            $order->user_id=$user->id;
+            $order->membership_id=$user->membership_code;
+            $order->account_total_user=$request->user_limit_id;
+            $order->cost_per_user=$webinfo->cost_per_user;
             $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
-            $invoice->amount_total=$amounttotal;
-            $invoice->payable_amount=$amounttotal;
-            $invoice->paid_amount=0;
-            $invoice->invoiceDate=date('Y-m-d');
-            $invoice->save();
-        }
+            $order->amount_total=$amounttotal;
+            $order->orderDate=date('Y-m-d');
+            $order->account_type_id=$request->account_type_id;
+            if(isset($request->account_type_id)){
+                $type=Accounttype::where('id',$request->account_type_id)->first();
+                $order->account_type=$type->account_type;
+            }
+            $successorder=$order->save();
 
-        $invdetails = [
-            'title' => env('APP_NAME') . 'Subscription Invoice',
-            "user"=>$user,
-            "invoice"=>$invoice,
-        ];
+            if($successorder){
+                $invoice=new Invoice();
+                $invoice->invoiceID=$this->invoiceID();
+                $invoice->order_id=$order->id;
+                $invoice->account_total_user=$request->user_limit_id;
+                $invoice->cost_per_user=$webinfo->cost_per_user;
+                $amounttotal=($request->user_limit_id*$webinfo->cost_per_user);
+                $invoice->amount_total=$amounttotal;
+                $invoice->payable_amount=$amounttotal;
+                $invoice->paid_amount=0;
+                $invoice->invoiceDate=date('Y-m-d');
+                $invoice->save();
+            }
 
-        \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
-
-        $response=[
-            "status"=>true,
-            "message"=>"New Package Create Successfully",
-            "data"=> [
+            $invdetails = [
+                'title' => env('APP_NAME') . 'Subscription Invoice',
+                "user"=>$user,
                 "invoice"=>$invoice,
-            ]
-        ];
-        return response()->json($response, 200);
+            ];
+
+            \Mail::to($user->email)->send(new \App\Mail\SendMailInvoice($invdetails));
+
+            $response=[
+                "status"=>true,
+                "message"=>"New Package Create Successfully",
+                "data"=> [
+                    "invoice"=>$invoice,
+                ]
+            ];
+            return response()->json($response, 200);
+        }
     }
 
     public function usepromo(Request $request){
@@ -121,7 +133,7 @@ class OrderController extends Controller
             }
         }else{
             $response=[
-                "status"=>true,
+                "status"=>false,
                 "message"=>"Promocode is not valid. Please enter a valid promocode",
                 "data"=> [
                     "invoice"=>$invo,
