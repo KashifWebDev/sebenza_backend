@@ -47,7 +47,7 @@ class OrderController extends Controller
         $exist=Order::where('account_type_id',$request->account_type_id)->where('user_id',$user->id)->first();
         if(isset($exist)){
             $response=[
-                "status"=>true,
+                "status"=>false,
                 "message"=>"You have already purchese this package please update it.",
                 "data"=> [
                     "invoice"=>[],
