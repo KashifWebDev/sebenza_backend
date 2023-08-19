@@ -22,9 +22,10 @@ class InvoiceController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
-        $invoices =Invoice::with(['orders','orders.users.roles'])->where('order_id',$order->id)->get();
-
+        $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->get();
+        foreach($order as $or){
+            $invoices[] =Invoice::with(['orders','orders.users.roles'])->where('order_id',$or->id)->first();
+        }
         $response = [
             'status' => true,
             'message'=>'My Invoices',
