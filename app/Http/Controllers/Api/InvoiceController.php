@@ -23,7 +23,7 @@ class InvoiceController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->first();
-        $invoices =Invoice::with(['orders','orders.users.roles'])->where('order_id',$order->id)->get()->reverse();
+        $invoices =Invoice::with(['orders','orders.users.roles'])->where('order_id',$order->id)->reverse()->get();
 
         $response = [
             'status' => true,
