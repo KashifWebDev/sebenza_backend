@@ -30,7 +30,7 @@ class SalaryController extends Controller
 
         foreach($sals as $sal){
             $u=User::where('id',$sal->user_id)->first();
-            $sal->full_name=$u->first_name + '' +$u->last_name;
+            $sal->full_name=$u->first_name . '' .$u->last_name;
             $salarys[]=$sal;
         }
         $response = [
