@@ -54,6 +54,8 @@ class SalaryController extends Controller
         }else{
             $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->member_by)->first();
         }
+        $u=User::where('id',$salarys->user_id)->first();
+        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
 
         $response = [
             'status' => true,
@@ -146,6 +148,8 @@ class SalaryController extends Controller
     public function edit($id)
     {
         $salarys =Salary::where('id',$id)->first();
+        $u=User::where('id',$salarys->user_id)->first();
+        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
 
         $response = [
             'status' => true,
@@ -183,6 +187,8 @@ class SalaryController extends Controller
         $salarys->hourly_rate=$request->hourly_rate;
         $salarys->working_hour=$request->working_hour;
         $salarys->update();
+        $u=User::where('id',$salarys->user_id)->first();
+        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
         $response=[
             "status"=>true,
             'message' => "Salary update successful",
