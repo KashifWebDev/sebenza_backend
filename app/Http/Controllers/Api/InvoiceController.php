@@ -24,7 +24,15 @@ class InvoiceController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $order =Order::with('users')->where('user_id',$user_id->tokenable_id)->get();
         foreach($order as $or){
-            $invoices[] =Invoice::with(['orders','orders.users.roles'])->where('order_id',$or->id)->first();
+            $invo =Invoice::with(['orders','orders.users.roles'])->where('order_id',$or->id)->first();
+            if(isset($invo)){
+                $invoices[]=$invo;
+            }
+        }
+        if(isset($invoices)){
+
+        }else{
+            $invoices=[];
         }
         $response = [
             'status' => true,
