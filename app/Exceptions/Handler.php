@@ -43,6 +43,13 @@ class Handler extends ExceptionHandler
                 ], 404);
         });
 
+        $this->renderable(function (ErrorException  $e) {
+            return response()->json([
+                    "status"=>false,
+                    'message' => "Nothing Found Here!",
+                ], 404);
+        });
+
         $this->renderable(function (MissingAppKeyException  $e) {
             return response()->json([
                     "status"=>false,
