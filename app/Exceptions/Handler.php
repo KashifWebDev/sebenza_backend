@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ErrorException  $e) {
             return response()->json([
                     "status"=>false,
-                    'message' => "Nothing Found Here!",
+                    'message' => "Nothing Found",
                 ], 404);
         });
 
@@ -59,4 +59,60 @@ class Handler extends ExceptionHandler
 
 
     }
+
+    public function render($request, Exception $exception) {
+
+        if ($request->ajax()) {
+
+            //custom ajax errors
+            switch ($exception->getStatusCode()) {
+
+            //permission denied
+            case 403:
+                $response = [
+                    "status"=>false,
+                    'message' => "No query found for this url",
+                ];
+                break;
+
+            //larevel session timeout
+            case 419:
+                $response = [
+                    "status"=>false,
+                    'message' => "No query found for this url",
+                ];
+                break;
+
+            //not found
+            case 404:
+                $response = [
+                    "status"=>false,
+                    'message' => "No query found for this url",
+                ];
+                break;
+
+            //business logic/generic errors
+            case 409:
+                $response = [
+                    "status"=>false,
+                    'message' => "No query found for this url",
+                ];
+                break;
+
+            default:
+                $response = [
+                    "status"=>false,
+                    'message' => "No query found for this url",
+                ];
+                break;
+            }
+
+            //return response - with error code
+            return response()->json(array('message' => $response), $exception->getStatusCode());
+        }
+
+        //default laravel response
+        return parent::render($request, $exception);
+    }
+
 }
