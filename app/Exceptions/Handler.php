@@ -6,6 +6,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Database\QueryException;
 use Illuminate\Encryption\MissingAppKeyException;
+use Illuminate\Encryption\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
