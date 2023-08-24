@@ -147,18 +147,25 @@ class SalaryController extends Controller
      */
     public function edit($id)
     {
-        $salarys =Salary::findOrfail($id);
-        $u=User::where('id',$salarys->user_id)->first();
-        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
 
-        $response = [
-            'status' => true,
-            'message'=>'Salary By ID',
-            "data"=> [
-                'salarys'=> $salarys,
-            ]
-        ];
-        return response()->json($response,200);
+        try {
+            $salarys =Salary::where('id',$id)->first();
+            $u=User::where('id',$salarys->user_id)->first();
+            $salarys->full_name=$u->first_name . ' ' .$u->last_name;
+
+            $response = [
+                'status' => true,
+                'message'=>'Salary By ID',
+                "data"=> [
+                    'salarys'=> $salarys,
+                ]
+            ];
+            return response()->json($response,200);
+
+        } catch (Exception $e) {
+                return $e;
+        }
+
     }
 
     /**
