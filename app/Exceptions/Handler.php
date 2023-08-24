@@ -6,7 +6,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Database\QueryException;
 use Illuminate\Encryption\MissingAppKeyException;
-use Illuminate\Encryption\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -37,11 +36,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
 {
-    if ($request->wantsJson() && $exception instanceof ModelNotFoundException) {
-        return response()->json(['status' => 'object requested not found'], 404);
+    // global exception handler if api request for non existing object id
+    if ($request->wantsJson() && $exception->getMessage() == 'Trying to get property of non-object') {
+        return response()->json([
+            'status' => 'object requested not found'
+        ], 404);
     }
 
     return parent::render($request, $exception);
 }
+
 
 }
