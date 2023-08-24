@@ -51,6 +51,16 @@ class Handler extends ExceptionHandler
                 ], 404);
         });
 
+        try {
+
+        } catch (\Exception $e) {
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
 
     }
 
