@@ -147,7 +147,7 @@ class SalaryController extends Controller
      */
     public function edit($id)
     {
-        $salarys =Salary::where('id',$id)->first();
+        $salarys =Salary::findOrfail($id);
         $u=User::where('id',$salarys->user_id)->first();
         $salarys->full_name=$u->first_name . ' ' .$u->last_name;
 
