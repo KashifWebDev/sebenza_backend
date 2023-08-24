@@ -163,7 +163,11 @@ class SalaryController extends Controller
             return response()->json($response,200);
 
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
         }
 
     }
