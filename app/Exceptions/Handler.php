@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
                 ], 404);
         });
 
-        $this->renderable(function ($request, \Exception $exception) {
+        $this->renderable(function ($request, Exception $exception) {
             if ($request->wantsJson() && $exception->getMessage() == 'Trying to get property of non-object') {
                 return response()->json([
                     'status' => 'object requested not found'
