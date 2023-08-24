@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
      *s
      * @return void
      */
-    public function render($request, Exception $exception)
+    public function render($request, \Exception $exception)
 {
     // global exception handler if api request for non existing object id
     if ($request->wantsJson() && $exception->getMessage() == 'Trying to get property of non-object') {
