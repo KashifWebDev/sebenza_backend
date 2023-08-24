@@ -46,26 +46,35 @@ class SalaryController extends Controller
 
     public function getMySalary()
     {
-        $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::findToken($token);
-        $user=User::where('id',$user_id->tokenable_id)->first();
-        if(isset($user->membership_code)){
-            $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->membership_code)->first();
-        }else{
-            $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->member_by)->first();
+        try{
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $user=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($user->membership_code)){
+                $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->membership_code)->first();
+            }else{
+                $salarys=Salary::where('user_id',$user->id)->where('membership_id',$user->member_by)->first();
+            }
+            $u=User::where('id',$salarys->user_id)->first();
+            $salarys->full_name=$u->first_name . ' ' .$u->last_name;
+
+            $response = [
+                'status' => true,
+                'message'=>'My Salary Info',
+                "data"=> [
+                    'salarys'=> $salarys,
+                ]
+
+            ];
+            return response()->json($response,200);
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
         }
-        $u=User::where('id',$salarys->user_id)->first();
-        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
-
-        $response = [
-            'status' => true,
-            'message'=>'My Salary Info',
-            "data"=> [
-                'salarys'=> $salarys,
-            ]
-
-        ];
-        return response()->json($response,200);
     }
 
 
@@ -180,33 +189,42 @@ class SalaryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::findToken($token);
-        $salarys=Salary::where('id',$id)->first();
-        $user=User::where('id',$user_id->tokenable_id)->first();
-        $salarys->created_by=$user->id;
-        $salarys->user_id=$request->user_id;
-        $salarys->payment_frequency_id=$request->payment_frequency_id;
-        $salarys->payment_frequency=Paymentfrequency::where('id',$request->payment_frequency_id)->first()->frequecy_name;
-            if(isset($user->membership_code)){
-                $salarys->membership_id=$user->membership_code;
-            }else{
-                $salarys->membership_id=$user->member_by;
-            }
-        $salarys->basic_salaray=$request->basic_salaray;
-        $salarys->hourly_rate=$request->hourly_rate;
-        $salarys->working_hour=$request->working_hour;
-        $salarys->update();
-        $u=User::where('id',$salarys->user_id)->first();
-        $salarys->full_name=$u->first_name . ' ' .$u->last_name;
-        $response=[
-            "status"=>true,
-            'message' => "Salary update successful",
-            "data"=> [
-                'salarys'=> $salarys,
-            ]
-        ];
-        return response()->json($response, 200);
+        try{
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $salarys=Salary::where('id',$id)->first();
+            $user=User::where('id',$user_id->tokenable_id)->first();
+            $salarys->created_by=$user->id;
+            $salarys->user_id=$request->user_id;
+            $salarys->payment_frequency_id=$request->payment_frequency_id;
+            $salarys->payment_frequency=Paymentfrequency::where('id',$request->payment_frequency_id)->first()->frequecy_name;
+                if(isset($user->membership_code)){
+                    $salarys->membership_id=$user->membership_code;
+                }else{
+                    $salarys->membership_id=$user->member_by;
+                }
+            $salarys->basic_salaray=$request->basic_salaray;
+            $salarys->hourly_rate=$request->hourly_rate;
+            $salarys->working_hour=$request->working_hour;
+            $salarys->update();
+            $u=User::where('id',$salarys->user_id)->first();
+            $salarys->full_name=$u->first_name . ' ' .$u->last_name;
+            $response=[
+                "status"=>true,
+                'message' => "Salary update successful",
+                "data"=> [
+                    'salarys'=> $salarys,
+                ]
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
     }
 
     /**

@@ -85,17 +85,26 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        $invoices =Invoice::with(['orders','orders.users'])->where('id',$id)->first();
+        try{
+            $invoices =Invoice::with(['orders','orders.users'])->where('id',$id)->first();
 
-        $response = [
-            'status' => true,
-            'message'=>'Invoice by invoice ID',
-            "data"=> [
-                'invoices'=> $invoices,
-            ]
-        ];
+            $response = [
+                'status' => true,
+                'message'=>'Invoice by invoice ID',
+                "data"=> [
+                    'invoices'=> $invoices,
+                ]
+            ];
 
-        return response()->json($response,200);
+            return response()->json($response,200);
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
     }
 
     /**
