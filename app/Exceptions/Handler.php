@@ -52,10 +52,13 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function ($request, \Exception $exception) {
-            return response()->json([
-                    "status"=>false,
-                    'message' => "CSRF Token not match.",
+            if ($request->wantsJson() && $exception->getMessage() == 'Trying to get property of non-object') {
+                return response()->json([
+                    'status' => 'object requested not found'
                 ], 404);
+            }
+
+            return parent::render($request, $exception);
         });
     }
 
