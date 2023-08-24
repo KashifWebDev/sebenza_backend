@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 
 class SalaryController extends Controller
 {
+    public function _invoke(){
+        try {
+
+        } catch (\Exception $e) {
+
+            return $e->getMessage();
+        }
+    }
     /**
      * Display a listing of the resource.
      *
