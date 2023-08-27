@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('membership_id');
-            $table->string('payment_method')->nullable();
-            $table->string('account_number')->nullable();
+            $table->string('payment_method');
+            $table->string('account_name')->nullable();
+            $table->string('account_number');
+            $table->text('additional_info')->nullable();
             $table->decimal('amount')->default(0);
             $table->string('status')->default('Pending');
             $table->timestamps();

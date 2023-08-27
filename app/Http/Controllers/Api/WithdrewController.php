@@ -24,9 +24,20 @@ class WithdrewController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
         if(isset($user->membership_code)){
-            $withdrews=Withdrew::where('membership_id',$user->membership_code)->get();
+            $wits=Withdrew::where('membership_id',$user->membership_code)->get();
         }else{
-            $withdrews=Withdrew::where('membership_id',$user->member_by)->get();
+            $wits=Withdrew::where('membership_id',$user->member_by)->get();
+        }
+
+        if(isset($wits)){
+            foreach($wits as $wit){
+                $w=Withdrew::where('id',$wit->id)->first();
+                $u=User::where('id',$w->user_id)->first();
+                $w->full_name=$u->first_name . ' ' .$u->last_name;
+                $withdrews[]=$w;
+            }
+        }else{
+            $withdrews=[];
         }
 
         $response = [
@@ -42,24 +53,34 @@ class WithdrewController extends Controller
 
     public function getMywithdrew()
     {
-        $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::findToken($token);
-        $user=User::where('id',$user_id->tokenable_id)->first();
-        if(isset($user->membership_code)){
-            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->membership_code)->get();
-        }else{
-            $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->member_by)->get();
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $user=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($user->membership_code)){
+                $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->membership_code)->get();
+            }else{
+                $withdrews=Withdrew::where('user_id',$user->id)->where('membership_id',$user->member_by)->get();
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'My Withdrew Info',
+                "data"=> [
+                    'withdrews'=> $withdrews,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
         }
-
-        $response = [
-            'status' => true,
-            'message'=>'My Withdrew Info',
-            "data"=> [
-                'withdrews'=> $withdrews,
-            ]
-
-        ];
-        return response()->json($response,200);
     }
 
 
@@ -91,13 +112,17 @@ class WithdrewController extends Controller
         }else{
             $withdrews->membership_id=$user->member_by;
         }
+        $withdrews->payment_method=$request->payment_method;
+        $withdrews->account_name=$request->account_name;
+        $withdrews->account_number=$request->account_number;
+        $withdrews->additional_info=$request->additional_info;
         $withdrews->amount=$request->amount;
         $salary=Salary::where('user_id',$user->id)->first();
         if($salary->account_balance>=$request->amount){
             $success=$withdrews->save();
         }else{
             $response=[
-                "status"=>true,
+                "status"=>false,
                 'message' => "Not enough balance in your account.",
                 "data"=> [
                     'withdrews'=> '',
