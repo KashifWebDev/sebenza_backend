@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\ExpensetypeController;
 use App\Http\Controllers\Api\PaymentfrequencyController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\WithdrewController;
+use App\Http\Controllers\Api\PayPalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,11 @@ Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
+    // paypal payment
+    Route::post('paypal-payment', [PayPalController::class,'payment'])->name('payment');
+     Route::get('paypal-cancel', [PayPalController::class,'paymentCancel'])->name('cancel.payment');
+    Route::get('paypal-success',[PayPalController::class, 'paymentSuccess'])->name('success.payment');
+
     Route::get('get-list', [UserController::class,'index']);
 
     Route::get('/view-profile', [UserauthController::class,'userprofile']);
