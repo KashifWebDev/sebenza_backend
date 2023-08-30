@@ -70,6 +70,16 @@ class VattexController extends Controller
                 $vattexs=Vattex::where('membership_id',$user->member_by)->first();
             }
             if(isset($vattexs)){
+
+                $response=[
+                    "status"=>false,
+                    'message' => "Already have vat tax info for your company.",
+                    "data"=> [
+                        'vattaxs'=> '',
+                    ]
+                ];
+                return response()->json($response, 200);
+            }else{
                 $vattexs=new Vattex();
                 $user=User::where('id',$user_id->tokenable_id)->first();
                 $vattexs->user_id=$user->id;
@@ -86,15 +96,6 @@ class VattexController extends Controller
                     'message' => "Vattax create successful",
                     "data"=> [
                         'vattaxs'=> $vattexs,
-                    ]
-                ];
-                return response()->json($response, 200);
-            }else{
-                $response=[
-                    "status"=>false,
-                    'message' => "Already have vat tax info for your company.",
-                    "data"=> [
-                        'vattaxs'=> '',
                     ]
                 ];
                 return response()->json($response, 200);
