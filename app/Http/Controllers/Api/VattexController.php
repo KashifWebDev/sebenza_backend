@@ -151,7 +151,7 @@ class VattexController extends Controller
      * @param  \App\Models\Vattex  $vattex
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
             $token = request()->bearerToken();
