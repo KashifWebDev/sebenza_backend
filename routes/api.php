@@ -56,9 +56,18 @@ Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
+
+    //banks
+    Route::resource('banks', BankController::class);
+    Route::post('bank/update/{id}', [BankController::class, 'update']);
+    Route::get('all/bank', [BankController::class, 'getCompanyUserBank']);
+    //vat tax
+    Route::resource('vattaxs', VattexController::class);
+    Route::post('vattax/update/{id}', [VattexController::class, 'update']);
+
     // paypal payment
     Route::post('paypal-payment', [PayPalController::class,'payment'])->name('payment');
-     Route::get('paypal-cancel', [PayPalController::class,'paymentCancel'])->name('cancel.payment');
+    Route::get('paypal-cancel', [PayPalController::class,'paymentCancel'])->name('cancel.payment');
     Route::get('paypal-success',[PayPalController::class, 'paymentSuccess'])->name('success.payment');
 
     Route::get('get-list', [UserController::class,'index']);
@@ -179,8 +188,6 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::post('order/update/{id}', [App\Http\Controllers\Backend\Api\OrderController::class,'update']);
     Route::resource('invoices', App\Http\Controllers\Backend\Api\InvoiceController::class);
     Route::post('invoice/update/{id}', [App\Http\Controllers\Backend\Api\OrderController::class,'update']);
-
-
 
 
 });
