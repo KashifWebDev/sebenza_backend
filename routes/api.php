@@ -26,6 +26,8 @@ use App\Http\Controllers\Api\PaymentfrequencyController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\WithdrewController;
 use App\Http\Controllers\Api\PayPalController;
+use App\Http\Controllers\Api\VattexController;
+use App\Http\Controllers\Api\BankController;
 
 /*
 |--------------------------------------------------------------------------
