@@ -134,7 +134,7 @@ class VattexController extends Controller
         } catch (\Exception $e) {
             $response=[
                 "status"=>false,
-                'message' => "Something went wrong please try again !",
+                'message'=>$e->getMessage(),
                 "data"=> [
                     'vattaxs'=> '',
                 ]
@@ -163,7 +163,6 @@ class VattexController extends Controller
             }else{
                 $vattexs=Vattex::where('membership_id',$user->member_by)->first();
             }
-
             $vattexs->vat=$request->vat;
             $vattexs->tax=$request->tax;
             $vattexs->update();
@@ -179,7 +178,7 @@ class VattexController extends Controller
         } catch (\Exception $e) {
             $response=[
                 "status"=>false,
-                'message' => "Can not update vattax. Something went wrong",
+                'message'=>$e->getMessage(),
                 "data"=> [
                     'vattaxs'=> '',
                 ]
