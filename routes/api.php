@@ -63,7 +63,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('all/bank', [BankController::class, 'getCompanyUserBank']);
     //vat tax
     Route::resource('vattaxs', VattexController::class);
-    Route::post('vattax/update/{id}', [VattexController::class, 'update']);
+    Route::post('vattax/update', [VattexController::class, 'update']);
 
     // paypal payment
     Route::post('paypal-payment', [PayPalController::class,'payment'])->name('payment');
