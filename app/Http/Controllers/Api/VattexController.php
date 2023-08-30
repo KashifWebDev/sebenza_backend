@@ -37,6 +37,7 @@ class VattexController extends Controller
 
         ];
         return response()->json($response,200);
+
     }
 
 
@@ -122,19 +123,30 @@ class VattexController extends Controller
     {
         try{
             $vattexs =Vattex::where('id',$id)->first();
-            $response = [
-                'status' => true,
-                'message'=>'Vattax view by ID',
-                "data"=> [
-                    'vattaxs'=> $vattexs,
-                ]
-            ];
-            return response()->json($response,200);
+            if(isset($vattexs)){
+                $response = [
+                    'status' => true,
+                    'message'=>'Vattax view by ID',
+                    "data"=> [
+                        'vattaxs'=> $vattexs,
+                    ]
+                ];
+                return response()->json($response,200);
+            }else{
+                $response = [
+                    'status' => false,
+                    'message'=>'No data found with this ID',
+                    "data"=> [
+                        'vattaxs'=> '',
+                    ]
+                ];
+                return response()->json($response,200);
+            }
 
         } catch (\Exception $e) {
             $response=[
                 "status"=>false,
-                'message'=>$e->getMessage(),
+                'message' => "Something went wrong please try again !",
                 "data"=> [
                     'vattaxs'=> '',
                 ]
@@ -163,22 +175,33 @@ class VattexController extends Controller
             }else{
                 $vattexs=Vattex::where('membership_id',$user->member_by)->first();
             }
-            $vattexs->vat=$request->vat;
-            $vattexs->tax=$request->tax;
-            $vattexs->update();
+            if(isset($vattexs)){
+                $vattexs->vat=$request->vat;
+                $vattexs->tax=$request->tax;
+                $vattexs->update();
 
-            $response=[
-                "status"=>true,
-                'message' => "Vattax update successful",
-                "data"=> [
-                    'vattaxs'=> $vattexs,
-                ]
-            ];
-            return response()->json($response, 200);
+                $response=[
+                    "status"=>true,
+                    'message' => "Vattax update successful",
+                    "data"=> [
+                        'vattaxs'=> $vattexs,
+                    ]
+                ];
+                return response()->json($response, 200);
+            }else{
+                $response=[
+                    "status"=>false,
+                    'message' => "Can not update vattax. Something went wrong",
+                    "data"=> [
+                        'vattaxs'=> '',
+                    ]
+                ];
+                return response()->json($response, 200);
+            }
         } catch (\Exception $e) {
             $response=[
                 "status"=>false,
-                'message'=>$e->getMessage(),
+                'message' => "Can not update vattax. Something went wrong",
                 "data"=> [
                     'vattaxs'=> '',
                 ]

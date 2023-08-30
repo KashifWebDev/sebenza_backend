@@ -192,19 +192,31 @@ class BankController extends Controller
     {
         try {
             $banks=Bank::where('id',$id)->first();
-            $banks->payment_method=$request->payment_method;
-            $banks->account_name=$request->account_name;
-            $banks->additional_info=$request->additional_info;
-            $banks->status=$request->status;
-            $banks->save();
-            $response=[
-                "status"=>true,
-                'message' => "Bank update successful",
-                "data"=> [
-                    'banks'=> $banks,
-                ]
-            ];
-            return response()->json($response, 200);
+            if(isset($banks)){
+                $banks->payment_method=$request->payment_method;
+                $banks->account_name=$request->account_name;
+                $banks->additional_info=$request->additional_info;
+                $banks->status=$request->status;
+                $banks->update();
+                $response=[
+                    "status"=>true,
+                    'message' => "Bank update successful",
+                    "data"=> [
+                        'banks'=> $banks,
+                    ]
+                ];
+                return response()->json($response, 200);
+            }else{
+                $response=[
+                    "status"=>false,
+                    'message' => "Nothing found with this ID",
+                    "data"=> [
+                        'banks'=> '',
+                    ]
+                ];
+                return response()->json($response, 200);
+            }
+
         } catch (\Exception $e) {
             $response=[
                 "status"=>false,
