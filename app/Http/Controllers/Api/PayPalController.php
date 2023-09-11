@@ -40,7 +40,6 @@ class PayPalController extends Controller
                         "data"=> [
                             'url'=> $links['href'],
                         ]
-
                     ];
                     return response()->json($response,200);
                 }
@@ -80,6 +79,7 @@ class PayPalController extends Controller
 
     public function paymentSuccess(Request $request)
     {
+        return $request;
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $provider->getAccessToken();
@@ -99,4 +99,5 @@ class PayPalController extends Controller
             return response()->json($response,200);
         }
     }
+
 }
