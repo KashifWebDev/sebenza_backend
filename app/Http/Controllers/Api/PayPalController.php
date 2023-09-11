@@ -89,11 +89,11 @@ class PayPalController extends Controller
     public function paymentSuccess(Request $request)
     {
         $response=json_decode($request->successResponse);
-        return $response->id;
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            $invoice =Invoice::where('payment_id',$response['id'])->first();
-            $invoice->payment_id=$response['id'];
-            $invoice->status=$response['status'];
+
+        if (isset($response->status) && $response->status == 'COMPLETED') {
+            $invoice =Invoice::where('payment_id',$response->id)->first();
+            $invoice->payment_id=$response->id;
+            $invoice->status=$response->status;
             $invoice->paymentDate=date('Y-m-d');
             $invoice->payment_response=json_encode($response);
             $invoice->update();
@@ -103,7 +103,7 @@ class PayPalController extends Controller
             ];
             return response()->json($response,200);
         } else {
-            $invoice =Invoice::where('payment_id',$response['id'])->first();
+            $invoice =Invoice::where('payment_id',$response->id)->first();
             $invoice->payment_id='';
             $invoice->payment_type='';
             $invoice->update();
