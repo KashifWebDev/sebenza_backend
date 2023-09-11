@@ -25,6 +25,7 @@ class PayPalController extends Controller
                 [
                     "amount" => [
                         "currency_code" => "USD",
+                        "invoice_id" => $request->invoice_id,
                         "value" => $request->price,
                     ]
                 ]
