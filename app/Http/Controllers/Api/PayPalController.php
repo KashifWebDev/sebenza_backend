@@ -98,6 +98,7 @@ class PayPalController extends Controller
             $invoice =Invoice::where('payment_id',$response['id'])->first();
             $invoice->payment_id=$response['id'];
             $invoice->status=$response['status'];
+            $invoice->paymentDate=date('Y-m-d');
             $invoice->payment_response=$response;
             $invoice->update();
             $response = [
