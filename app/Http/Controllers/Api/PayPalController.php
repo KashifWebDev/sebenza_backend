@@ -35,6 +35,10 @@ class PayPalController extends Controller
         if (isset($response['id']) && $response['id'] != null) {
             foreach ($response['links'] as $links) {
                 if ($links['rel'] == 'approve') {
+                    $invoice =Invoice::where('invoiceID',$request->invoice_id)->first();
+                    $invoice->payment_id=$response['id'];
+                    $invoice->payment_type='PayPal';
+                    $invoice->update();
                     $response = [
                         'status' => true,
                         'message'=>'Paypal Payment Url',
@@ -66,8 +70,12 @@ class PayPalController extends Controller
 
     }
 
-    public function paymentCancel()
+    public function paymentCancel(Request $request)
     {
+        $invoice =Invoice::where('payment_id',$request->token)->first();
+        $invoice->payment_id='';
+        $invoice->payment_type='';
+        $invoice->update();
         $response = [
             'status' => false,
             'message'=>'Payment cancel ! Something went wrong.',
@@ -80,19 +88,27 @@ class PayPalController extends Controller
 
     public function paymentSuccess(Request $request)
     {
-        return $request;
+
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            $invoice =Invoice::where('payment_id',$response['id'])->first();
+            $invoice->payment_id=$response['id'];
+            $invoice->status=$response['status'];
+            $invoice->update();
             $response = [
                 'status' => true,
                 'message'=>'Transaction complete.',
             ];
             return response()->json($response,200);
         } else {
+            $invoice =Invoice::where('payment_id',$response['id'])->first();
+            $invoice->payment_id='';
+            $invoice->payment_type='';
+            $invoice->update();
             $response = [
                 'status' => false,
                 'message'=>'Payment cancel ! Something went wrong.',

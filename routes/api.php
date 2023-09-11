@@ -67,6 +67,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('vattaxs', VattexController::class);
     Route::post('vattax/update', [VattexController::class, 'update']);
 
+    // paypal payment
+    Route::post('paypal-payment', [PayPalController::class,'payment'])->name('payment');
+    Route::get('paypal-cancel', [PayPalController::class,'paymentCancel'])->name('cancel.payment');
+    Route::post('paypal-success',[PayPalController::class, 'paymentSuccess'])->name('success.payment');
 
     Route::get('get-list', [UserController::class,'index']);
 
@@ -189,9 +193,3 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
 
 
 });
-
-
-// paypal payment
-Route::post('user/paypal-payment', [PayPalController::class,'payment'])->name('payment');
-Route::get('user/paypal-cancel', [PayPalController::class,'paymentCancel'])->name('cancel.payment');
-Route::get('user/paypal-success',[PayPalController::class, 'paymentSuccess'])->name('success.payment');
