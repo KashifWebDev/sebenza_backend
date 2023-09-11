@@ -89,7 +89,7 @@ class PayPalController extends Controller
     public function paymentSuccess(Request $request)
     {
         $response=json_decode($request->successResponse);
-        return $response[0];
+        return $response->id;
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             $invoice =Invoice::where('payment_id',$response['id'])->first();
             $invoice->payment_id=$response['id'];
