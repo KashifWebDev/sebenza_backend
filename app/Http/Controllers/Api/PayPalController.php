@@ -93,6 +93,9 @@ class PayPalController extends Controller
         if (isset($response->status) && $response->status == 'COMPLETED') {
             $invoice =Invoice::where('id',$request->invoiceID)->first();
             $invoice->payment_id=$response->id;
+            $invoice->payment_type='PayPal';
+            $invoice->paid_amount=$invoice->payable_amount;
+            $invoice->payable_amount=0;
             $invoice->status=$response->status;
             $invoice->paymentDate=date('Y-m-d');
             $invoice->payment_response=json_encode($response);
