@@ -89,11 +89,6 @@ class PayPalController extends Controller
     public function paymentSuccess(Request $request)
     {
 
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request['token']);
-
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             $invoice =Invoice::where('payment_id',$response['id'])->first();
             $invoice->payment_id=$response['id'];
