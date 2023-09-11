@@ -25,7 +25,7 @@ class PayPalController extends Controller
                 [
                     "amount" => [
                         "currency_code" => "USD",
-                        "invoice_id" => $request->invoice_id,
+                        "invoiceID" => $request->invoiceID,
                         "value" => $request->price,
                     ]
                 ]
@@ -35,7 +35,7 @@ class PayPalController extends Controller
         if (isset($response['id']) && $response['id'] != null) {
             foreach ($response['links'] as $links) {
                 if ($links['rel'] == 'approve') {
-                    $invoice =Invoice::where('invoiceID',$request->invoice_id)->first();
+                    $invoice =Invoice::where('id',$request->invoiceID)->first();
                     $invoice->payment_id=$response['id'];
                     $invoice->payment_type='PayPal';
                     $invoice->update();
@@ -98,6 +98,7 @@ class PayPalController extends Controller
             $invoice =Invoice::where('payment_id',$response['id'])->first();
             $invoice->payment_id=$response['id'];
             $invoice->status=$response['status'];
+            $invoice->payment_response=$response;
             $invoice->update();
             $response = [
                 'status' => true,

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('paid_amount')->default(0);
             $table->string('payment_id')->nullable();
             $table->string('payment_type')->nullable();
+            $table->longText('payment_response')->nullable();
             $table->date('invoiceDate');
             $table->date('paymentDate')->nullable();
             $table->string('status')->default('Unpaid');
