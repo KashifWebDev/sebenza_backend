@@ -31,7 +31,7 @@ use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\Estimatequote;
 use App\Http\Controllers\Api\TermscategoryController;
 use App\Http\Controllers\Api\Estimatesetting;
-use App\Http\Controllers\Api\Termscondition;
+use App\Http\Controllers\Api\TermsconditionController;
 
 /*
 |--------------------------------------------------------------------------
