@@ -28,6 +28,10 @@ use App\Http\Controllers\Api\WithdrewController;
 use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\VattexController;
 use App\Http\Controllers\Api\BankController;
+use App\Http\Controllers\Api\Estimatequote;
+use App\Http\Controllers\Api\TermscategoryController;
+use App\Http\Controllers\Api\Estimatesetting;
+use App\Http\Controllers\Api\Termscondition;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,6 +126,22 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('withdrews', WithdrewController::class);
     Route::post('withdrew/update/{id}', [WithdrewController::class,'update']);
     Route::get('my/withdrew', [WithdrewController::class,'getMywithdrew']);
+
+    // estimate & quote
+
+    // termscategory
+    Route::resource('termscategories', TermscategoryController::class);
+    Route::post('termscategory/update/{id}', [TermscategoryController::class,'update']);
+    //terms & condition
+    Route::get('termscondition/getdata', [Termscondition::class,'getdata']);
+    Route::resource('termsconditions', Termscondition::class);
+    Route::post('termscondition/update/{id}', [Termscondition::class,'update']);
+    //estimatesetting
+    Route::resource('estimatesettings', Estimatesetting::class);
+    Route::post('estimatesetting/update/{id}', [Estimatesetting::class,'update']);
+    //estimatequote
+    Route::resource('estimatequotes', Estimatequote::class);
+    Route::post('estimatequote/update/{id}', [Estimatequote::class,'update']);
 
 });
 

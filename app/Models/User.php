@@ -88,5 +88,10 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id');
     }
 
+    public function estimatequotes()
+    {
+        return $this->hasMany(Estimatequote::class, 'user_id');
+    }
+
 
 }
