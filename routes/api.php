@@ -28,9 +28,9 @@ use App\Http\Controllers\Api\WithdrewController;
 use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\VattexController;
 use App\Http\Controllers\Api\BankController;
-use App\Http\Controllers\Api\Estimatequote;
+use App\Http\Controllers\Api\EstimatequoteController;
 use App\Http\Controllers\Api\TermscategoryController;
-use App\Http\Controllers\Api\Estimatesetting;
+use App\Http\Controllers\Api\EstimatesettingController;
 use App\Http\Controllers\Api\TermsconditionController;
 
 /*
@@ -137,11 +137,11 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('termsconditions', TermsconditionController::class);
     Route::post('termscondition/update/{id}', [TermsconditionController::class,'update']);
     //estimatesetting
-    Route::resource('estimatesettings', Estimatesetting::class);
-    Route::post('estimatesetting/update/{id}', [Estimatesetting::class,'update']);
+    Route::resource('estimatesettings', EstimatesettingController::class);
+    Route::post('estimatesetting/update/{id}', [EstimatesettingController::class,'update']);
     //estimatequote
-    Route::resource('estimatequotes', Estimatequote::class);
-    Route::post('estimatequote/update/{id}', [Estimatequote::class,'update']);
+    Route::resource('estimatequotes', EstimatequoteController::class);
+    Route::post('estimatequote/update/{id}', [EstimatequoteController::class,'update']);
 
 });
 
