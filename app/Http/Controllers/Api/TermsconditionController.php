@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Termscondition;
+use App\Models\Termscategory;
 use Illuminate\Http\Request;
 
 class TermsconditionController extends Controller
