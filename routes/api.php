@@ -133,9 +133,9 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('termscategories', TermscategoryController::class);
     Route::post('termscategory/update/{id}', [TermscategoryController::class,'update']);
     //terms & condition
-    Route::get('termscondition/getdata', [Termscondition::class,'getdata']);
-    Route::resource('termsconditions', Termscondition::class);
-    Route::post('termscondition/update/{id}', [Termscondition::class,'update']);
+    Route::get('termscondition/getdata', [TermsconditionController::class,'getdata']);
+    Route::resource('termsconditions', TermsconditionController::class);
+    Route::post('termscondition/update/{id}', [TermsconditionController::class,'update']);
     //estimatesetting
     Route::resource('estimatesettings', Estimatesetting::class);
     Route::post('estimatesetting/update/{id}', [Estimatesetting::class,'update']);
