@@ -29,6 +29,7 @@ class SalaryController extends Controller
         }
 
         if(isset($sals)){
+            return 'hi';
             foreach($sals as $sal){
                 $u=User::where('id',$sal->user_id)->first();
                 $sal->full_name=$u->first_name . ' ' .$u->last_name;
