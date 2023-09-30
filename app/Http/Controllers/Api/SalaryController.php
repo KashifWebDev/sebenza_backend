@@ -28,7 +28,7 @@ class SalaryController extends Controller
             $sals=[];
         }
 
-        if(isset($sals)){
+        if(count($sals)>0){
             return 'hi';
             foreach($sals as $sal){
                 $u=User::where('id',$sal->user_id)->first();
