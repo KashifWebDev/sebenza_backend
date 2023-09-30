@@ -29,7 +29,7 @@ class WithdrewController extends Controller
             $wits=Withdrew::where('membership_id',$user->member_by)->get();
         }
 
-        if(isset($wits)){
+        if(count($wits)>0){
             foreach($wits as $wit){
                 $w=Withdrew::where('id',$wit->id)->first();
                 $u=User::where('id',$w->user_id)->first();
@@ -63,7 +63,7 @@ class WithdrewController extends Controller
                 $wits=Withdrew::where('user_id',$user->id)->where('membership_id',$user->member_by)->get();
             }
 
-            if(isset($wits)){
+            if(count($wits)>0){
                 foreach($wits as $wit){
                     $w=Withdrew::where('id',$wit->id)->first();
                     $u=User::where('id',$w->user_id)->first();

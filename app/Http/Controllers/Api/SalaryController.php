@@ -23,13 +23,12 @@ class SalaryController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
         if(isset($user->membership_code)){
-            $sals=[];
+            $sals=Salary::where('membership_id',$user->membership_code)->get();
         }else{
-            $sals=[];
+            $sals=Salary::where('membership_id',$user->member_by)->get();
         }
 
         if(count($sals)>0){
-            return 'hi';
             foreach($sals as $sal){
                 $u=User::where('id',$sal->user_id)->first();
                 $sal->full_name=$u->first_name . ' ' .$u->last_name;
