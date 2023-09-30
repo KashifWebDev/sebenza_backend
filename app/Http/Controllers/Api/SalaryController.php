@@ -28,10 +28,14 @@ class SalaryController extends Controller
             $sals=Salary::where('membership_id',$user->member_by)->get();
         }
 
-        foreach($sals as $sal){
-            $u=User::where('id',$sal->user_id)->first();
-            $sal->full_name=$u->first_name . ' ' .$u->last_name;
-            $salarys[]=$sal;
+        if(isset($sals)){
+            foreach($sals as $sal){
+                $u=User::where('id',$sal->user_id)->first();
+                $sal->full_name=$u->first_name . ' ' .$u->last_name;
+                $salarys[]=$sal;
+            }
+        }else{
+            $salarys=[];
         }
         $response = [
             'status' => true,
