@@ -236,7 +236,7 @@ class EstimatequoteController extends Controller
                 if(isset($itemsold)){
                     Item::where('estimate_id', '=', $estimatequotes->id)->delete();
                 }
-                foreach($request->items as $item){
+                foreach(json_decode($request->items) as $item){
                     $createitem=new Item();
                     $createitem->estimate_id=$estimatequotes->id;
                     $createitem->itemName=$item->itemName;
@@ -254,7 +254,7 @@ class EstimatequoteController extends Controller
                     Estimatetermscondition::where('estimate_id', '=', $estimatequotes->id)->delete();
                 }
 
-                foreach($request->termsconditions as $terms){
+                foreach(json_decode($request->termsconditions) as $terms){
                     $createterms=new Estimatetermscondition();
                     $createterms->estimate_id=$estimatequotes->id;
                     $createterms->termscondition_id=$terms->terms_id;
