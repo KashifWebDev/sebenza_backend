@@ -55,7 +55,10 @@ class EstimatequoteController extends Controller
      */
     public function store(Request $request)
     {
-
+        return json_decode($request->items)[0];
+        foreach($request->items as $item){
+            return $item;
+        }
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $estimatequotes=new Estimatequote();
@@ -99,7 +102,7 @@ class EstimatequoteController extends Controller
 
         $success=$estimatequotes->save();
         if($success){
-            foreach(json_decode($request->items) as $item){
+            foreach($request->items as $item){
                 $createitem=new Item();
                 $createitem->estimate_id=$estimatequotes->id;
                 $createitem->itemName=$item->itemName;
@@ -111,7 +114,7 @@ class EstimatequoteController extends Controller
                 $createitem->totalPrice=$item->quantity*$item->itemPrice;
                 $createitem->save();
             }
-            foreach(json_decode($request->termsconditions) as $terms){
+            foreach($request->termsconditions as $terms){
                 $createterms=new Estimatetermscondition();
                 $createterms->estimate_id=$estimatequotes->id;
                 $createterms->termscondition_id=$terms->terms_id;
