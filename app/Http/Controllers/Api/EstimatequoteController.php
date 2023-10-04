@@ -55,6 +55,7 @@ class EstimatequoteController extends Controller
      */
     public function store(Request $request)
     {
+        return $request->items;
         foreach($request->items as $item){
             return $item;
         }
