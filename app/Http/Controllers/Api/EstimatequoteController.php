@@ -55,7 +55,6 @@ class EstimatequoteController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $estimatequotes=new Estimatequote();
