@@ -88,7 +88,7 @@ class EstimatequoteController extends Controller
             $imguploadPath = ('public/images/estimate/');
             $productImg->move($imguploadPath, $imgname);
             $productImgUrl = $imguploadPath . $imgname;
-            $product->customer_e_signature = $productImgUrl;
+            $estimatequotes->customer_e_signature = $productImgUrl;
         }
 
         $estimatequotes->subTotal=$request->subTotal;
