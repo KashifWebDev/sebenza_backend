@@ -55,7 +55,7 @@ class EstimatequoteController extends Controller
      */
     public function store(Request $request)
     {
-        foreach(json_decode($request->items) as $item){
+        foreach($request->items as $item){
             return $item;
         }
         $token = request()->bearerToken();
