@@ -81,7 +81,7 @@ class EstimatequoteController extends Controller
         $estimatequotes->last_updated=date('Y-m-d');
         $estimatequotes->paymentDate=$request->paymentDate;
         $estimatequotes->status=$request->status;
-
+        $time = microtime('.') * 10000;
         $productImg = $request->file('customer_e_signature');
         if($productImg){
             $imgname = $time . $productImg->getClientOriginalName();
@@ -214,7 +214,7 @@ class EstimatequoteController extends Controller
             $estimatequotes->last_updated=date('Y-m-d');
             $estimatequotes->paymentDate=$request->paymentDate;
             $estimatequotes->status=$request->status;
-
+            $time = microtime('.') * 10000;
             $productImg = $request->file('customer_e_signature');
             if($productImg){
                 $imgname = $time . $productImg->getClientOriginalName();
