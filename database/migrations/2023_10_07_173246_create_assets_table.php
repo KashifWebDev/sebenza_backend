@@ -23,7 +23,6 @@ return new class extends Migration
             $table->date('purchese_date');
             $table->float('purchese_value',10,2)->default(0);
             $table->string('currency')->default('USD');
-            $table->integer('quantity');
             $table->date('capture_date');
             $table->string('capture_name');
             $table->text('attachment')->nullable();
