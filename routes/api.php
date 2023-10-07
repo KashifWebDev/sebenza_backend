@@ -32,6 +32,8 @@ use App\Http\Controllers\Api\EstimatequoteController;
 use App\Http\Controllers\Api\TermscategoryController;
 use App\Http\Controllers\Api\EstimatesettingController;
 use App\Http\Controllers\Api\TermsconditionController;
+use App\Http\Controllers\Api\AssetController;
+use App\Http\Controllers\Api\MoneytransferController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +144,15 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     //estimatequote
     Route::resource('estimatequotes', EstimatequoteController::class);
     Route::post('estimatequote/update/{id}', [EstimatequoteController::class,'update']);
+
+    // assets
+    Route::resource('assets', AssetController::class);
+    Route::post('asset/update/{id}', [AssetController::class,'update']);
+
+    // moneytransfer
+    Route::resource('moneytransfers', MoneytransferController::class);
+    Route::post('moneytransfer/update/{id}', [MoneytransferController::class,'update']);
+
 
 });
 
