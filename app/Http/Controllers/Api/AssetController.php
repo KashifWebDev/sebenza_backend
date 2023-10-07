@@ -73,7 +73,7 @@ class AssetController extends Controller
         $assets->purchese_value=$request->purchese_value;
         $assets->currency=$request->currency;
         $assets->capture_date=date('Y-m-d');
-        $assets->capture_name=$u->name;
+        $assets->capture_name=$u->first_name .' '.$u->last_name;
 
         $time = microtime('.') * 10000;
         $productImg = $request->attachment;
