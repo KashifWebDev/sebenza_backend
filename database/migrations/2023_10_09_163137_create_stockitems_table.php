@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('stockitems', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('stock_id');
+            $table->integer('stockitem_id');
             $table->string('item_name');
             $table->text('description')->nullable();
             $table->string('color')->nullable();
