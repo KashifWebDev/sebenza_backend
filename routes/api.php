@@ -34,6 +34,9 @@ use App\Http\Controllers\Api\EstimatesettingController;
 use App\Http\Controllers\Api\TermsconditionController;
 use App\Http\Controllers\Api\AssetController;
 use App\Http\Controllers\Api\MoneytransferController;
+use App\Http\Controllers\Api\WarehouseController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,7 +156,16 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('moneytransfers', MoneytransferController::class);
     Route::post('moneytransfer/update/{id}', [MoneytransferController::class,'update']);
 
-
+    // warehouses
+    Route::resource('warehouses', WarehouseController::class);
+    Route::post('warehouse/update/{id}', [WarehouseController::class,'update']);
+    // products
+    Route::resource('products', ProductController::class);
+    Route::post('product/update/{id}', [ProductController::class,'update']);
+    // stocks
+    Route::resource('stocks', StockController::class);
+    Route::post('stock/update/{id}', [StockController::class,'update']);
+    Route::get('getproducts', [StockController::class, 'getproducts']);
 });
 
 // admin login api

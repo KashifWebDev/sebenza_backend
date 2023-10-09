@@ -93,5 +93,10 @@ class User extends Authenticatable
         return $this->hasMany(Estimatequote::class, 'user_id');
     }
 
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class, 'user_id');
+    }
+
 
 }
