@@ -245,7 +245,8 @@ class StockController extends Controller
                 foreach(json_decode($request->items) as $item){
                     $createitem=new Stockitem();
                     $createitem->stock_id=$stocks->id;
-                    $createitem->item_name=$item->item_name;
+                    $createitem->stockitem_id=$item->stockitem_id;
+                    $createitem->item_name=Product::where('id',$item->stockitem_id)->first()->ProductName;
                     $createitem->description=$item->description;
                     $createitem->color=$item->color;
                     $createitem->size=$item->size;
