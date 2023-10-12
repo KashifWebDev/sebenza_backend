@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->string('membership_code');
             $table->date('date');
             $table->string('sender_name');
             $table->string('sender_cell_number')->nullable();

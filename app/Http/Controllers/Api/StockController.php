@@ -86,6 +86,7 @@ class StockController extends Controller
         }else{
             $stocks->membership_code=$u->member_by;
         }
+        $stocks->date=date('Y-m-d');
         $stocks->sender_name=$request->sender_name;
         $stocks->sender_cell_number=$request->sender_cell_number;
         $stocks->sender_email=$request->sender_email;
