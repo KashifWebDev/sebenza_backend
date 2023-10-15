@@ -24,4 +24,13 @@ class Stock extends Model
         return $this->hasMany(Stockpayment::class, 'stock_id');
     }
 
+    public function getInvoice_imageAttribute($value)
+    {
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
+    }
+
 }
