@@ -16,21 +16,12 @@ class NewsupdateController extends Controller
     public function index(Request $request)
     {
         if(isset($request->search)){
-            $uss =Newsupdate::where('title','LIKE', "%$request->search%")->get();
+            $news =Newsupdate::where('title','LIKE', "%$request->search%")->get();
         }else{
-            $uss =Newsupdate::all();
+            $news =Newsupdate::all();
         }
 
-        if(count($uss)>0){
-            foreach($uss as $us){
-                $use=$us;
-                if(isset($use->postImage)){
-                    $use->postImage=env('PROD_URL').$use->postImage;
-                }else{
-
-                }
-                $news[]=$use;
-            }
+        if(count($news)>0){
 
             $response = [
                 'status' => true,
