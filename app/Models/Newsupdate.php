@@ -34,4 +34,13 @@ class Newsupdate extends Model
         return $this->hasMany(Seennewsupdate::class, 'news_id');
     }
 
+    public function getPostImageAttribute($value)
+    {
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
+    }
+
 }
