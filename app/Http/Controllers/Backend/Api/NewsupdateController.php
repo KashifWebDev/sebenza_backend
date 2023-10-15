@@ -77,14 +77,6 @@ class NewsupdateController extends Controller
             $news->postImage = $newsImgUrl;
         }
 
-        // if ($request->hasFile('postImage')) {
-        //     foreach ($request->file('postImage') as $imgfiles) {
-        //         $name = time() . "_" . $imgfiles->getClientOriginalName();
-        //         $imgfiles->move(public_path() . '/images/news/', $name);
-        //         $imageData[] = $name;
-        //     }
-        //     $news->postImage = json_encode($imageData);
-        // };
         $news->save();
         if(isset($news->postImage)){
             $news->postImage=env('PROD_URL').$news->postImage;
@@ -173,19 +165,6 @@ class NewsupdateController extends Controller
             $news->postImage = $newsImgUrl;
         }
 
-        // if ($request->hasFile('postImage')) {
-        //     if($news->postImage){
-        //         foreach (json_decode($news->postImage) as $postimg) {
-        //            unlink('public/images/news/' . $postimg);
-        //         }
-        //     }
-        //     foreach ($request->file('postImage') as $imgfiles) {
-        //         $name = time() . "_" . $imgfiles->getClientOriginalName();
-        //         $imgfiles->move(public_path() . '/images/news/', $name);
-        //         $imageData[] = $name;
-        //     }
-        //     $news->postImage = json_encode($imageData);
-        // }
         $news->save();
         if(isset($news->postImage)){
             $news->postImage=env('PROD_URL').$news->postImage;
