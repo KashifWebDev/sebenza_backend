@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function getProductImageAttribute($value)
+    public function getproductimageAttribute($value)
     {
        if($value==''){
         return $value;
