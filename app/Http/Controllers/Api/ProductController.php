@@ -22,19 +22,42 @@ class ProductController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
-            $products =Product::where('membership_code',$u->membership_code)->get();
+            $pros =Product::where('membership_code',$u->membership_code)->get();
         }else{
-            $products =Product::where('membership_code',$u->member_by)->get();
+            $pros =Product::where('membership_code',$u->member_by)->get();
         }
 
-        $response = [
-            'status' => true,
-            'message'=>'List of My Products',
-            "data"=> [
-                'products'=> $products,
-            ]
+        if(count($pros)>0){
+            foreach($pros as $us){
+                $use=$us;
+                if(isset($use->ProductImage)){
+                    $use->ProductImage=env('PROD_URL').$use->ProductImage;
+                }else{
 
-        ];
+                }
+                $products[]=$use;
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'List of My Products',
+                "data"=> [
+                    'products'=> $products,
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => true,
+                'message'=>'List of My Products',
+                "data"=> [
+                    'products'=> [],
+                ]
+
+            ];
+        }
+
+
         return response()->json($response,200);
     }
 
@@ -117,6 +140,10 @@ class ProductController extends Controller
             $products =Product::where('id',$id)->where('membership_code',$u->membership_code)->first();
         }else{
             $products =Product::where('id',$id)->where('membership_code',$u->member_by)->first();
+        }
+
+        if(isset($products->ProductImage)){
+            $products->ProductImage=env('PROD_URL').$products->ProductImage;
         }
 
         if(isset($products)){
