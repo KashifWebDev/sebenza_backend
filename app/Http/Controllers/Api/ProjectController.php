@@ -20,9 +20,9 @@ class ProjectController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
-            $projects =Project::with(['customers','projectexpenses'])->where('membership_code',$u->membership_code)->get();
+            $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('membership_code',$u->membership_code)->get();
         }else{
-            $projects =Project::with(['customers','projectexpenses'])->where('membership_code',$u->member_by)->get();
+            $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('membership_code',$u->member_by)->get();
         }
 
         $response = [
@@ -120,9 +120,9 @@ class ProjectController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
-            $projects =Project::with(['customers','projectexpenses'])->where('id',$id)->where('membership_code',$u->membership_code)->first();
+            $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('id',$id)->where('membership_code',$u->membership_code)->first();
         }else{
-            $projects =Project::with(['customers','projectexpenses'])->where('id',$id)->where('membership_code',$u->member_by)->first();
+            $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('id',$id)->where('membership_code',$u->member_by)->first();
         }
 
         if(isset($projects)){
