@@ -14,6 +14,16 @@ class Project extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function assigns()
+    {
+        return $this->belongsTo(User::class, 'assign_to');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function projectexpenses()
     {
         return $this->hasMany(Projectexpense::class, 'project_id');
