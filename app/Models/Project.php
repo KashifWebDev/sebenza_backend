@@ -14,7 +14,7 @@ class Project extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function projectexpense()
+    public function projectexpenses()
     {
         return $this->hasMany(Projectexpense::class, 'project_id');
     }
