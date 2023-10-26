@@ -37,6 +37,8 @@ use App\Http\Controllers\Api\MoneytransferController;
 use App\Http\Controllers\Api\WarehouseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\StockController;
+use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -166,6 +168,14 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('stocks', StockController::class);
     Route::post('stock/update/{id}', [StockController::class,'update']);
     Route::get('getproducts', [StockController::class, 'getproducts']);
+
+    //project
+    Route::resource('projects', ProjectController::class);
+    Route::post('project/update/{id}', [ProjectController::class,'update']);
+    //customer
+    Route::resource('customers', CustomerController::class);
+    Route::post('customer/update/{id}', [CustomerController::class,'update']);
+    Route::get('get-customer', [CustomerController::class,'getcustomer']);
 });
 
 // admin login api
