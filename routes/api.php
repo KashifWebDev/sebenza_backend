@@ -39,6 +39,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,6 +177,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('customers', CustomerController::class);
     Route::post('customer/update/{id}', [CustomerController::class,'update']);
     Route::get('get-customer', [CustomerController::class,'getcustomer']);
+    //files
+    Route::resource('files', FileController::class);
+    Route::post('file/update/{id}', [FileController::class,'update']);
+
 });
 
 // admin login api
