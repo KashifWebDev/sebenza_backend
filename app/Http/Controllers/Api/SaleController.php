@@ -100,7 +100,7 @@ class SaleController extends Controller
             "status"=>true,
             "message"=>"Sales Create Successfully",
             "data"=> [
-                "invoice"=>$invoice,
+                "sale"=>$sale,
             ]
         ];
         return response()->json($response, 200);
