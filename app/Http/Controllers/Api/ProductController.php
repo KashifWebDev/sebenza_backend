@@ -91,6 +91,7 @@ class ProductController extends Controller
         }
         $products->ProductName=$request->ProductName;
         $products->BrandName=$request->BrandName;
+        $products->UnitPrice=$request->UnitPrice;
 
         $time = microtime('.') * 10000;
         $productImg = $request->ProductImage;
@@ -190,6 +191,7 @@ class ProductController extends Controller
         if(isset($products)){
             $products->ProductName=$request->ProductName;
             $products->BrandName=$request->BrandName;
+            $products->UnitPrice=$request->UnitPrice;
 
             $time = microtime('.') * 10000;
             $productImg = $request->ProductImage;

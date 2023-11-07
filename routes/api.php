@@ -40,6 +40,7 @@ use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,9 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     //files
     Route::resource('files', FileController::class);
     Route::post('file/update/{id}', [FileController::class,'update']);
+    //sales
+    Route::resource('sales', SaleController::class);
+    Route::post('sale/update/{id}', [SaleController::class,'update']);
 
 });
 
