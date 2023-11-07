@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Sale;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\Saleitem;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
