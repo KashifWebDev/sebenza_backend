@@ -25,9 +25,9 @@ class SaleController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
-            $sales =Sale::where('membership_code',$u->membership_code)->get();
+            $sales =Sale::with(['saleitems'])->where('membership_code',$u->membership_code)->get();
         }else{
-            $sales =Sale::where('membership_code',$u->member_by)->get();
+            $sales =Sale::with(['saleitems'])->where('membership_code',$u->member_by)->get();
         }
 
         if(isset($sales)){
@@ -114,7 +114,7 @@ class SaleController extends Controller
      */
     public function edit($id)
     {
-        $sale=Sale::with('saleitems')->where('id',$id)->first();
+        $sale=Sale::with(['saleitems'])->where('id',$id)->first();
 
         $response = [
             'status' => true,
