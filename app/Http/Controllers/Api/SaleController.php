@@ -58,7 +58,7 @@ class SaleController extends Controller
         $user=User::where('id', $user_id->tokenable_id)->first();
         $sale=new Sale();
         $sale->user_id=$user->id;
-        $sale->membership_id=$user->membership_code;
+        $sale->membership_code=$user->membership_code;
 
         $sale->customer_name=$request->customer_name;
         $sale->customer_phone=$request->customer_phone;
