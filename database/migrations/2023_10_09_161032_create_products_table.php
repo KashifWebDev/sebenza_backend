@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('ProductImage');
             $table->string('BrandName');
             $table->float('UnitPrice')->default(0);
+            $table->float('SalePrice')->default(0);
             $table->boolean('status');
             $table->timestamps();
         });

@@ -127,6 +127,65 @@ class SaleController extends Controller
         return response()->json($response,200);
     }
 
+    public function saledata()
+    {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $sales =Sale::with(['saleitems'])->where('membership_code',$u->membership_code)->get();
+            $salemonthly =Sale::with(['saleitems'])->where('membership_code',$u->membership_code)->whereMonth('created_at', Carbon::now()->month)->get();
+            $saletoday =Sale::with(['saleitems'])->where('membership_code',$u->membership_code)->whereDate('created_at', Carbon::today())->get();
+        }else{
+            $sales =Sale::with(['saleitems'])->where('membership_code',$u->member_by)->get();
+            $salemonthly =Sale::with(['saleitems'])->where('membership_code',$u->member_by)->whereMonth('created_at', Carbon::now()->month)->get();
+            $saletoday =Sale::with(['saleitems'])->where('membership_code',$u->member_by)->whereDate('created_at', Carbon::today())->get();
+        }
+
+        if(isset($sales)){
+            $response = [
+                'status' => true,
+                'message'=>'Sales Data By Membership ID',
+                "data"=> [
+                    'totalInvoice'=> $sales->count(),
+                    'totalPrice'=> $sales->sum('payable_amount'),
+                    'totalPaidAmount'=> $sales->sum('paid_amount'),
+                    'totalDueAmount'=> $sales->sum('due'),
+                    'monthlyInvoice'=> $salemonthly->count(),
+                    'monthlyPrice'=> $salemonthly->sum('payable_amount'),
+                    'monthlyPaidAmount'=> $salemonthly->sum('paid_amount'),
+                    'monthlyDueAmount'=> $salemonthly->sum('due'),
+                    'todayInvoice'=> $saletoday->count(),
+                    'todayPrice'=> $saletoday->sum('payable_amount'),
+                    'todayPaidAmount'=> $saletoday->sum('paid_amount'),
+                    'todayDueAmount'=> $saletoday->sum('due'),
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No sales find by this Membership ID',
+                "data"=> [
+                    'totalInvoice'=> 0,
+                    'totalPrice'=> 0,
+                    'totalPaidAmount'=> 0,
+                    'totalDueAmount'=> 0,
+                    'monthlyInvoice'=> 0,
+                    'monthlyPrice'=> 0,
+                    'monthlyPaidAmount'=> 0,
+                    'monthlyDueAmount'=> 0,
+                    'todayInvoice'=> 0,
+                    'todayPrice'=> 0,
+                    'todayPaidAmount'=> 0,
+                    'todayDueAmount'=> 0,
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

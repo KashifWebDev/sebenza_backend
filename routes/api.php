@@ -184,6 +184,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     //sales
     Route::resource('sales', SaleController::class);
     Route::post('sale/update/{id}', [SaleController::class,'update']);
+    Route::get('sale/data', [SaleController::class,'saledata']);
 
 });
 
