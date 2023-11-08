@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('membership_code');
+            $table->string('invoiceID');
             $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
             $table->string('customer_address')->nullable();

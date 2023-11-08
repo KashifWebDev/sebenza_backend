@@ -7,13 +7,67 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Saleexcel;
 use App\Models\Saleitem;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Carbon\Carbon;
+use App\Exports\SaleExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SaleController extends Controller
 {
+    public function fileExport(Request $request)
+    {
+        $startDate =$request->startDate;
+        $endDate =$request->endDate;
+        $fileName=date('Ymd').'order.xlsx';
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+
+        if($startDate && $endDate){
+            $file= Excel::download(new SaleExport($startDate,$endDate), $fileName);
+            $saleexcel=new Saleexcel();
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            $saleexcel->user_id=$u->id;
+            if(isset($u->membership_code)){
+                $saleexcel->membership_code=$u->membership_code;
+            }else{
+                $saleexcel->membership_code=$u->member_by;
+            }
+            if ($sales) {
+                $imgname = $time . $sales->getClientOriginalName();
+                $imguploadPath = ('public/sales');
+                $sales->move($imguploadPath, $imgname);
+                $salesUrl = $imguploadPath . $imgname;
+                $saleexcel->data_file = $salesUrl;
+            }
+            $saleexcel->startDate=$startDate;
+            $saleexcel->endDate=$endDate;
+            $saleexcel->date=date('Y-m-d');
+            $saleexcel->save();
+            $response = [
+                'status' => true,
+                'message'=>'Sales Data Report File',
+                "data"=> [
+                    'sales'=> $saleexcel,
+                ]
+
+            ];
+
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'Please Select Any Date',
+                "data"=> [
+                    'sales'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -56,10 +110,15 @@ class SaleController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $user=User::where('id', $user_id->tokenable_id)->first();
         $sale=new Sale();
         $sale->user_id=$user->id;
-        $sale->membership_code=$user->membership_code;
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $sale->membership_code=$u->membership_code;
+        }else{
+            $sale->membership_code=$u->member_by;
+        }
+        $sale->invoiceID=$this->invoiceID();
 
         $sale->customer_name=$request->customer_name;
         $sale->customer_phone=$request->customer_phone;
