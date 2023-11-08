@@ -50,7 +50,7 @@ class SaleController extends Controller
                 'status' => true,
                 'message'=>'Sales Data Report File',
                 "data"=> [
-                    'sales'=> $saleexcel,
+                    'saleexcel'=> $saleexcel,
                 ]
 
             ];
