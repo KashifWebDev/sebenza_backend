@@ -21,25 +21,6 @@ class SaleController extends Controller
 {
     public function fileExport(Request $request)
     {
-        // Create a new Excel spreadsheet
-    $spreadsheet = new Spreadsheet();
-
-    // Add data to the spreadsheet
-    $sheet = $spreadsheet->getActiveSheet();
-    $sheet->setCellValue('A1', 'Hello');
-    $sheet->setCellValue('B1', 'World');
-
-    // Create a response object to send the file to the browser
-    $response = response();
-
-    // Create a writer and save the Excel file to a temporary location
-    $writer = new Xlsx($spreadsheet);
-    $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
-    $writer->save($tempFilePath);
-
-
-    return $writer;
-
         $startDate =$request->startDate;
         $endDate =$request->endDate;
         $fileName=date('Ymd').'order.xlsx';
@@ -47,8 +28,10 @@ class SaleController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         if(isset($startDate) && isset($endDate)){
-            $file= Excel::download(new SaleExport($startDate,$endDate), public_path($fileName));
-            // return response()->json($file,200);
+            $file= Excel::download(new SaleExport($startDate,$endDate), $fileName);
+            Storage::disk('public')->put('exports/'.$fileName, $file->store());
+
+             return response()->json($file,200);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
             $saleexcel->user_id=$u->id;
