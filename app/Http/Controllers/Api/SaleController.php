@@ -38,10 +38,10 @@ class SaleController extends Controller
     $writer->save($tempFilePath);
 
     // Send the file to the browser
-    $response->send(file_get_contents($tempFilePath));
+    $response->move(file_get_contents($tempFilePath));
 
 
-    return $response;
+    return $writer;
 
         $startDate =$request->startDate;
         $endDate =$request->endDate;
