@@ -22,7 +22,6 @@ class SaleController extends Controller
     public function fileExport(Request $request)
     {
         // Create a new Excel spreadsheet
-    // Create a new Excel spreadsheet
     $spreadsheet = new Spreadsheet();
 
     // Add data to the spreadsheet
@@ -32,13 +31,22 @@ class SaleController extends Controller
 
     // Create a response object to send the file to the browser
     $response = response();
+
     // Create a writer and save the Excel file to a temporary location
     $writer = new Xlsx($spreadsheet);
     $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
     $writer->save($tempFilePath);
 
     // Send the file to the browser
-    return $response->file($tempFilePath);
+    $response->send(file_get_contents($tempFilePath));
+
+
+    return $response
+        ->withHeaders([
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="example.xlsx"',
+        ])
+        ->file($tempFilePath);
 
         $startDate =$request->startDate;
         $endDate =$request->endDate;
