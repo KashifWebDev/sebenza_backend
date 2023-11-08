@@ -16,7 +16,6 @@ use App\Exports\SaleExport;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Support\Facades\Storage;
 
 class SaleController extends Controller
 {
@@ -29,10 +28,8 @@ class SaleController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         if(isset($startDate) && isset($endDate)){
-            $file= Excel::download(new SaleExport($startDate,$endDate), $fileName);
-            Storage::disk('public')->put('exports/'.$fileName, $file->store());
-
-             return response()->json($file,200);
+            $file= Excel::download(new SaleExport($startDate,$endDate), public_path($fileName));
+            return response()->json($file,200);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
             $saleexcel->user_id=$u->id;
