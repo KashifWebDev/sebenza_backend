@@ -32,11 +32,6 @@ class SaleController extends Controller
 
     // Create a response object to send the file to the browser
     $response = response();
-
-    // Set the content type and headers for the Excel file
-    $response->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    $response->header('Content-Disposition', 'attachment; filename="example.xlsx"');
-
     // Create a writer and save the Excel file to a temporary location
     $writer = new Xlsx($spreadsheet);
     $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
