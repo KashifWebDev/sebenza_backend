@@ -26,7 +26,7 @@ class SaleController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         if(isset($startDate) && isset($endDate)){
-            $file= Excel::load(new SaleExport($startDate,$endDate), public_path('public/'.$fileName));
+            $file= Excel::download(new SaleExport($startDate,$endDate), public_path('public/'.$fileName));
             // return response()->json($file,200);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
