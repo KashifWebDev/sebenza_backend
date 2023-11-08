@@ -111,7 +111,7 @@ class SaleController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $sale=new Sale();
-        $sale->user_id=$user->id;
+        $sale->user_id=$user_id->id;
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
             $sale->membership_code=$u->membership_code;
