@@ -35,10 +35,10 @@ class SaleController extends Controller
             }else{
                 $saleexcel->membership_code=$u->member_by;
             }
-            if ($sales) {
-                $imgname = $time . $sales->getClientOriginalName();
+            if ($file) {
+                $imgname = $time . $file->getClientOriginalName();
                 $imguploadPath = ('public/sales');
-                $sales->move($imguploadPath, $imgname);
+                $file->move($imguploadPath, $imgname);
                 $salesUrl = $imguploadPath . $imgname;
                 $saleexcel->data_file = $salesUrl;
             }
@@ -60,7 +60,7 @@ class SaleController extends Controller
                 'status' => false,
                 'message'=>'Please Select Any Date',
                 "data"=> [
-                    'sales'=> '',
+                    'saleexcel'=> '',
                 ]
 
             ];
