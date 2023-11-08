@@ -37,9 +37,6 @@ class SaleController extends Controller
     $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
     $writer->save($tempFilePath);
 
-    // Send the file to the browser
-    $response->move(file_get_contents($tempFilePath));
-
 
     return $writer;
 
