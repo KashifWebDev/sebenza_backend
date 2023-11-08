@@ -28,7 +28,7 @@ class SaleController extends Controller
         if(isset($startDate) && isset($endDate)){
             $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
 
-            $file= Excel::store(new SaleExport($startDate,$endDate), $tempFilePath, 'local');
+            $file= Excel::store(new SaleExport($startDate,$endDate), $tempFilePath, 'local.xlsx');
             // Move the file to the public path
             $publicPath = public_path('exports/example.xlsx');
             File::move($tempFilePath, $publicPath);
