@@ -21,13 +21,13 @@ class SaleController extends Controller
     {
         $startDate =$request->startDate;
         $endDate =$request->endDate;
-        $fileName='public/'.date('Ymd').'sale';
+        $fileName='public/'.date('Ymd').'order.xlsx';
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
         if(isset($startDate) && isset($endDate)){
             $file= Excel::download(new SaleExport($startDate,$endDate), public_path($fileName));
-            // return response()->json($file,200);
+             return response()->json($file,200);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
             $saleexcel->user_id=$u->id;
