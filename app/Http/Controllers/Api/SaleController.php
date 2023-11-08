@@ -22,6 +22,7 @@ class SaleController extends Controller
     public function fileExport(Request $request)
     {
         // Create a new Excel spreadsheet
+    // Create a new Excel spreadsheet
     $spreadsheet = new Spreadsheet();
 
     // Add data to the spreadsheet
@@ -42,12 +43,7 @@ class SaleController extends Controller
     $writer->save($tempFilePath);
 
     // Send the file to the browser
-    $response->send(file_get_contents($tempFilePath));
-
-    // Clean up the temporary file
-    unlink($tempFilePath);
-
-    return $response;
+    return $response->file($tempFilePath);
 
         $startDate =$request->startDate;
         $endDate =$request->endDate;
