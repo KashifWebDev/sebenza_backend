@@ -14,6 +14,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Carbon\Carbon;
 use App\Exports\SaleExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
 
 class SaleController extends Controller
 {
@@ -26,15 +27,9 @@ class SaleController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         if(isset($startDate) && isset($endDate)){
-            $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_');
 
-            $file= Excel::store(new SaleExport($startDate,$endDate), $tempFilePath, 'local.xlsx');
-            // Move the file to the public path
-            $publicPath = public_path('exports/example.xlsx');
-            File::move($tempFilePath, $publicPath);
+            $file= Excel::store(new SaleExport($startDate,$endDate), $fileName);
 
-            // Return a response with the public URL of the file
-            return response()->file($publicPath);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
             $saleexcel->user_id=$u->id;
