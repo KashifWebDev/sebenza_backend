@@ -21,7 +21,7 @@ class SaleController extends Controller
     {
         $startDate =$request->startDate;
         $endDate =$request->endDate;
-        $fileName='public/'.date('Ymd').'order.xlsx';
+        $fileName='public/'.date('Ymd').'sale';
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
 
