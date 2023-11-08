@@ -41,12 +41,7 @@ class SaleController extends Controller
     $response->send(file_get_contents($tempFilePath));
 
 
-    return $response
-        ->withHeaders([
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment; filename="example.xlsx"',
-        ])
-        ->file($tempFilePath);
+    return $response;
 
         $startDate =$request->startDate;
         $endDate =$request->endDate;
