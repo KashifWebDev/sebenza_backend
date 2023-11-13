@@ -11,24 +11,15 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class SaleExport implements FromCollection
+class SaleExport implements FromCollection, WithHeadings
 {
 
     use Exportable;
 
-    public function __construct($startDate,$endDate)
+    public function collection($startDate,$endDate)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-    }
-
-    public function collection()
-    {
-        $startDate=$this->startDate;
-        $endDate=$this->endDate;
         return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate])->get();
     }
-
 
 
 }
