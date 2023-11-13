@@ -11,12 +11,10 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class SaleExport implements FromCollection, WithHeadings,WithMapping
+class SaleExport implements FromQuery, WithHeadings,WithMapping
 {
 
     use Exportable;
-    private $startDate;
-    private $endDate;
 
     public function __construct($startDate,$endDate)
     {
@@ -42,11 +40,11 @@ class SaleExport implements FromCollection, WithHeadings,WithMapping
         ];
     }
 
-    public function collection()
+    public function query()
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::whereBetween('created_at', [$startDate, $endDate])->get();
+        return Sale::whereBetween('created_at', [$startDate, $endDate]);
     }
 
 
