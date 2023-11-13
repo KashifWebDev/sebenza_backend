@@ -15,6 +15,9 @@ class SaleExport implements FromQuery
 {
 
     use Exportable;
+    private $startDate;
+    private $endDate;
+
     public function __construct($startDate,$endDate)
     {
         $this->startDate = $startDate;
@@ -23,7 +26,7 @@ class SaleExport implements FromQuery
 
     public function query()
     {
-        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate])->get();
+        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate]);
     }
 
 
