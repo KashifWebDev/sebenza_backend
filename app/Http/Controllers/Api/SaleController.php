@@ -29,7 +29,7 @@ class SaleController extends Controller
 
         if(isset($startDate) && isset($endDate)){
 
-            $file= Excel::store(new SaleExport($startDate,$endDate), public_path($fileName));
+            $file= Excel::store(new SaleExport($startDate,$endDate), $fileName);
             // Storage::disk('public')->put($fileName, $file->save());
             // return response()->json($file,200);
             $saleexcel=new Saleexcel();
