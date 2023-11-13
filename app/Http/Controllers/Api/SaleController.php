@@ -29,10 +29,8 @@ class SaleController extends Controller
 
         if(isset($startDate) && isset($endDate)){
 
-            // Move the Excel file to the public folder
-
-            $file= Excel::load(new SaleExport($startDate,$endDate), public_path($fileName));
-             Storage::disk('public')->put($fileName, $file->save());
+            $file= Excel::store(new SaleExport($startDate,$endDate), public_path($fileName));
+            // Storage::disk('public')->put($fileName, $file->save());
             // return response()->json($file,200);
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
