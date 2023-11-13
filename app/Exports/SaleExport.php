@@ -28,21 +28,20 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
     }
 
 
-    public function map($order): array
+    public function map($sale): array
     {
         return [
-            $order->orderDate,
-            $order->invoiceID,
-            $order->customer_name,
-            $order->customer_phone,
-            $order->customer_address,
-            $order->amount_total,
-            $order->discount,
-            $order->payable_amount,
-            $order->paid_amount,
-            $order->due,
-            implode(', ', $order->saleitems->pluck('item_name')->toArray()),
-
+            $sale->orderDate,
+            $sale->invoiceID,
+            $sale->customer_name,
+            $sale->customer_phone,
+            $sale->customer_address,
+            $sale->amount_total,
+            $sale->discount,
+            $sale->payable_amount,
+            $sale->paid_amount,
+            $sale->due,
+            ""
         ];
     }
 
@@ -50,7 +49,7 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate]);
+        return Sale::whereBetween('created_at', [$startDate, $endDate]);
     }
 
 
