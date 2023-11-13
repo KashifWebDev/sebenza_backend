@@ -30,8 +30,7 @@ class SaleController extends Controller
         if(isset($startDate) && isset($endDate)){
 
             $file= Excel::store(new SaleExport($startDate,$endDate), $fileName);
-            // Storage::disk('public')->put($fileName, $file->save());
-            // return response()->json($file,200);
+
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
             $saleexcel->user_id=$u->id;
@@ -41,11 +40,7 @@ class SaleController extends Controller
                 $saleexcel->membership_code=$u->member_by;
             }
             if ($file) {
-                $imgname = $time . $file->getClientOriginalName();
-                $imguploadPath = ('public/sales');
-                $file->move($imguploadPath, $imgname);
-                $salesUrl = $imguploadPath . $imgname;
-                $saleexcel->data_file = $salesUrl;
+                $saleexcel->data_file = 'storage/app/'.$fileName;
             }
             $saleexcel->startDate=$startDate;
             $saleexcel->endDate=$endDate;
