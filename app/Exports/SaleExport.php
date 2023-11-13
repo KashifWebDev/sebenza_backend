@@ -42,11 +42,11 @@ class SaleExport implements FromCollection, WithHeadings,WithMapping
         ];
     }
 
-    public function query()
+    public function collection()
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::whereBetween('created_at', [$startDate, $endDate]);
+        return Sale::whereBetween('created_at', [$startDate, $endDate])->get();
     }
 
 
