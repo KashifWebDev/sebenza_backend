@@ -11,8 +11,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class SaleExport implements FromQuery, WithHeadings,WithMapping
+class SaleExport implements FromCollection, WithHeadings,WithMapping
 {
+
+
+
 
     use Exportable;
 
@@ -23,28 +26,29 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
     }
 
 
-    public function map($sale): array
+    public function map($order): array
     {
         return [
-            $sale->orderDate,
-            $sale->invoiceID,
-            $sale->customer_name,
-            $sale->customer_phone,
-            $sale->customer_address,
-            $sale->amount_total,
-            $sale->discount,
-            $sale->payable_amount,
-            $sale->paid_amount,
-            $sale->due,
-            ""
+            $order->orderDate,
+            $order->invoiceID,
+            $order->customer_name,
+            $order->customer_phone,
+            $order->customer_address,
+            $order->amount_total,
+            $order->discount,
+            $order->payable_amount,
+            $order->paid_amount,
+            $order->due,
+            implode(', ', $order->saleitems->pluck('item_name')->toArray()),
+
         ];
     }
 
-    public function query()
+    public function collection()
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::whereBetween('created_at', [$startDate, $endDate]);
+        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate])->get();
     }
 
 
