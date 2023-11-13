@@ -11,13 +11,50 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class SaleExport implements FromCollection
+class SaleExport implements FromCollection, WithHeadings,WithMapping
 {
-    use Exportable;
 
-    public function collection()
+    use Exportable;
+    private $startDate;
+    private $endDate;
+
+    public function __construct($startDate,$endDate)
     {
-        return Sale::all();
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
+
+
+    public function map($sale): array
+    {
+        return [
+            $sale->orderDate,
+            $sale->invoiceID,
+            $sale->customer_name,
+            $sale->customer_phone,
+            $sale->customer_address,
+            $sale->amount_total,
+            $sale->discount,
+            $sale->payable_amount,
+            $sale->paid_amount,
+            $sale->due,
+            ""
+        ];
+    }
+
+    public function query()
+    {
+        $startDate=$this->startDate;
+        $endDate=$this->endDate;
+        return Sale::whereBetween('created_at', [$startDate, $endDate]);
+    }
+
+
+    public function headings(): array
+    {
+        return ["Date","Invoice", "Customer Name", "Contact No.", "Customer Address", "Price", "Discount", "Payable Amount", "Paid", "Due", "Item Info"];
+    }
+
+
 
 }
