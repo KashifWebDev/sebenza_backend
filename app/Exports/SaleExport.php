@@ -18,11 +18,13 @@ class SaleExport implements FromQuery,WithHeadings,WithMapping
     use Exportable;
     private $startDate;
     private $endDate;
+    private $user;
 
-    public function __construct($startDate,$endDate)
+    public function __construct($startDate,$endDate,$user)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->user = $user;
     }
 
 
@@ -48,7 +50,12 @@ class SaleExport implements FromQuery,WithHeadings,WithMapping
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::whereBetween('orderDate', [$startDate, $endDate]);
+        $user=$this->user;
+        if(isset($user->membership_code)){
+            return Sale::where('membership_id',$user->membership_code)->whereBetween('orderDate', [$startDate, $endDate]);
+        }else{
+            return Sale::where('membership_id',$user->member_by)->whereBetween('orderDate', [$startDate, $endDate]);
+        }
     }
 
 

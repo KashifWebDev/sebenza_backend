@@ -26,10 +26,11 @@ class SaleController extends Controller
         $fileName=$time.'order.xlsx';
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
 
         if(isset($startDate) && isset($endDate)){
 
-            $file= Excel::store(new SaleExport($startDate,$endDate), $fileName);
+            $file= Excel::store(new SaleExport($startDate,$endDate,$user), $fileName);
 
             $saleexcel=new Saleexcel();
             $u=User::where('id',$user_id->tokenable_id)->first();
