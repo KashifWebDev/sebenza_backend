@@ -49,7 +49,7 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::with(['saleitems'])->all();
+        return Sale::with(['saleitems'])->get();
     }
 
 
