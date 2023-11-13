@@ -26,7 +26,7 @@ class SaleExport implements FromQuery,WithHeadings,WithMapping
     }
 
 
-    public function map($sales): array
+    public function map($sale): array
     {
         return [
             $sale->orderDate,
