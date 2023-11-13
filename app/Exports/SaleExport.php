@@ -52,9 +52,9 @@ class SaleExport implements FromQuery,WithHeadings,WithMapping
         $endDate=$this->endDate;
         $user=$this->user;
         if(isset($user->membership_code)){
-            return Sale::where('membership_id',$user->membership_code)->whereBetween('orderDate', [$startDate, $endDate]);
+            return Sale::where('membership_code',$user->membership_code)->whereBetween('orderDate', [$startDate, $endDate]);
         }else{
-            return Sale::where('membership_id',$user->member_by)->whereBetween('orderDate', [$startDate, $endDate]);
+            return Sale::where('membership_code',$user->member_by)->whereBetween('orderDate', [$startDate, $endDate]);
         }
     }
 
