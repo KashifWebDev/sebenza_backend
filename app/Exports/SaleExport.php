@@ -18,7 +18,8 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
 
 
     use Exportable;
-    private $curierid;
+    private $startDate;
+    private $endDate;
 
     public function __construct($startDate,$endDate)
     {
@@ -49,7 +50,7 @@ class SaleExport implements FromQuery, WithHeadings,WithMapping
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::with(['saleitems'])->get();
+        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate]);
     }
 
 
