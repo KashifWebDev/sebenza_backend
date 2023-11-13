@@ -48,7 +48,7 @@ class SaleExport implements FromQuery,WithHeadings,WithMapping
     {
         $startDate=$this->startDate;
         $endDate=$this->endDate;
-        return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate]);
+        return Sale::with(['saleitems']);
     }
 
 
