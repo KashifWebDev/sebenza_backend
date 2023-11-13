@@ -15,8 +15,13 @@ class SaleExport implements FromQuery
 {
 
     use Exportable;
+    public function __construct($startDate,$endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
 
-    public function query($startDate,$endDate)
+    public function query()
     {
         return Sale::with(['saleitems'])->whereBetween('created_at', [$startDate, $endDate])->get();
     }
