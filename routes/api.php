@@ -200,7 +200,9 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
         //expense
     Route::post('expense/export', [ExpenseController::class,'fileExport']);
     Route::get('expense/export/list', [ExpenseController::class,'expenselist']);
-
+        //customer
+    Route::post('customer/export', [CustomerController::class,'fileExport']);
+    Route::get('customer/export/list', [CustomerController::class,'customerlist']);
 });
 
 // admin login api
