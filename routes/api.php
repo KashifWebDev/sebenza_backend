@@ -197,6 +197,9 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
         //user
     Route::post('product/export', [ProductController::class,'fileExport']);
     Route::get('product/export/list', [ProductController::class,'productlist']);
+        //expense
+    Route::post('expense/export', [ExpenseController::class,'fileExport']);
+    Route::get('expense/export/list', [ExpenseController::class,'expenselist']);
 
 });
 

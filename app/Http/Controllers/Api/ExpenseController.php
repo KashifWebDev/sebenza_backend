@@ -8,9 +8,98 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Exports\ExpenseExport;
+use App\Models\Expenseexcel;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
 {
+    public function fileExport(Request $request)
+    {
+        $startDate =$request->startDate;
+        $endDate =$request->endDate;
+        $time = microtime('.') * 10000;
+        $fileName=$time.'expense.xlsx';
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
+
+        if(isset($startDate) && isset($endDate)){
+
+            $file= Excel::store(new ExpenseExport($startDate,$endDate,$user), $fileName);
+
+            $saleexcel=new Expenseexcel();
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            $saleexcel->user_id=$u->id;
+            if(isset($u->membership_code)){
+                $saleexcel->membership_code=$u->membership_code;
+            }else{
+                $saleexcel->membership_code=$u->member_by;
+            }
+            if ($file) {
+                $saleexcel->data_file = 'storage/app/'.$fileName;
+            }
+            $saleexcel->startDate=$startDate;
+            $saleexcel->endDate=$endDate;
+            $saleexcel->date=date('Y-m-d');
+            $saleexcel->save();
+            $response = [
+                'status' => true,
+                'message'=>'Expense Data Report File',
+                "data"=> [
+                    'saleexcel'=> $saleexcel,
+                ]
+
+            ];
+
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'Please Select Any Date',
+                "data"=> [
+                    'saleexcel'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+    public function productlist()
+    {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expenseexcel =Expenseexcel::where('membership_code',$u->membership_code)->get();
+        }else{
+            $expenseexcel =Expenseexcel::where('membership_code',$u->member_by)->get();
+        }
+
+        if(isset($expenseexcel)){
+            $response = [
+                'status' => true,
+                'message'=>'Expense report data By Membership ID',
+                "data"=> [
+                    'expenseexcel'=> $expenseexcel,
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No expense report data found',
+                "data"=> [
+                    'expenseexcel'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
