@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Expensetype;
+use App\Models\User;
 
 class ExpensetypeController extends Controller
 {
