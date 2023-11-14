@@ -32,7 +32,7 @@ class ExpenseExport implements FromQuery,WithHeadings,WithMapping
     {
         return [
             $expense->created_at->format('Y-m-d'),
-            $expense->membership_code,
+            $expense->membership_id,
             $expense->expensetypes->expence_type,
             $expense->amount,
             $expense->notes,
