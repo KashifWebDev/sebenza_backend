@@ -66,7 +66,7 @@ class ExpenseController extends Controller
         }
         return response()->json($response,200);
     }
-    public function productlist()
+    public function expenselist()
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
