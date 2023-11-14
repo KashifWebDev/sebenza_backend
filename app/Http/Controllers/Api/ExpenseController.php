@@ -110,7 +110,13 @@ class ExpenseController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->tokenable_id)->get();
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->membership_code)->get();
+        }else{
+            $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->member_by)->get();
+        }
+
 
         $response = [
             'status' => true,
