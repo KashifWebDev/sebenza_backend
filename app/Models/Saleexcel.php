@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Saleexcel extends Model
 {
     use HasFactory;
+
+    public function getDataFileAttribute($value)
+    {
+       if($value==''){
+        return $value;
+       }else{
+        return env('PROD_URL').$value;
+       }
+    }
 }

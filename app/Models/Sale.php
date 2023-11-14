@@ -14,13 +14,4 @@ class Sale extends Model
         return $this->hasMany(Saleitem::class, 'sale_id');
     }
 
-    public function getDataFileAttribute($value)
-    {
-       if($value==''){
-        return $value;
-       }else{
-        return env('PROD_URL').$value;
-       }
-    }
-
 }
