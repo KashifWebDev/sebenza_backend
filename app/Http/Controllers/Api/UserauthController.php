@@ -16,9 +16,96 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Imports\UserImport;
 use Excel;
+use Carbon\Carbon;
+use App\Models\Userexcel;
+use App\Exports\UserExport;
+use Illuminate\Support\Facades\Storage;
 
 class UserauthController extends Controller
 {
+
+    public function fileExport(Request $request)
+    {
+        $startDate =$request->startDate;
+        $endDate =$request->endDate;
+        $time = microtime('.') * 10000;
+        $fileName=$time.'user.xlsx';
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
+
+        if(isset($startDate) && isset($endDate)){
+
+            $file= Excel::store(new UserExport($startDate,$endDate,$user), $fileName);
+
+            $userexcel=new Userexcel();
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            $userexcel->user_id=$u->id;
+            if(isset($u->membership_code)){
+                $userexcel->membership_code=$u->membership_code;
+            }else{
+                $userexcel->membership_code=$u->member_by;
+            }
+            if ($file) {
+                $userexcel->data_file = 'storage/app/'.$fileName;
+            }
+            $userexcel->startDate=$startDate;
+            $userexcel->endDate=$endDate;
+            $userexcel->date=date('Y-m-d');
+            $userexcel->save();
+            $response = [
+                'status' => true,
+                'message'=>'User Data Report File',
+                "data"=> [
+                    'userexcel'=> $userexcel,
+                ]
+
+            ];
+
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'Please Select Any Date',
+                "data"=> [
+                    'userexcel'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+    public function userslist()
+    {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $userexcel =Userexcel::where('membership_code',$u->membership_code)->get();
+        }else{
+            $userexcel =Userexcel::where('membership_code',$u->member_by)->get();
+        }
+
+        if(isset($userexcel)){
+            $response = [
+                'status' => true,
+                'message'=>'Users report data By Membership ID',
+                "data"=> [
+                    'userexcel'=> $userexcel,
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No users report data found',
+                "data"=> [
+                    'userexcel'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
 
     public function userImport(Request $request){
 
