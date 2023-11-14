@@ -45,9 +45,9 @@ class ExpenseExport implements FromQuery,WithHeadings,WithMapping
         $endDate=$this->endDate;
         $user=$this->user;
         if(isset($user->membership_code)){
-            return Expense::with('expensetypes')->where('membership_code',$user->membership_code)->whereBetween('created_at', [$startDate, $endDate]);
+            return Expense::with('expensetypes')->where('membership_id',$user->membership_code)->whereBetween('created_at', [$startDate, $endDate]);
         }else{
-            return Expense::with('expensetypes')->where('membership_code',$user->member_by)->whereBetween('created_at', [$startDate, $endDate]);
+            return Expense::with('expensetypes')->where('membership_id',$user->member_by)->whereBetween('created_at', [$startDate, $endDate]);
         }
     }
 
