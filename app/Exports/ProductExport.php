@@ -31,7 +31,7 @@ class ProductExport implements FromQuery,WithHeadings,WithMapping
     public function map($sale): array
     {
         return [
-            $sale->created_at_>format('Y-m-d'),
+            $sale->created_at->format('Y-m-d'),
             $sale->membership_code,
             $sale->ProductName,
             $sale->BrandName,
