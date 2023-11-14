@@ -68,6 +68,38 @@ class SaleController extends Controller
         }
         return response()->json($response,200);
     }
+    public function saleslist()
+    {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $salesreport =Saleexcel::where('membership_code',$u->membership_code)->get();
+        }else{
+            $salesreport =Saleexcel::where('membership_code',$u->member_by)->get();
+        }
+
+        if(isset($salesreport)){
+            $response = [
+                'status' => true,
+                'message'=>'Sales report data By Membership ID',
+                "data"=> [
+                    'salesreport'=> $salesreport,
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No sales report data found',
+                "data"=> [
+                    'salesreport'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
 
     /**
      * Display a listing of the resource.
