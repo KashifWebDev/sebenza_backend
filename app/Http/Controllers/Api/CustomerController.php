@@ -68,7 +68,7 @@ class CustomerController extends Controller
         }
         return response()->json($response,200);
     }
-    public function expenselist()
+    public function customerlist()
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
