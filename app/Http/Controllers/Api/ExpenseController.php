@@ -112,9 +112,9 @@ class ExpenseController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
         if(isset($u->membership_code)){
-            $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->membership_code)->get();
+            $expenses =Expense::with('expensetypes')->where('membership_id',$u->membership_code)->get();
         }else{
-            $expenses =Expense::with('expensetypes')->where('membership_id',$user_id->member_by)->get();
+            $expenses =Expense::with('expensetypes')->where('membership_id',$u->member_by)->get();
         }
 
 
