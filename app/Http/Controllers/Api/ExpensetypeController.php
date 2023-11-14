@@ -20,7 +20,12 @@ class ExpensetypeController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $expensetypes =Expensetype::where('membership_id',$user_id->tokenable_id)->get();
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expensetypes =Expensetype::where('membership_id',$u->membership_code)->get();
+        }else{
+            $expensetypes =Expensetype::where('membership_id',$u->member_by)->get();
+        }
 
         $response = [
             'status' => true,
@@ -42,7 +47,12 @@ class ExpensetypeController extends Controller
     {
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $expensetypes =Expensetype::where('membership_id',$user_id->tokenable_id)->where('status','Active')->get();
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expensetypes =Expensetype::where('membership_id',$u->membership_code)->where('status','Active')->get();
+        }else{
+            $expensetypes =Expensetype::where('membership_id',$u->member_by)->where('status','Active')->get();
+        }
 
         $response = [
             'status' => true,
@@ -66,7 +76,12 @@ class ExpensetypeController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $expensetypes=new Expensetype();
-        $expensetypes->membership_id=$user_id->tokenable_id;
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expensetypes->membership_id=$u->membership_code;
+        }else{
+            $expensetypes->membership_id=$u->member_by;
+        }
         $expensetypes->expence_type=$request->expence_type;
         $expensetypes->status=$request->status;
         $expensetypes->save();
@@ -125,7 +140,12 @@ class ExpensetypeController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
 
         $expensetypes =Expensetype::where('id',$id)->first();
-        $expensetypes->membership_id=$user_id->tokenable_id;
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $expensetypes->membership_id=$u->membership_code;
+        }else{
+            $expensetypes->membership_id=$u->member_by;
+        }
         $expensetypes->expence_type=$request->expence_type;
         $expensetypes->status=$request->status;
         $expensetypes->update();
