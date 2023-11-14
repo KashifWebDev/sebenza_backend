@@ -8,9 +8,97 @@ use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Exports\ProductExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function fileExport(Request $request)
+    {
+        $startDate =$request->startDate;
+        $endDate =$request->endDate;
+        $time = microtime('.') * 10000;
+        $fileName=$time.'products.xlsx';
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
+
+        if(isset($startDate) && isset($endDate)){
+
+            $file= Excel::store(new ProductExport($startDate,$endDate,$user), $fileName);
+
+            $saleexcel=new Productexcel();
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            $saleexcel->user_id=$u->id;
+            if(isset($u->membership_code)){
+                $saleexcel->membership_code=$u->membership_code;
+            }else{
+                $saleexcel->membership_code=$u->member_by;
+            }
+            if ($file) {
+                $saleexcel->data_file = 'storage/app/'.$fileName;
+            }
+            $saleexcel->startDate=$startDate;
+            $saleexcel->endDate=$endDate;
+            $saleexcel->date=date('Y-m-d');
+            $saleexcel->save();
+            $response = [
+                'status' => true,
+                'message'=>'Products Data Report File',
+                "data"=> [
+                    'saleexcel'=> $saleexcel,
+                ]
+
+            ];
+
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'Please Select Any Date',
+                "data"=> [
+                    'saleexcel'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+    public function productlist()
+    {
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+        if(isset($u->membership_code)){
+            $salesreport =Productexcel::where('membership_code',$u->membership_code)->get();
+        }else{
+            $salesreport =Productexcel::where('membership_code',$u->member_by)->get();
+        }
+
+        if(isset($salesreport)){
+            $response = [
+                'status' => true,
+                'message'=>'Products report data By Membership ID',
+                "data"=> [
+                    'salesreport'=> $salesreport,
+                ]
+
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No sales report data found',
+                "data"=> [
+                    'salesreport'=> '',
+                ]
+
+            ];
+        }
+        return response()->json($response,200);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

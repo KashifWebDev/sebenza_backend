@@ -191,10 +191,12 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
         // sales
     Route::post('sale/export', [SaleController::class,'fileExport']);
     Route::get('sale/export/list', [SaleController::class,'saleslist']);
-
         //user
     Route::post('export', [UserauthController::class,'fileExport']);
     Route::get('export/list', [UserauthController::class,'userslist']);
+        //user
+    Route::post('product/export', [ProductController::class,'fileExport']);
+    Route::get('product/export/list', [ProductController::class,'productlist']);
 
 });
 
