@@ -11,17 +11,17 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\User;
 
 class CustomerExport implements FromQuery,WithHeadings,WithMapping
 {
 
 
     use Exportable;
-    private $user;
 
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
     }
 
 
@@ -39,8 +39,11 @@ class CustomerExport implements FromQuery,WithHeadings,WithMapping
 
     public function query()
     {
-        if(Auth::guard('web')->check()){
-            $user=$this->user;
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
+
+        if($user_id->name=='user'){
             if(isset($user->membership_code)){
                 return Customer::where('membership_code',$user->membership_code);
             }else{
