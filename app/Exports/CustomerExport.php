@@ -47,7 +47,7 @@ class CustomerExport implements FromQuery,WithHeadings,WithMapping
                 return Customer::where('membership_code',$user->member_by);
             }
         }else{
-            return Customer::all();
+            return Customer::whereIn('status',['0','1']);
         }
 
     }
