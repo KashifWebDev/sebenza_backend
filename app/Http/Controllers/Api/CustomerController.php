@@ -22,8 +22,11 @@ class CustomerController extends Controller
     {
         $time = microtime('.') * 10000;
         $fileName=$time.'customer.xlsx';
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
 
-        $file= Excel::store(new CustomerExport(), $fileName);
+        $file= Excel::store(new CustomerExport($user,$user_id), $fileName);
 
         $excel=new Customerexcel();
         $u=User::where('id',$user_id->tokenable_id)->first();
