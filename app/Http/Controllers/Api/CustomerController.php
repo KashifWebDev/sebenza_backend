@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Exports\CustomerExport;
+use App\Exports\ExpenseExport;
+use App\Exports\ProductExport;
+use App\Exports\SaleExport;
+use App\Exports\UserExport;
+use App\Exports\AssetExport;
+use App\Exports\ProjectExport;
+use App\Exports\WarehouseExport;
+
 use App\Models\Customerexcel;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,12 +29,39 @@ class CustomerController extends Controller
     public function fileExport(Request $request)
     {
         $time = microtime('.') * 10000;
-        $fileName=$time.'customer.xlsx';
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
 
-        $file= Excel::store(new CustomerExport($user,$user_id), $fileName);
+        if($request->data_for=='customers'){
+            $fileName=$time.'customer.xlsx';
+            $file= Excel::store(new CustomerExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='products'){
+            $fileName=$time.'products.xlsx';
+            $file= Excel::store(new ProductExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='expenses'){
+            $fileName=$time.'expenses.xlsx';
+            $file= Excel::store(new ExpenseExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='sales'){
+            $fileName=$time.'sales.xlsx';
+            $file= Excel::store(new SaleExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='users'){
+            $fileName=$time.'users.xlsx';
+            $file= Excel::store(new UserExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='assets'){
+            $fileName=$time.'assets.xlsx';
+            $file= Excel::store(new AssetExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='projects'){
+            $fileName=$time.'projects.xlsx';
+            $file= Excel::store(new ProjectExport($user,$user_id), $fileName);
+        }elseif($request->data_for=='warehouses'){
+            $fileName=$time.'warehouses.xlsx';
+            $file= Excel::store(new WarehouseExport($user,$user_id), $fileName);
+        }else{
+
+        }
+
+
 
         $excel=new Customerexcel();
         $u=User::where('id',$user_id->tokenable_id)->first();

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Expense;
+use App\Models\Warehouse;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -11,8 +11,9 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ExpenseExport implements FromQuery,WithHeadings,WithMapping
+class WarehouseExport implements FromQuery,WithHeadings,WithMapping
 {
+
 
     use Exportable;
     private $user;
@@ -25,14 +26,18 @@ class ExpenseExport implements FromQuery,WithHeadings,WithMapping
     }
 
 
-    public function map($expense): array
+    public function map($sale): array
     {
         return [
-            $expense->created_at->format('Y-m-d'),
-            $expense->membership_id,
-            $expense->expensetypes->expence_type,
-            $expense->amount,
-            $expense->notes,
+            $sale->created_at->format('Y-m-d'),
+            $sale->membership_code,
+            $sale->title,
+            $sale->country,
+            $sale->city,
+            $sale->location,
+            $sale->total_qty,
+            $sale->available_qty,
+            $sale->status,
         ];
     }
 
@@ -40,22 +45,24 @@ class ExpenseExport implements FromQuery,WithHeadings,WithMapping
     {
         $user=$this->user;
         $user_id=$this->user_id;
+
         if($user_id->name=='user'){
             $user=$this->user;
             if(isset($user->membership_code)){
-                return Expense::where('membership_id',$user->membership_code);
+                return Warehouse::where('membership_code',$user->membership_code);
             }else{
-                return Expense::where('membership_id',$user->member_by);
+                return Warehouse::where('membership_code',$user->member_by);
             }
         }else{
-            return Expense::where('amount','>=',0);
+            return Warehouse::whereIn('status',['0','1']);
         }
+
     }
 
 
     public function headings(): array
     {
-        return ["Date","Membership Code", "Expense Type", "Amount", "Message"];
+        return ["Date","Membership Code", "Title", "Country", "City", "Location", "Total QTY", "Available QTY" , "Status"];
     }
 
 

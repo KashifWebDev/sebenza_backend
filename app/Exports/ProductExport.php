@@ -16,15 +16,13 @@ class ProductExport implements FromQuery,WithHeadings,WithMapping
 
 
     use Exportable;
-    private $startDate;
-    private $endDate;
     private $user;
+    private $user_id;
 
-    public function __construct($startDate,$endDate,$user)
+    public function __construct($user,$user_id)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->user = $user;
+        $this->user_id = $user_id;
     }
 
 
@@ -43,14 +41,20 @@ class ProductExport implements FromQuery,WithHeadings,WithMapping
 
     public function query()
     {
-        $startDate=$this->startDate;
-        $endDate=$this->endDate;
         $user=$this->user;
-        if(isset($user->membership_code)){
-            return Product::where('membership_code',$user->membership_code)->whereBetween('created_at', [$startDate, $endDate]);
+        $user_id=$this->user_id;
+
+        if($user_id->name=='user'){
+            $user=$this->user;
+            if(isset($user->membership_code)){
+                return Product::where('membership_code',$user->membership_code);
+            }else{
+                return Product::where('membership_code',$user->member_by);
+            }
         }else{
-            return Product::where('membership_code',$user->member_by)->whereBetween('created_at', [$startDate, $endDate]);
+            return Product::whereIn('status',['0','1']);
         }
+
     }
 
 

@@ -16,47 +16,45 @@ class UserExport implements FromQuery,WithHeadings,WithMapping
 
 
     use Exportable;
-    private $startDate;
-    private $endDate;
     private $user;
+    private $user_id;
 
-    public function __construct($startDate,$endDate,$user)
+    public function __construct($user,$user_id)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->user = $user;
+        $this->user_id = $user_id;
     }
 
 
-    public function map($user): array
+    public function map($userss): array
     {
-        if(isset($user->membership_code)){
+        if(isset($userss->membership_code)){
             return [
-                $user->company_name,
-                $user->created_at->format('Y-m-d'),
-                $user->account_type,
-                $user->membership_code,
-                $user->first_name,
-                $user->last_name,
-                $user->phone,
-                $user->email,
-                $user->address,
-                $user->city,
-                $user->country,
+                $userss->company_name,
+                $userss->created_at->format('Y-m-d'),
+                $userss->account_type,
+                $userss->membership_code,
+                $userss->first_name,
+                $userss->last_name,
+                $userss->phone,
+                $userss->email,
+                $userss->address,
+                $userss->city,
+                $userss->country,
             ];
         }else{
             return [
-                $user->company_name,
-                $user->created_at->format('Y-m-d'),
-                $user->account_type,
-                $user->member_by,
-                $user->first_name,
-                $user->last_name,
-                $user->phone,
-                $user->email,
-                $user->address,
-                $user->city,
-                $user->country,
+                $userss->company_name,
+                $userss->created_at->format('Y-m-d'),
+                $userss->account_type,
+                $userss->member_by,
+                $userss->first_name,
+                $userss->last_name,
+                $userss->phone,
+                $userss->email,
+                $userss->address,
+                $userss->city,
+                $userss->country,
             ];
         }
 
@@ -64,14 +62,19 @@ class UserExport implements FromQuery,WithHeadings,WithMapping
 
     public function query()
     {
-        $startDate=$this->startDate;
-        $endDate=$this->endDate;
         $user=$this->user;
-        if(isset($user->membership_code)){
-            return User::where('membership_code',$user->membership_code)->whereBetween('created_at', [$startDate, $endDate]);
+        $user_id=$this->user_id;
+        if($user_id->name=='user'){
+            $user=$this->user;
+            if(isset($user->membership_code)){
+                return User::where('membership_code',$user->membership_code);
+            }else{
+                return User::where('membership_code',$user->member_by);
+            }
         }else{
-            return User::where('membership_code',$user->member_by)->whereBetween('created_at', [$startDate, $endDate]);
+            return User::whereIn('status',['0','1']);
         }
+
     }
 
 
