@@ -10,20 +10,17 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerExport implements FromQuery,WithHeadings,WithMapping
 {
 
 
     use Exportable;
-    private $startDate;
-    private $endDate;
     private $user;
 
-    public function __construct($startDate,$endDate,$user)
+    public function __construct($user)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->user = $user;
     }
 
@@ -42,13 +39,15 @@ class CustomerExport implements FromQuery,WithHeadings,WithMapping
 
     public function query()
     {
-        $startDate=$this->startDate;
-        $endDate=$this->endDate;
-        $user=$this->user;
-        if(isset($user->membership_code)){
-            return Customer::where('membership_code',$user->membership_code)->whereBetween('created_at', [$startDate, $endDate]);
+        if(Auth::guard('web')->check){
+            $user=$this->user;
+            if(isset($user->membership_code)){
+                return Customer::where('membership_code',$user->membership_code);
+            }else{
+                return Customer::where('membership_code',$user->member_by);
+            }
         }else{
-            return Customer::where('membership_code',$user->member_by)->whereBetween('created_at', [$startDate, $endDate]);
+            return Customer::all();
         }
     }
 

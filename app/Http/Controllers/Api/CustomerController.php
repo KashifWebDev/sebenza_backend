@@ -20,86 +20,42 @@ class CustomerController extends Controller
 {
     public function fileExport(Request $request)
     {
-        $startDate =$request->startDate;
-        $endDate =$request->endDate;
         $time = microtime('.') * 10000;
         $fileName=$time.'customer.xlsx';
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
 
-        if(isset($startDate) && isset($endDate)){
+        $file= Excel::store(new CustomerExport($user), $fileName);
 
-            $file= Excel::store(new CustomerExport($startDate,$endDate,$user), $fileName);
-
-            $saleexcel=new Customerexcel();
-            $u=User::where('id',$user_id->tokenable_id)->first();
-            $saleexcel->user_id=$u->id;
-            if(isset($u->membership_code)){
-                $saleexcel->membership_code=$u->membership_code;
-            }else{
-                $saleexcel->membership_code=$u->member_by;
-            }
-            if ($file) {
-                $saleexcel->data_file = 'storage/app/'.$fileName;
-            }
-            $saleexcel->startDate=$startDate;
-            $saleexcel->endDate=$endDate;
-            $saleexcel->date=date('Y-m-d');
-            $saleexcel->save();
-            $response = [
-                'status' => true,
-                'message'=>'Customer Data Report File',
-                "data"=> [
-                    'saleexcel'=> $saleexcel,
-                ]
-
-            ];
-
-        }else{
-            $response = [
-                'status' => false,
-                'message'=>'Please Select Any Date',
-                "data"=> [
-                    'saleexcel'=> '',
-                ]
-
-            ];
-        }
-        return response()->json($response,200);
-    }
-    public function customerlist()
-    {
-        $token = request()->bearerToken();
-        $user_id=PersonalAccessToken::findToken($token);
+        $excel=new Customerexcel();
         $u=User::where('id',$user_id->tokenable_id)->first();
+        $excel->user_id=$u->id;
         if(isset($u->membership_code)){
-            $expenseexcel =Customerexcel::where('membership_code',$u->membership_code)->get();
+            $excel->membership_code=$u->membership_code;
         }else{
-            $expenseexcel =Customerexcel::where('membership_code',$u->member_by)->get();
+            $excel->membership_code=$u->member_by;
         }
-
-        if(isset($expenseexcel)){
-            $response = [
-                'status' => true,
-                'message'=>'Customer report data By Membership ID',
-                "data"=> [
-                    'expenseexcel'=> $expenseexcel,
-                ]
-
-            ];
-        }else{
-            $response = [
-                'status' => false,
-                'message'=>'No expense report data found',
-                "data"=> [
-                    'expenseexcel'=> '',
-                ]
-
-            ];
+        if ($file) {
+            $excel->data_file = 'storage/app/'.$fileName;
         }
+        $excel->startDate=$startDate;
+        $excel->endDate=$endDate;
+        $excel->date=date('Y-m-d');
+        $excel->save();
+        $response = [
+            'status' => true,
+            'message'=>'Customer Data Report File',
+            "data"=> [
+                'excel'=> $excel,
+            ]
+
+        ];
+
+
         return response()->json($response,200);
     }
+
 
     /**
      * Display a listing of the resource.
