@@ -45,7 +45,7 @@ class CustomerController extends Controller
         $excel->save();
         $response = [
             'status' => true,
-            'message'=>'Customer Data Report File',
+            'message'=>'Excel export data file',
             "data"=> [
                 'excel'=> $excel,
             ]
