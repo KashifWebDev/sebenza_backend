@@ -58,7 +58,7 @@ class CustomerController extends Controller
             $fileName=$time.'warehouses.xlsx';
             $file= Excel::store(new WarehouseExport($user,$user_id), $fileName);
         }else{
-
+            $file='';
         }
 
 
