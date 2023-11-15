@@ -39,7 +39,7 @@ class CustomerExport implements FromQuery,WithHeadings,WithMapping
 
     public function query()
     {
-        if(Auth::guard('web')->check){
+        if(Auth::guard('web')->check()){
             $user=$this->user;
             if(isset($user->membership_code)){
                 return Customer::where('membership_code',$user->membership_code);
