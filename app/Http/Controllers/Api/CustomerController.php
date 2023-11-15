@@ -63,29 +63,41 @@ class CustomerController extends Controller
 
 
 
-        $excel=new Customerexcel();
-        $u=User::where('id',$user_id->tokenable_id)->first();
-        $excel->user_id=$u->id;
-        if(isset($u->membership_code)){
-            $excel->membership_code=$u->membership_code;
-        }else{
-            $excel->membership_code=$u->member_by;
-        }
-        if ($file) {
-            $excel->data_file = 'storage/app/'.$fileName;
-        }
-        $excel->startDate=date('Y-m-d');
-        $excel->endDate=date('Y-m-d');
-        $excel->date=date('Y-m-d');
-        $excel->save();
-        $response = [
-            'status' => true,
-            'message'=>'Excel export data file',
-            "data"=> [
-                'excel'=> $excel,
-            ]
+        if($file){
+            $excel=new Customerexcel();
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            $excel->user_id=$u->id;
+            if(isset($u->membership_code)){
+                $excel->membership_code=$u->membership_code;
+            }else{
+                $excel->membership_code=$u->member_by;
+            }
+            if ($file) {
+                $excel->data_file = 'storage/app/'.$fileName;
+            }
+            $excel->startDate=date('Y-m-d');
+            $excel->endDate=date('Y-m-d');
+            $excel->date=date('Y-m-d');
+            $excel->save();
 
-        ];
+            $response = [
+                'status' => true,
+                'message'=>'Excel export data file',
+                "data"=> [
+                    'excel'=> $excel,
+                ]
+            ];
+
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'Excel export file not found',
+                "data"=> [
+                    'excel'=> '',
+                ]
+            ];
+        }
+
 
 
         return response()->json($response,200);
