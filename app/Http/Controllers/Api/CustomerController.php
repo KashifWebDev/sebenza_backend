@@ -39,8 +39,8 @@ class CustomerController extends Controller
         if ($file) {
             $excel->data_file = 'storage/app/'.$fileName;
         }
-        $excel->startDate=$startDate;
-        $excel->endDate=$endDate;
+        $excel->startDate=date('Y-m-d');
+        $excel->endDate=date('Y-m-d');
         $excel->date=date('Y-m-d');
         $excel->save();
         $response = [
