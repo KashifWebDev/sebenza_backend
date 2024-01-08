@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserauthController;
+use App\Http\Controllers\Api\AccountingController;
 use App\Http\Controllers\Backend\Api\AdminauthController;
 use App\Http\Controllers\Backend\Api\AccounttypeController;
 use App\Http\Controllers\Backend\Api\AccountpackageController;
@@ -185,6 +186,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('sales', SaleController::class);
     Route::post('sale/update/{id}', [SaleController::class,'update']);
     Route::get('sale/data', [SaleController::class,'saledata']);
+
+    // all report api
+    Route::get('get/metting/data', [AccountingController::class,'update']);
+
 
 
     // excel data report
