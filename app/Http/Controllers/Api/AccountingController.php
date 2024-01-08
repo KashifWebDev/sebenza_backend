@@ -10,7 +10,7 @@ use App\Models\Meting;
 
 class AccountingController extends Controller
 {
-    public function getmettings(){
+    public function getmettings(Request $request){
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $metings =Meting::with('notes')->where('form_id',$user_id->tokenable_id)->get();
