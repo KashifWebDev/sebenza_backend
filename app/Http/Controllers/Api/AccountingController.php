@@ -63,6 +63,7 @@ class AccountingController extends Controller
             $user=User::where('id',$user_id->tokenable_id)->first();
             $startDate=$request->startDate;
             $endDate=$request->endDate;
+            $status=$request->status;
 
             if(isset($user->membership_code)){
                 $wits=Withdrew::where('user_id',$user->id)->where('membership_id',$user->membership_code)->get();
@@ -72,6 +73,9 @@ class AccountingController extends Controller
 
             if ($startDate != '' && $endDate != '') {
                 $wits = $wits->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+            if ($status != '') {
+                $wits = $wits->where('status', $status);
             }
 
 
