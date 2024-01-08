@@ -187,9 +187,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('sale/update/{id}', [SaleController::class,'update']);
     Route::get('sale/data', [SaleController::class,'saledata']);
 
-    // all report api
+    // all user report api
     Route::post('get/metting-data', [AccountingController::class,'getmettings']);
     Route::post('get/task-data', [AccountingController::class,'gettasks']);
+    Route::post('get/withdraw-data', [AccountingController::class,'getwithdraws']);
 
 
 
