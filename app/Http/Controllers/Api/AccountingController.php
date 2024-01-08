@@ -15,6 +15,8 @@ use App\Models\Estimatequote;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Customer;
+use App\Models\Project;
+use App\Models\Sale;
 
 class AccountingController extends Controller
 {
