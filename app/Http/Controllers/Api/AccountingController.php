@@ -111,5 +111,48 @@ class AccountingController extends Controller
         }
     }
 
+    public function getexpenses(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $expenses =Expense::with('expensetypes')->where('membership_id',$u->membership_code)->get();
+            }else{
+                $expenses =Expense::with('expensetypes')->where('membership_id',$u->member_by)->get();
+            }
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+            $expensetype_id=$request->expensetype_id;
+
+            if ($startDate != '' && $endDate != '') {
+                $expenses = $expenses->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+            if ($expensetype_id != '') {
+                $expenses = $expenses->where('expensetype_id', $expensetype_id);
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'Date wise Expense List',
+                "data"=> [
+                    'expenses'=> $expenses,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
+
 
 }
