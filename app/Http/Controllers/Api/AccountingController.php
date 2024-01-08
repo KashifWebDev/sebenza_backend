@@ -13,6 +13,7 @@ use App\Models\Withdrew;
 use App\Models\Expense;
 use App\Models\Estimatequote;
 use App\Models\Product;
+use App\Models\Stock;
 
 class AccountingController extends Controller
 {
