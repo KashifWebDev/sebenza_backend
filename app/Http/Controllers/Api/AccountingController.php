@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\Withdrew;
 use App\Models\Expense;
+use App\Models\Estimatequote;
 
 class AccountingController extends Controller
 {
@@ -155,5 +156,44 @@ class AccountingController extends Controller
 
     }
 
+    public function getquotes(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $estimatequotes =Estimatequote::with(['users','payments','items','termsconditions'])->where('membership_code',$u->membership_code)->get();
+            }else{
+                $estimatequotes =Estimatequote::with(['users','payments','items','termsconditions'])->where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+
+            if ($startDate != '' && $endDate != '') {
+                $estimatequotes = $estimatequotes->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'List of Estimatequotes',
+                "data"=> [
+                    'estimatequotes'=> $estimatequotes,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
 
 }

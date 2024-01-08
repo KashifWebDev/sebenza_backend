@@ -192,6 +192,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('get/task-data', [AccountingController::class,'gettasks']);
     Route::post('get/withdraw-data', [AccountingController::class,'getwithdraws']);
     Route::post('get/expense-data', [AccountingController::class,'getexpenses']);
+    Route::post('get/quotes-data', [AccountingController::class,'getquotes']);
 
 
 
