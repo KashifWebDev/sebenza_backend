@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Withdrew;
 use App\Models\Expense;
 use App\Models\Estimatequote;
+use App\Models\Product;
 
 class AccountingController extends Controller
 {
@@ -195,5 +196,109 @@ class AccountingController extends Controller
 
 
     }
+
+    public function getproducts(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $pros =Product::where('membership_code',$u->membership_code)->get();
+            }else{
+                $pros =Product::where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+
+            if ($startDate != '' && $endDate != '') {
+                $pros = $pros->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+
+            if(count($pros)>0){
+                foreach($pros as $us){
+                    $use=$us;
+                    if(isset($use->ProductImage)){
+                        $use->ProductImage=env('PROD_URL').$use->ProductImage;
+                    }else{
+
+                    }
+                    $products[]=$use;
+                }
+
+                $response = [
+                    'status' => true,
+                    'message'=>'List of My Products',
+                    "data"=> [
+                        'products'=> $products,
+                    ]
+
+                ];
+            }else{
+                $response = [
+                    'status' => true,
+                    'message'=>'List of My Products By Date',
+                    "data"=> [
+                        'products'=> [],
+                    ]
+
+                ];
+            }
+
+
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
+
+    public function getstocks(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $stocks =Stock::with(['stockitems','users'])->where('membership_code',$u->membership_code)->get();
+            }else{
+                $stocks =Stock::with(['stockitems','users'])->where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+
+            if ($startDate != '' && $endDate != '') {
+                $stocks = $stocks->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'List of My Stocks By Date',
+                "data"=> [
+                    'stocks'=> $stocks,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
+
 
 }
