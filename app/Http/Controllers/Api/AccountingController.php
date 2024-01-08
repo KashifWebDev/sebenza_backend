@@ -16,7 +16,7 @@ class AccountingController extends Controller
         $metings =Meting::with('notes')->where('form_id',$user_id->tokenable_id)->get();
         $startDate=$request->startDate;
         $endDate=$request->endDate;
-
+        return $request;
         if ($startDate != '' && $endDate != '') {
             $metings = $metings->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
         }
