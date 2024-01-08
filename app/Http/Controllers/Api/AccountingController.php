@@ -14,6 +14,7 @@ use App\Models\Expense;
 use App\Models\Estimatequote;
 use App\Models\Product;
 use App\Models\Stock;
+use App\Models\Customer;
 
 class AccountingController extends Controller
 {
@@ -301,5 +302,146 @@ class AccountingController extends Controller
 
     }
 
+    public function getcustomers(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $customers =Customer::where('membership_code',$u->membership_code)->get();
+            }else{
+                $customers =Customer::where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+            $status=$request->status;
+
+            if ($startDate != '' && $endDate != '') {
+                $customers = $customers->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+            if ($status != '') {
+                $customers = $customers->where('status', $status);
+            }
+
+
+            $response = [
+                'status' => true,
+                'message'=>'List of Customer',
+                "data"=> [
+                    'customers'=> $customers,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
+
+    public function getprojects(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('membership_code',$u->membership_code)->get();
+            }else{
+                $projects =Project::with(['users','assigns','customers','projectexpenses'])->where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+            $status=$request->status;
+
+            if ($startDate != '' && $endDate != '') {
+                $projects = $projects->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+            if ($status != '') {
+                $projects = $projects->where('status', $status);
+            }
+
+
+            $response = [
+                'status' => true,
+                'message'=>'List of Projects',
+                "data"=> [
+                    'projects'=> $projects,
+                ]
+
+            ];
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
+
+    public function getsales(Request $request){
+        try {
+            $token = request()->bearerToken();
+            $user_id=PersonalAccessToken::findToken($token);
+            $u=User::where('id',$user_id->tokenable_id)->first();
+            if(isset($u->membership_code)){
+                $sales =Sale::with(['saleitems'])->where('membership_code',$u->membership_code)->get();
+            }else{
+                $sales =Sale::with(['saleitems'])->where('membership_code',$u->member_by)->get();
+            }
+
+            $startDate=$request->startDate;
+            $endDate=$request->endDate;
+            $status=$request->status;
+
+            if ($startDate != '' && $endDate != '') {
+                $sales = $sales->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            }
+
+            if(isset($sales)){
+                $response = [
+                    'status' => true,
+                    'message'=>'Sales By Membership ID',
+                    "data"=> [
+                        'sales'=> $sales,
+                    ]
+
+                ];
+            }else{
+                $response = [
+                    'status' => false,
+                    'message'=>'No sales find by this Membership ID',
+                    "data"=> [
+                        'sales'=> '',
+                    ]
+
+                ];
+            }
+            return response()->json($response,200);
+
+        } catch (\Exception $e) {
+
+            $response = [
+                'status' => false,
+                'message'=>$e->getMessage(),
+            ];
+            return response()->json($response,200);
+        }
+
+
+    }
 
 }
