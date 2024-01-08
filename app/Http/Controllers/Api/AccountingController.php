@@ -35,12 +35,13 @@ class AccountingController extends Controller
     public function gettasks(Request $request){
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-        $tasks =Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->get();
         $startDate=$request->startDate;
         $endDate=$request->endDate;
 
         if ($startDate != '' && $endDate != '') {
-            $tasks = $tasks->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+            $tasks=Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])->get();
+        }else{
+            $tasks=Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->get();
         }
         $response = [
             'status' => true,
