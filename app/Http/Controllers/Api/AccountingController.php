@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Meting;
+use App\Models\Task;
 
 class AccountingController extends Controller
 {
@@ -25,6 +26,27 @@ class AccountingController extends Controller
             'message'=>'Date Wise Metting List',
             "data"=> [
                 'metings'=> $metings,
+            ]
+
+        ];
+        return response()->json($response,200);
+    }
+
+    public function gettasks(Request $request){
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $tasks =Task::with('tasknotes')->where('form_id',$user_id->tokenable_id)->get();
+        $startDate=$request->startDate;
+        $endDate=$request->endDate;
+
+        if ($startDate != '' && $endDate != '') {
+            $tasks = $tasks->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
+        $response = [
+            'status' => true,
+            'message'=>'Date Wise Task List',
+            "data"=> [
+                'tasks'=> $tasks,
             ]
 
         ];

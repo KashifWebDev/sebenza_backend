@@ -189,6 +189,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
     // all report api
     Route::post('get/metting-data', [AccountingController::class,'getmettings']);
+    Route::post('get/task-data', [AccountingController::class,'gettasks']);
 
 
 
