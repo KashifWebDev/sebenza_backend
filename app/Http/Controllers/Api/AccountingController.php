@@ -88,7 +88,7 @@ class AccountingController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
 
-        $sales =Sale::where('membership_code',$user->member_by)->get()->groupeBy('orderDate');
+        $sales =Sale::where('membership_code',$user->member_by)->get()->groupBy('orderDate');
         if(count($sales)>0){
             foreach($sales as $s){
                 $salesdata[]= array(
