@@ -93,16 +93,16 @@ class AccountingController extends Controller
             $sales =Sale::where('membership_code',$user->member_by)->get()->groupBy('orderDate');
         }
         if(count($sales)>0){
-            foreach($sales as $s){
+            foreach($sales as $key=>$s){
                 if(isset($user->membership_code)){
                     $salesdata[]= array(
-                        'x'=>$s->orderDate,
-                        'y'=>Sale::where('membership_code',$user->membership_code)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                        'x'=>$key,
+                        'y'=>Sale::where('membership_code',$user->membership_code)->where('orderDate', $key)->get()->sum('payable_amount'),
                     );
                 }else{
                     $salesdata[]= array(
-                        'x'=>$s->orderDate,
-                        'y'=>Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                        'x'=>$key,
+                        'y'=>Sale::where('membership_code',$user->member_by)->where('orderDate', $key)->get()->sum('payable_amount'),
                     );
                 }
 
