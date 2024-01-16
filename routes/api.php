@@ -199,6 +199,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('get/project-data', [AccountingController::class,'getprojects']);
     Route::post('get/sales-data', [AccountingController::class,'getsales']);
 
+    Route::get('my/history', [AccountingController::class,'history']);
 
 
     // excel data report
@@ -215,7 +216,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('expense/export', [ExpenseController::class,'fileExport']);
     Route::get('expense/export/list', [ExpenseController::class,'expenselist']);
 
-        // all excel exporter
+    // all excel exporter
     Route::post('excel/export', [CustomerController::class,'fileExport']);
 
 });
