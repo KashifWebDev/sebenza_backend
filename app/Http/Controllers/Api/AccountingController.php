@@ -87,14 +87,25 @@ class AccountingController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
-
-        $sales =Sale::where('membership_code',$user->member_by)->get()->groupBy('orderDate');
+        if(isset($user->membership_code)){
+            $sales =Sale::where('membership_code',$user->membership_code)->get()->groupBy('orderDate');
+        }else{
+            $sales =Sale::where('membership_code',$user->member_by)->get()->groupBy('orderDate');
+        }
         if(count($sales)>0){
             foreach($sales as $s){
-                $salesdata[]= array(
-                    'x'=>$s->orderDate,
-                    'y'=>$sales =Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
-                );
+                if(isset($user->membership_code)){
+                    $salesdata[]= array(
+                        'x'=>$s->orderDate,
+                        'y'=>$sales =Sale::where('membership_code',$user->membership_code)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                    );
+                }else{
+                    $salesdata[]= array(
+                        'x'=>$s->orderDate,
+                        'y'=>$sales =Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                    );
+                }
+
             }
 
             $response = [
