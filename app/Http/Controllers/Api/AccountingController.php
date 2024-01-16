@@ -78,9 +78,45 @@ class AccountingController extends Controller
                     'total_sales_amount'=> Sale::where('membership_code',$user->member_by)->get()->sum('payable_amount'),
                     'my_tickets'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
                 ]
-                ];
+            ];
         }
         return response()->json($response,200);
+    }
+
+    public function saleshistory(Request $request){
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $user=User::where('id',$user_id->tokenable_id)->first();
+
+        $sales =Sale::where('membership_code',$user->member_by)->get()->groupeBy('orderDate');
+        if(count($sales)>0){
+            foreach($sales as $s){
+                $salesdata[]= array(
+                    'x'=>$s->orderDate,
+                    'y'=>$sales =Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                );
+            }
+
+            $response = [
+                'status' => true,
+                'message'=>'sales data chart',
+                "data"=> [
+                    'salesdata'=>$salesdata
+                ]
+            ];
+            return response()->json($response,200);
+        }else{
+            $response = [
+                'status' => true,
+                'message'=>'sales data chart',
+                "data"=> [
+                    'salesdata'=>[]
+                ]
+            ];
+            return response()->json($response,200);
+        }
+
+
     }
 
     public function getmettings(Request $request){

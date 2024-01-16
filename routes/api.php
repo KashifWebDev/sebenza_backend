@@ -200,6 +200,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('get/sales-data', [AccountingController::class,'getsales']);
 
     Route::get('my/history', [AccountingController::class,'history']);
+    Route::get('sales/history', [AccountingController::class,'saleshistory']);
 
 
     // excel data report
