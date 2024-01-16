@@ -97,12 +97,12 @@ class AccountingController extends Controller
                 if(isset($user->membership_code)){
                     $salesdata[]= array(
                         'x'=>$s->orderDate,
-                        'y'=>$sales =Sale::where('membership_code',$user->membership_code)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                        'y'=>Sale::where('membership_code',$user->membership_code)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
                     );
                 }else{
                     $salesdata[]= array(
                         'x'=>$s->orderDate,
-                        'y'=>$sales =Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
+                        'y'=>Sale::where('membership_code',$user->member_by)->where('orderDate', $s->orderDate)->get()->sum('payable_amount'),
                     );
                 }
 
