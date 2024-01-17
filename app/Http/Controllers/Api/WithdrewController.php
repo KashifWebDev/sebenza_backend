@@ -124,10 +124,11 @@ class WithdrewController extends Controller
         }else{
             $withdrews->membership_id=$user->member_by;
         }
-        $withdrews->payment_method=$request->payment_method;
-        $withdrews->account_name=$request->account_name;
-        $withdrews->account_number=$request->account_number;
-        $withdrews->additional_info=$request->additional_info;
+        $bank=Bank::where('user_id',$user->id)->where('status','Active')->first();
+        $withdrews->payment_method=$bank->payment_method;
+        $withdrews->account_name=$bank->account_name;
+        $withdrews->account_number=$bank->account_number;
+        $withdrews->additional_info=$bank->additional_info;
         $withdrews->amount=$request->amount;
         $salary=Salary::where('user_id',$user->id)->first();
         if($salary->account_balance>=$request->amount){
