@@ -9,6 +9,7 @@ use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Withdrew;
 use App\Models\Salary;
+use App\Models\Bank;
 use Illuminate\Http\Request;
 
 class WithdrewController extends Controller
