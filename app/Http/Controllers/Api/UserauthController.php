@@ -460,15 +460,19 @@ class UserauthController extends Controller
             $productImgUrl = $imguploadPath . $imgname;
             $user->profile = $productImgUrl;
         }
-
         $user->update();
+
+        $usernew = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('id', $user->id)->first();
+
+        $token = $usernew->createToken('user')->plainTextToken;
 
         $response = [
             "status"=>true,
             "message"=>"Member Join successfully",
-            "data"=> [
-                "user"=>$user,
-            ]
+            "data"=>[
+                'token'=>$token,
+                'user'=>$usernew,
+            ],
         ];
 
         return response($response, 201);

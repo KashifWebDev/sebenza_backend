@@ -63,7 +63,7 @@ Route::get('getpackages', [AccountpackageController::class, 'getpackage']);
 Route::get('newsupdates', [NewsController::class,'getpubnews']);
 Route::get('newsupdate/{slug}', [NewsController::class,'getpubnewsbyid']);
 
-Route::post('update/subuser/{slug}', [UserauthController::class, 'updatesubuser']);
+Route::post('update/new-member', [UserauthController::class, 'memberjoininfo']);
 
 Route::get('aboutus', [AboutusController::class,'getaboutinfo']);
 Route::get('helpcenter', [HelpcenterController::class,'gethelpcenterinfo']);
