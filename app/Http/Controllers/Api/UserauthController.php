@@ -439,4 +439,39 @@ class UserauthController extends Controller
         return response()->json($error);
     }
 
+
+    public function memberjoininfo(Request $request){
+
+        $user=User::where('email', $request->email)->first();
+        $user->first_name=$request->firstName;
+        $user->last_name=$request->lastName;
+        $user->phone=$request->mobile;
+        $user->address=$request->address;
+        $user->postcode=$request->postcode;
+        $user->state=$request->state;
+        $user->country=$request->country;
+        $user->city=$request->city;
+        $time = microtime('.') * 10000;
+        $productImg = $request->file('img');
+        if($productImg){
+            $imgname = $time . $productImg->getClientOriginalName();
+            $imguploadPath = ('public/backend/profile/');
+            $productImg->move($imguploadPath, $imgname);
+            $productImgUrl = $imguploadPath . $imgname;
+            $user->profile = $productImgUrl;
+        }
+
+        $user->update();
+
+        $response = [
+            "status"=>true,
+            "message"=>"Member Join successfully",
+            "data"=> [
+                "user"=>$user,
+            ]
+        ];
+
+        return response($response, 201);
+    }
+
 }
