@@ -443,7 +443,7 @@ class UserauthController extends Controller
     public function memberjoininfo(Request $request){
 
         $user=User::where('email',$request->email)->first();
-        return $user;
+
         $user->first_name=$request->firstName;
         $user->last_name=$request->lastName;
         $user->phone=$request->mobile;
@@ -462,6 +462,7 @@ class UserauthController extends Controller
             $user->profile = $productImgUrl;
         }
         $user->update();
+        return $user;
 
         $usernew = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('id', $user->id)->first();
 
