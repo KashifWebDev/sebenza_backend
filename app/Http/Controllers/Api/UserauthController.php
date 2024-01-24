@@ -443,6 +443,7 @@ class UserauthController extends Controller
     public function memberjoininfo(Request $request){
 
         $user=User::where('email', $request->email)->first();
+        return $request;
         $user->first_name=$request->firstName;
         $user->last_name=$request->lastName;
         $user->phone=$request->mobile;
