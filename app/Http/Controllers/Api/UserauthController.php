@@ -462,8 +462,7 @@ class UserauthController extends Controller
             $user->profile = $productImgUrl;
         }
         $user->update();
-        return $request;
-        $usernew = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('id', $user->id)->first();
+        $usernew = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('email',$request->email)->first();
         $token = $usernew->createToken('user')->plainTextToken;
 
         $response = [
