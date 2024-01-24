@@ -444,9 +444,9 @@ class UserauthController extends Controller
 
         $user=User::where('email',$request->email)->first();
 
-        $user->first_name=$request->firstName;
-        $user->last_name=$request->lastName;
-        $user->phone=$request->mobile;
+        $user->first_name=$request->first_name;
+        $user->last_name=$request->last_name;
+        $user->phone=$request->phone;
         $user->address=$request->address;
         $user->postcode=$request->postcode;
         $user->state=$request->state;
@@ -462,10 +462,8 @@ class UserauthController extends Controller
             $user->profile = $productImgUrl;
         }
         $user->update();
-        return $user;
-
+        return $request;
         $usernew = User::with(['roles'=>function ($query) { $query->select('id','name','guard_name');}])->where('id', $user->id)->first();
-
         $token = $usernew->createToken('user')->plainTextToken;
 
         $response = [
