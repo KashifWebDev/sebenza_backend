@@ -452,6 +452,7 @@ class UserauthController extends Controller
         $user->state=$request->state;
         $user->country=$request->country;
         $user->city=$request->city;
+        $user->password=Hash::make($request->password);
         $time = microtime('.') * 10000;
         $productImg = $request->file('img');
         if($productImg){
