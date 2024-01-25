@@ -26,7 +26,7 @@ use App\Models\File;
 class AccountingController extends Controller
 {
     public function history(Request $request){
-        return $request;
+
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
@@ -56,6 +56,7 @@ class AccountingController extends Controller
                 ]
 
             ];
+            return response()->json($response,200);
         }else{
             if(isset($user->membership_code)){
                 $response = [
