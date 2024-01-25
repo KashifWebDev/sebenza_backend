@@ -26,61 +26,89 @@ use App\Models\File;
 class AccountingController extends Controller
 {
     public function history(Request $request){
+
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $user=User::where('id',$user_id->tokenable_id)->first();
 
-        if(isset($user->membership_code)){
+        if($request->isAdmin==1){
             $response = [
                 'status' => true,
                 'message'=>'Dashboard all data',
                 "data"=> [
-                    'total_users'=> User::where('member_by',$user->membership_code)->get()->count(),
-                    'my_mettings'=> Meting::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_tasks'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_calender_schedule'=> Calender::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_orders'=>Order::where('user_id',$user_id->tokenable_id)->get()->count(),
-                    'my_invoices'=> Order::where('user_id',$user_id->tokenable_id)->get()->count(),
-                    'total_quotes'=> Estimatequote::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_products'=> Product::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_stocks'=> Stock::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_assets'=> Asset::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_warehouses'=> Warehouse::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_customers'=> Customer::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_projects'=> Project::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_files'=> File::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_sales'=> Sale::where('membership_code',$user->membership_code)->get()->count(),
-                    'total_sales_amount'=> Sale::where('membership_code',$user->membership_code)->get()->sum('payable_amount'),
-                    'my_tickets'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
+                    'total_users'=> User::get()->count(),
+                    'my_mettings'=> Meting::get()->count(),
+                    'my_tasks'=> Task::get()->count(),
+                    'my_calender_schedule'=> Calender::get()->count(),
+                    'my_orders'=>Order::get()->count(),
+                    'my_invoices'=> Order::get()->count(),
+                    'total_quotes'=> Estimatequote::get()->count(),
+                    'total_products'=> Product::get()->count(),
+                    'total_stocks'=> Stock::get()->count(),
+                    'total_assets'=> Asset::get()->count(),
+                    'total_warehouses'=> Warehouse::get()->count(),
+                    'total_customers'=> Customer::get()->count(),
+                    'total_projects'=> Project::get()->count(),
+                    'total_files'=> File::get()->count(),
+                    'total_sales'=> Sale::get()->count(),
+                    'total_sales_amount'=> Sale::get()->sum('payable_amount'),
+                    'my_tickets'=> Task::get()->count(),
                 ]
 
             ];
         }else{
-            $response = [
-                'status' => true,
-                'message'=>'Dashboard all data',
-                "data"=> [
-                    'total_users'=> User::where('member_by',$user->member_by)->get()->count(),
-                    'my_mettings'=> Meting::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_tasks'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_calender_schedule'=> Calender::where('form_id',$user_id->tokenable_id)->get()->count(),
-                    'my_orders'=>Order::where('user_id',$user_id->tokenable_id)->get()->count(),
-                    'my_invoices'=> Order::where('user_id',$user_id->tokenable_id)->get()->count(),
-                    'total_quotes'=> Estimatequote::where('membership_code',$user->member_by)->get()->count(),
-                    'total_products'=> Product::where('membership_code',$user->member_by)->get()->count(),
-                    'total_stocks'=> Stock::where('membership_code',$user->member_by)->get()->count(),
-                    'total_assets'=> Asset::where('membership_code',$user->member_by)->get()->count(),
-                    'total_warehouses'=> Warehouse::where('membership_code',$user->member_by)->get()->count(),
-                    'total_customers'=> Customer::where('membership_code',$user->member_by)->get()->count(),
-                    'total_projects'=> Project::where('membership_code',$user->member_by)->get()->count(),
-                    'total_files'=> File::where('membership_code',$user->member_by)->get()->count(),
-                    'total_sales'=> Sale::where('membership_code',$user->member_by)->get()->count(),
-                    'total_sales_amount'=> Sale::where('membership_code',$user->member_by)->get()->sum('payable_amount'),
-                    'my_tickets'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
-                ]
-            ];
+            if(isset($user->membership_code)){
+                $response = [
+                    'status' => true,
+                    'message'=>'Dashboard all data',
+                    "data"=> [
+                        'total_users'=> User::where('member_by',$user->membership_code)->get()->count(),
+                        'my_mettings'=> Meting::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_tasks'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_calender_schedule'=> Calender::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_orders'=>Order::where('user_id',$user_id->tokenable_id)->get()->count(),
+                        'my_invoices'=> Order::where('user_id',$user_id->tokenable_id)->get()->count(),
+                        'total_quotes'=> Estimatequote::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_products'=> Product::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_stocks'=> Stock::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_assets'=> Asset::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_warehouses'=> Warehouse::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_customers'=> Customer::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_projects'=> Project::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_files'=> File::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_sales'=> Sale::where('membership_code',$user->membership_code)->get()->count(),
+                        'total_sales_amount'=> Sale::where('membership_code',$user->membership_code)->get()->sum('payable_amount'),
+                        'my_tickets'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
+                    ]
+
+                ];
+            }else{
+                $response = [
+                    'status' => true,
+                    'message'=>'Dashboard all data',
+                    "data"=> [
+                        'total_users'=> User::where('member_by',$user->member_by)->get()->count(),
+                        'my_mettings'=> Meting::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_tasks'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_calender_schedule'=> Calender::where('form_id',$user_id->tokenable_id)->get()->count(),
+                        'my_orders'=>Order::where('user_id',$user_id->tokenable_id)->get()->count(),
+                        'my_invoices'=> Order::where('user_id',$user_id->tokenable_id)->get()->count(),
+                        'total_quotes'=> Estimatequote::where('membership_code',$user->member_by)->get()->count(),
+                        'total_products'=> Product::where('membership_code',$user->member_by)->get()->count(),
+                        'total_stocks'=> Stock::where('membership_code',$user->member_by)->get()->count(),
+                        'total_assets'=> Asset::where('membership_code',$user->member_by)->get()->count(),
+                        'total_warehouses'=> Warehouse::where('membership_code',$user->member_by)->get()->count(),
+                        'total_customers'=> Customer::where('membership_code',$user->member_by)->get()->count(),
+                        'total_projects'=> Project::where('membership_code',$user->member_by)->get()->count(),
+                        'total_files'=> File::where('membership_code',$user->member_by)->get()->count(),
+                        'total_sales'=> Sale::where('membership_code',$user->member_by)->get()->count(),
+                        'total_sales_amount'=> Sale::where('membership_code',$user->member_by)->get()->sum('payable_amount'),
+                        'my_tickets'=> Task::where('form_id',$user_id->tokenable_id)->get()->count(),
+                    ]
+                ];
+            }
+            return response()->json($response,200);
         }
-        return response()->json($response,200);
     }
 
     public function saleshistory(Request $request){
