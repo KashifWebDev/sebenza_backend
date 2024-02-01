@@ -172,6 +172,7 @@ class UserauthController extends Controller
             $user->city=$request->city;
             $user->address=$request->address;
             $user->user_limit_id=$request->user_limit_id;
+            $user->profile='public/backend/user.jpg';
 
             $user->assignRole(5);
             $result=$user->save();
