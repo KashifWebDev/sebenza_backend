@@ -33,6 +33,8 @@ class UserImport implements ToModel
                     $user=new User();
                     $user->email=$row[0];
                     $user->member_by=$memberof->membership_code;
+                    $user->account_type=$memberof->account_type;
+                    $user->account_type_id=$memberof->account_type_id;
                     $user->assignRole('user');
                     $user->save();
 

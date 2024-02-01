@@ -262,6 +262,8 @@ class UserauthController extends Controller
                 $user->email=$request->email;
                 $user->member_by=$memby->membership_code;
                 $user->company_name=$memby->company_name;
+                $user->account_type=$memby->account_type;
+                $user->account_type_id=$memby->account_type_id;
                 $user->assignRole($request->role);
                 $user->save();
 
