@@ -31,6 +31,7 @@ class User extends Authenticatable
         'company_name',
         'country',
         'city',
+        'profile',
         'address',
         'password',
     ];
