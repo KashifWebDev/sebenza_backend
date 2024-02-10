@@ -82,7 +82,7 @@ class ServeiceController extends Controller
         $serveices->title=$request->title;
         $serveices->regular_price=$request->regular_price;
         $serveices->discount=$request->discount;
-        $serveices->net_price=$request->net_price;
+        $serveices->net_price=$request->regular_price-$request->discount;
         $serveices->status=$request->status;
 
         $time = microtime('.') * 10000;
@@ -179,7 +179,7 @@ class ServeiceController extends Controller
             $serveices->title=$request->title;
             $serveices->regular_price=$request->regular_price;
             $serveices->discount=$request->discount;
-            $serveices->net_price=$request->net_price;
+            $serveices->net_price=$request->regular_price-$request->discount;
             $serveices->status=$request->status;
 
             $time = microtime('.') * 10000;
