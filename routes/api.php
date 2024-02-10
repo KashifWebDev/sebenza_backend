@@ -43,7 +43,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\CasemanagementController;
-use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\ServeiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -183,8 +183,8 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('case/update/{id}', [CasemanagementController::class,'update']);
 
     //services
-    Route::resource('services', ServiceController::class);
-    Route::post('service/update/{id}', [ServiceController::class,'update']);
+    Route::resource('services', ServeiceController::class);
+    Route::post('service/update/{id}', [ServeiceController::class,'update']);
 
     //customer
     Route::resource('customers', CustomerController::class);
