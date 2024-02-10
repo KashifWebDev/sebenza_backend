@@ -99,5 +99,10 @@ class User extends Authenticatable
         return $this->hasMany(Stock::class, 'user_id');
     }
 
+    public function cases()
+    {
+        return $this->hasMany(Casemanagement::class, 'user_id');
+    }
+
 
 }
