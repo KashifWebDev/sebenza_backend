@@ -62,7 +62,7 @@ class SuggestionController extends Controller
         $suggestions->date=date('Y-m-d');
         $suggestions->department_id=$request->department_id;
         if(isset($admin)){
-            $suggestions->admin_id=$admin->admin_id;
+            $suggestions->admin_id=$admin->id;
         }else{
             $suggestions->admin_id=Admin::where('status','Active')->first()->id;
         }
