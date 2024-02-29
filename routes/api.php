@@ -18,6 +18,7 @@ use App\Http\Controllers\Backend\Api\TeammemberController;
 use App\Http\Controllers\Backend\Api\TicketController;
 use App\Http\Controllers\Backend\Api\WhatsappController;
 use App\Http\Controllers\Backend\Api\PromocodeController;
+use App\Http\Controllers\Backend\Api\DepartmentController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\MetingController;
 use App\Http\Controllers\Api\CalenderController;
@@ -44,6 +45,7 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\CasemanagementController;
 use App\Http\Controllers\Api\ServeiceController;
+use App\Http\Controllers\Api\ComplainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,8 +141,6 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::post('withdrew/update/{id}', [WithdrewController::class,'update']);
     Route::get('my/withdrew', [WithdrewController::class,'getMywithdrew']);
 
-    // estimate & quote
-
     // termscategory
     Route::resource('termscategories', TermscategoryController::class);
     Route::post('termscategory/update/{id}', [TermscategoryController::class,'update']);
@@ -231,6 +231,15 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // all excel exporter
     Route::post('excel/export', [CustomerController::class,'fileExport']);
 
+    // complains
+    Route::resource('complains', ComplainController::class);
+    Route::get('view-complain/{id}', [ComplainController::class,'view']);
+
+    // suggestions
+    Route::resource('suggestions', SuggestionController::class);
+    Route::get('all/departments', [DepartmentController::class,'getdepartments']);
+    Route::get('view-suggestion/{id}', [SuggestionController::class,'view']);
+
 });
 
 // admin login api
@@ -283,6 +292,10 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     // whatsapp
     Route::resource('whatsapps', WhatsappController::class);
     Route::post('whatsapp/update/{id}', [WhatsappController::class,'update']);
+
+    // departments
+    Route::resource('departments', DepartmentController::class);
+    Route::post('department/update/{id}', [DepartmentController::class,'update']);
 
     // supportticket
     Route::get('supporttickets', [TicketController::class, 'admindex']);
