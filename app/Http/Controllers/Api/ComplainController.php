@@ -62,7 +62,7 @@ class ComplainController extends Controller
         $complains->date=date('Y-m-d');
         $complains->department_id=$request->department_id;
         if(isset($admin)){
-            $complains->admin_id=$admin->admin_id;
+            $complains->admin_id=$admin->id;
         }else{
             $complains->admin_id=Admin::where('status','Active')->first()->id;
         }
