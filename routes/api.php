@@ -46,6 +46,7 @@ use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\CasemanagementController;
 use App\Http\Controllers\Api\ServeiceController;
 use App\Http\Controllers\Api\ComplainController;
+use App\Http\Controllers\Api\SuggestionController;
 
 /*
 |--------------------------------------------------------------------------
