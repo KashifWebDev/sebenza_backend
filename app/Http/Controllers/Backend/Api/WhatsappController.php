@@ -7,8 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Whatsapp;
 use Illuminate\Http\Request;
 
+use Stevebauman\Location\Facades\Location;
+use App\Helpers\UserSystemInfoHelper;
+
 class WhatsappController extends Controller
 {
+    public function ipinfo(){
+        $positions = Location::get(UserSystemInfoHelper::get_ip());
+        return $positions;
+    }
     /**
      * Display a listing of the resource.
      *

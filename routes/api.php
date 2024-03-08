@@ -75,6 +75,7 @@ Route::get('helpcenter', [HelpcenterController::class,'gethelpcenterinfo']);
 Route::get('teammembers', [TeammemberController::class,'getteammembersinfo']);
 Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
+Route::get('get-ipinfo',[WhatsappController::class,'ipinfo']);
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
