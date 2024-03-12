@@ -16,11 +16,10 @@ class WhatsappController extends Controller
     public function ipinfo(){
         $positions = GeoLocation::lookup('103.49.203.178');
 
-        $amount=Currency::convert()
-            ->from('USD')
-            ->to('BDT')
-            ->amount(100)
-            ->get();
+        $amount=Currency::rates()
+        ->latest()
+        ->source('crypto')
+        ->get();
 
         dd($amount);
     }
