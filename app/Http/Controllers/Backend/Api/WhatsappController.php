@@ -22,7 +22,7 @@ class WhatsappController extends Controller
             ->amount(100)
             ->get();
 
-        return $amount;
+        return 'gi';
     }
     /**
      * Display a listing of the resource.
