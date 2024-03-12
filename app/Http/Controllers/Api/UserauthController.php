@@ -133,7 +133,7 @@ class UserauthController extends Controller
     }
 
     public function userstore(Request $request){
-
+        $positions = GeoLocation::lookup($request->ip());
         $email=User::where('email', $request->email)->first();
         $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
@@ -165,6 +165,9 @@ class UserauthController extends Controller
             $user->password=Hash::make($request->password);
             $user->membership_code=$this->uniqueID();
             $user->company_name=$request->company_name;
+            $user->currency=$positions->currency;
+            $user->currencyCode=$positions->currencyCode;
+            $user->currencySymbol=$positions->currencySymbol;
             $user->account_type_id=$request->account_type_id;
             if(isset($request->account_type_id)){
                 $type=Accounttype::where('id',$request->account_type_id)->first();
@@ -328,8 +331,6 @@ class UserauthController extends Controller
     }
 
     public function userlogin(Request $request){
-        $positions = GeoLocation::lookup($request->ip());
-        return $positions;
         $user = User::where('email', $request->email)
                     ->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -398,7 +399,7 @@ class UserauthController extends Controller
 
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
-
+        $positions = GeoLocation::lookup($request->ip());
         $user=User::where('id', $user_id->tokenable_id)->first();
         $user->first_name=$request->firstName;
         $user->last_name=$request->lastName;
@@ -408,6 +409,22 @@ class UserauthController extends Controller
         $user->state=$request->state;
         $user->country=$request->country;
         $user->city=$request->city;
+        if(isset($request->currency)){
+            $user->currency=$positions->currency;
+        }else{
+            $user->currency=$positions->currency;
+        }
+        if(isset($request->currencyCode)){
+            $user->currencyCode=$positions->currencyCode;
+        }else{
+            $user->currencyCode=$positions->currencyCode;
+        }
+        if(isset($request->currencySymbol)){
+            $user->currencySymbol=$positions->currencySymbol;
+        }else{
+            $user->currencySymbol=$positions->currencySymbol;
+        }
+
         $time = microtime('.') * 10000;
         $productImg = $request->file('img');
         if($productImg){

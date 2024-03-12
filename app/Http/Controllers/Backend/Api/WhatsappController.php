@@ -9,12 +9,20 @@ use Illuminate\Http\Request;
 
 use MakiDizajnerica\GeoLocation\Facades\GeoLocation;
 use App\Helpers\UserSystemInfoHelper;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class WhatsappController extends Controller
 {
     public function ipinfo(){
         $positions = GeoLocation::lookup('103.49.203.178');
-        return $positions;
+
+        $amount=Currency::convert()
+            ->from('USD')
+            ->to('BDT')
+            ->amount(100)
+            ->get();
+
+        return $amount;
     }
     /**
      * Display a listing of the resource.
