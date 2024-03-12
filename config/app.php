@@ -169,6 +169,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
