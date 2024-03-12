@@ -7,13 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Whatsapp;
 use Illuminate\Http\Request;
 
-use Stevebauman\Location\Facades\Location;
+use MakiDizajnerica\GeoLocation\Facades\GeoLocation;
 use App\Helpers\UserSystemInfoHelper;
 
 class WhatsappController extends Controller
 {
     public function ipinfo(){
-        $positions = Location::get(UserSystemInfoHelper::get_ip());
+        $positions = GeoLocation::lookup('103.49.203.178');
         return $positions;
     }
     /**

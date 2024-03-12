@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9551de9d2aa5cb3a41ada34c16123682",
+    "content-hash": "a428b7d4d557faa54774bc36341ba4c9",
     "packages": [
         {
             "name": "brick/math",
@@ -2311,6 +2311,75 @@
                 }
             ],
             "time": "2022-12-08T12:29:14+00:00"
+        },
+        {
+            "name": "makidizajnerica/laravel-geolocation",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MakiDizajnerica/laravel-geolocation.git",
+                "reference": "1d426eb492f56be0c0695c84d875560d706e6d7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MakiDizajnerica/laravel-geolocation/zipball/1d426eb492f56be0c0695c84d875560d706e6d7b",
+                "reference": "1d426eb492f56be0c0695c84d875560d706e6d7b",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=9.0",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.9",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MakiDizajnerica\\GeoLocation\\GeoLocationServiceProvider"
+                    ],
+                    "aliases": {
+                        "GeoLocation": "MakiDizajnerica\\GeoLocation\\Facades\\GeoLocation"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MakiDizajnerica\\GeoLocation\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nemanja Marijanovic",
+                    "email": "n.marijanovic@hotmail.com"
+                }
+            ],
+            "description": "GeoLocation package for Laravel.",
+            "homepage": "https://github.com/MakiDizajnerica/laravel-geolocation",
+            "keywords": [
+                "IP",
+                "city",
+                "continent",
+                "country",
+                "details",
+                "framework",
+                "geolocation",
+                "ip address",
+                "laravel",
+                "location",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/MakiDizajnerica/laravel-geolocation/issues",
+                "source": "https://github.com/MakiDizajnerica/laravel-geolocation/tree/v2.0.1"
+            },
+            "time": "2022-07-21T20:13:03+00:00"
         },
         {
             "name": "markbaker/complex",

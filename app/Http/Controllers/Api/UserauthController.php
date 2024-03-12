@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use App\Models\Userexcel;
 use App\Exports\UserExport;
 use Illuminate\Support\Facades\Storage;
+use MakiDizajnerica\GeoLocation\Facades\GeoLocation;
 
 class UserauthController extends Controller
 {
@@ -132,6 +133,7 @@ class UserauthController extends Controller
     }
 
     public function userstore(Request $request){
+
         $email=User::where('email', $request->email)->first();
         $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
@@ -326,6 +328,8 @@ class UserauthController extends Controller
     }
 
     public function userlogin(Request $request){
+        $positions = GeoLocation::lookup($request->ip());
+        return $positions;
         $user = User::where('email', $request->email)
                     ->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
