@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Whatsapp;
 use Illuminate\Http\Request;
-
+use App\Models\Currencyrate;
 use MakiDizajnerica\GeoLocation\Facades\GeoLocation;
 use App\Helpers\UserSystemInfoHelper;
 use Currency;
