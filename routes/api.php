@@ -264,7 +264,7 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     Route::post('accounttype/update', [AccounttypeController::class, 'update']);
 
     Route::resource('currencyrates', CurrencyrateController::class,);
-    Route::post('currencyrate/update', [CurrencyrateController::class, 'update']);
+    Route::post('currencyrate/update/{id}', [CurrencyrateController::class, 'update']);
 
     Route::resource('accountpackages', AccountpackageController::class,);
     Route::post('accountpackage/update', [AccountpackageController::class, 'update']);
