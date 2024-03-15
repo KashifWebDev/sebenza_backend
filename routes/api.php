@@ -246,8 +246,6 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('all/departments', [DepartmentController::class,'getdepartments']);
     Route::get('view-suggestion/{id}', [SuggestionController::class,'view']);
 
-    Route::get('app-info',[WhatsappController::class,'appinfo']);
-
 });
 
 // admin login api
@@ -255,9 +253,9 @@ Route::post('admin/register', [AdminauthController::class, 'adminstore']);
 Route::post('admin/login', [AdminauthController::class, 'adminlogin']);
 Route::post('admin/logout', [AdminauthController::class, 'adminlogout']);
 
+Route::get('app-info',[WhatsappController::class,'appinfo']);
 
 Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
-    Route::get('app-info',[WhatsappController::class,'appinfo']);
     Route::get('/view-profile', [AdminauthController::class,'adminprofile']);
     Route::post('/update-profile', [AdminauthController::class,'adminprofileupdate']);
     Route::get('/details/{id}', [AdminauthController::class,'admindetails']);
