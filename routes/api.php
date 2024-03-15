@@ -79,6 +79,7 @@ Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 Route::get('get-ipinfo',[WhatsappController::class,'ipinfo']);
 
 Route::post('exchange-rate',[WhatsappController::class,'exchangerate']);
+Route::get('/clear-cache', [WhatsappController::class, 'clearcache'])->name('clearcache');
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
@@ -245,6 +246,8 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('all/departments', [DepartmentController::class,'getdepartments']);
     Route::get('view-suggestion/{id}', [SuggestionController::class,'view']);
 
+    Route::get('app-info',[WhatsappController::class,'appinfo']);
+
 });
 
 // admin login api
@@ -254,7 +257,7 @@ Route::post('admin/logout', [AdminauthController::class, 'adminlogout']);
 
 
 Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
-
+    Route::get('app-info',[WhatsappController::class,'appinfo']);
     Route::get('/view-profile', [AdminauthController::class,'adminprofile']);
     Route::post('/update-profile', [AdminauthController::class,'adminprofileupdate']);
     Route::get('/details/{id}', [AdminauthController::class,'admindetails']);

@@ -20,6 +20,42 @@ class WhatsappController extends Controller
         return $amount;
     }
 
+    public function clearcache(){
+        \Artisan::call('optimize:clear');
+        \Artisan::call('route:clear');
+        \Artisan::call('cache:clear');
+        \Artisan::call('config:clear');
+
+        $response = [
+            'status' => true,
+            'message'=>'Application Cache Clear Successfully',
+        ];
+        return response()->json($response,200);
+    }
+
+    public function appinfo(){
+        $value=[
+            'php_version'=>phpversion(),
+            'composer_version'=>trim(shell_exec('composer --version')),
+            'app_version'=>app()->version(),
+            'site_name'=>env('APP_NAME'),
+            'app_debug_mode'=>config('app.debug') ? 'Enabled' : 'Disabled',
+            'site_node'=>config('app.env') == 'local' ? 'Testing' : 'Production',
+            'db_port'=>config('database.connections.mysql.port'),
+            'server_ip'=>$_SERVER['SERVER_ADDR'],
+            'server_protocol'=>$_SERVER['SERVER_PROTOCOL'],
+        ];
+
+        $response = [
+            'status' => true,
+            'message'=>'Application Details Info.',
+            "data"=> [
+                'applications'=> $value,
+            ]
+        ];
+        return response()->json($response,200);
+    }
+
     public function exchangerate(Request $request){
         $currancyrate=Currencyrate::where('from',$request->from)->where('to',$request->to)->first();
         if(isset($currancyrate)){
