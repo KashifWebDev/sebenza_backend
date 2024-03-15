@@ -16,10 +16,36 @@ class WhatsappController extends Controller
     public function ipinfo(){
         $positions = GeoLocation::lookup('103.49.203.178');
 
-        $amount=Currency::rates();
-
-        dd($amount);
+        $amount= Currency::conv($from = 'USD', $to = 'NOK', $value = 10);
+        return $amount;
     }
+
+    public function exchangerate(Request $request){
+        $currancyrate=Currencyrate::where('from',$request->from)->where('to',$request->to)->first();
+        if(isset($currancyrate)){
+            $value=$currancyrate->rate*$request->amount;
+
+            $response = [
+                'status' => true,
+                'message'=>'Exchange amount',
+                "data"=> [
+                    'value'=> $value,
+                ]
+            ];
+            return response()->json($response,200);
+        }else{
+            $response = [
+                'status' => false,
+                'message'=>'No Exchange rate found !',
+                "data"=> [
+                    'value'=> [],
+                ]
+            ];
+            return response()->json($response,200);
+        }
+
+    }
+
     /**
      * Display a listing of the resource.
      *

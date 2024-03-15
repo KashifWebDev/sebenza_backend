@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\Api\TicketController;
 use App\Http\Controllers\Backend\Api\WhatsappController;
 use App\Http\Controllers\Backend\Api\PromocodeController;
 use App\Http\Controllers\Backend\Api\DepartmentController;
+use App\Http\Controllers\Backend\Api\CurrencyrateController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\MetingController;
 use App\Http\Controllers\Api\CalenderController;
@@ -76,6 +77,8 @@ Route::get('teammembers', [TeammemberController::class,'getteammembersinfo']);
 Route::get('whatsapps',[WhatsappController::class,'getwhatsappinfo']);
 
 Route::get('get-ipinfo',[WhatsappController::class,'ipinfo']);
+
+Route::post('exchange-rate',[WhatsappController::class,'exchangerate']);
 
 Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
 
@@ -259,6 +262,9 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
 
     Route::resource('accounttypes', AccounttypeController::class,);
     Route::post('accounttype/update', [AccounttypeController::class, 'update']);
+
+    Route::resource('currencyrates', CurrencyrateController::class,);
+    Route::post('currencyrate/update', [CurrencyrateController::class, 'update']);
 
     Route::resource('accountpackages', AccountpackageController::class,);
     Route::post('accountpackage/update', [AccountpackageController::class, 'update']);

@@ -350,6 +350,20 @@ class UserauthController extends Controller
 
         $token = $user->createToken('user')->plainTextToken;
 
+        $positions = GeoLocation::lookup($request->ip());
+        if(isset($user->currency)){
+        }else{
+            $user->currency=$positions->currency;
+        }
+        if(isset($user->currencyCode)){
+        }else{
+            $user->currencyCode=$positions->currencyCode;
+        }
+        if(isset($user->currencySymbol)){
+        }else{
+            $user->currencySymbol=$positions->currencySymbol;
+        }
+
         $response = [
             "status"=>true,
             "message"=>"Login Successfully",
@@ -410,17 +424,17 @@ class UserauthController extends Controller
         $user->country=$request->country;
         $user->city=$request->city;
         if(isset($request->currency)){
-            $user->currency=$positions->currency;
+            $user->currency=$request->currency;
         }else{
             $user->currency=$positions->currency;
         }
         if(isset($request->currencyCode)){
-            $user->currencyCode=$positions->currencyCode;
+            $user->currencyCode=$request->currencyCode;
         }else{
             $user->currencyCode=$positions->currencyCode;
         }
         if(isset($request->currencySymbol)){
-            $user->currencySymbol=$positions->currencySymbol;
+            $user->currencySymbol=$request->currencySymbol;
         }else{
             $user->currencySymbol=$positions->currencySymbol;
         }

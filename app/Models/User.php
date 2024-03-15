@@ -32,6 +32,9 @@ class User extends Authenticatable
         'country',
         'city',
         'profile',
+        'currency',
+        'currencyCode',
+        'currencySymbol',
         'address',
         'password',
     ];
