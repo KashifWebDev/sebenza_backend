@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\Api\WhatsappController;
 use App\Http\Controllers\Backend\Api\PromocodeController;
 use App\Http\Controllers\Backend\Api\DepartmentController;
 use App\Http\Controllers\Backend\Api\CurrencyrateController;
+use App\Http\Controllers\Backend\Api\SendmailController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\MetingController;
 use App\Http\Controllers\Api\CalenderController;
@@ -314,6 +315,10 @@ Route::group(['prefix'=>'admin','middleware' => ['auth:sanctum']], function () {
     // promocodes
     Route::resource('promocodes', PromocodeController::class);
     Route::post('promocode/update/{id}', [PromocodeController::class,'update']);
+
+    // mail system
+    Route::resource('sendmails', SendmailController::class);
+    Route::post('send/email', [SendmailController::class, 'sendemail']);
 
     // orders & invoices
     Route::resource('orders', App\Http\Controllers\Backend\Api\OrderController::class);

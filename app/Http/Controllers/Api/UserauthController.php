@@ -134,6 +134,7 @@ class UserauthController extends Controller
 
     public function userstore(Request $request){
         $positions = GeoLocation::lookup($request->ip());
+        return $positions;
         $email=User::where('email', $request->email)->first();
         $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
