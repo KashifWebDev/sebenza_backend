@@ -134,7 +134,6 @@ class UserauthController extends Controller
 
     public function userstore(Request $request){
         $positions = GeoLocation::lookup($request->ip());
-        return $positions['currency'];
         $email=User::where('email', $request->email)->first();
         $phonenumber=User::where('phone', $request->phone)->first();
         if($email){
@@ -166,9 +165,9 @@ class UserauthController extends Controller
             $user->password=Hash::make($request->password);
             $user->membership_code=$this->uniqueID();
             $user->company_name=$request->company_name;
-            $user->currency=$positions->currency;
-            $user->currencyCode=$positions->currencyCode;
-            $user->currencySymbol=$positions->currencySymbol;
+            $user->currency=$positions['currency'];
+            $user->currencyCode=$positions['currencyCode'];
+            $user->currencySymbol=$positions['currencySymbol'];
             $user->account_type_id=$request->account_type_id;
             if(isset($request->account_type_id)){
                 $type=Accounttype::where('id',$request->account_type_id)->first();
@@ -354,15 +353,15 @@ class UserauthController extends Controller
         $positions = GeoLocation::lookup($request->ip());
         if(isset($user->currency)){
         }else{
-            $user->currency=$positions->currency;
+            $user->currency=$positions['currency'];
         }
         if(isset($user->currencyCode)){
         }else{
-            $user->currencyCode=$positions->currencyCode;
+            $user->currencyCode=$positions['currencyCode'];
         }
         if(isset($user->currencySymbol)){
         }else{
-            $user->currencySymbol=$positions->currencySymbol;
+            $user->currencySymbol=$positions['currencySymbol'];
         }
 
         $response = [
@@ -427,17 +426,17 @@ class UserauthController extends Controller
         if(isset($request->currency)){
             $user->currency=$request->currency;
         }else{
-            $user->currency=$positions->currency;
+            $user->currency=$positions['currency'];
         }
         if(isset($request->currencyCode)){
             $user->currencyCode=$request->currencyCode;
         }else{
-            $user->currencyCode=$positions->currencyCode;
+            $user->currencyCode=$positions['currencyCode'];
         }
         if(isset($request->currencySymbol)){
             $user->currencySymbol=$request->currencySymbol;
         }else{
-            $user->currencySymbol=$positions->currencySymbol;
+            $user->currencySymbol=$positions['currencySymbol'];
         }
 
         $time = microtime('.') * 10000;
