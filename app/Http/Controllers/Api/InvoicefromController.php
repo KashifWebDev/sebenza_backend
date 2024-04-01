@@ -92,7 +92,11 @@ class InvoicefromController extends Controller
         $invoicefors->amount_total=$request->amount_total;
         $invoicefors->discount=$request->discount;
         $invoicefors->payable_amount=$request->payable_amount;
-        $invoicefors->paid_amount=$invoicefors->paid_amount;
+        if(isset($request->paid_amount)){
+            $invoicefors->paid_amount=$request->paid_amount;
+        }else{
+            $invoicefors->paid_amount=0;
+        }
         $invoicefors->status=$request->status;
         $success=$invoicefors->save();
 
@@ -190,7 +194,13 @@ class InvoicefromController extends Controller
         $invoicefors->amount_total=$request->amount_total;
         $invoicefors->discount=$request->discount;
         $invoicefors->payable_amount=$request->payable_amount;
-        $invoicefors->paid_amount=$invoicefors->paid_amount;
+
+        if(isset($request->paid_amount)){
+            $invoicefors->paid_amount=$request->paid_amount;
+        }else{
+            $invoicefors->paid_amount=0;
+        }
+
         $invoicefors->status=$request->status;
         $success=$invoicefors->update();
 
