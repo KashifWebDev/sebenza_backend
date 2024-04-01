@@ -66,7 +66,7 @@ class InvoicefromController extends Controller
 
         $Invoicefors =new Invoicefrom();
         if(isset($u->membership_code)){
-            $invoicefors->membership_code=$u->membership_code;
+            $invoicefors->membership_code='dasdasd';
         }else{
             $invoicefors->membership_code=$u->member_by;
         }
