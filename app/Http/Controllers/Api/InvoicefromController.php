@@ -84,6 +84,7 @@ class InvoicefromController extends Controller
             $logoImgUrl = $uploadPath . $name;
             $invoicefors->logo = $logoImgUrl;
         }
+        $invoicefors->email=$request->email;
         $invoicefors->name=$request->name;
         $invoicefors->company_name=$request->company_name;
         $invoicefors->address=$request->address;
@@ -186,6 +187,7 @@ class InvoicefromController extends Controller
             $logoImgUrl = $uploadPath . $name;
             $invoicefors->logo = $logoImgUrl;
         }
+        $invoicefors->email=$request->email;
         $invoicefors->name=$request->name;
         $invoicefors->company_name=$request->company_name;
         $invoicefors->address=$request->address;
