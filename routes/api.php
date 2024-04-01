@@ -49,6 +49,7 @@ use App\Http\Controllers\Api\CasemanagementController;
 use App\Http\Controllers\Api\ServeiceController;
 use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\SuggestionController;
+use App\Http\Controllers\Api\InvoicefromController;
 
 /*
 |--------------------------------------------------------------------------
@@ -246,6 +247,10 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::resource('suggestions', SuggestionController::class);
     Route::get('all/departments', [DepartmentController::class,'getdepartments']);
     Route::get('view-suggestion/{id}', [SuggestionController::class,'view']);
+
+    // supportticket
+    Route::resource('invoicefroms', InvoicefromController::class);
+    Route::post('invoicefrom/update/{id}', [InvoicefromController::class, 'update']);
 
 });
 
