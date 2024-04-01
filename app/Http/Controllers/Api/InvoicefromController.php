@@ -62,7 +62,7 @@ class InvoicefromController extends Controller
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
-        return $u;
+        return $u->membership_code;
         $Invoicefors =new Invoicefrom();
         if(isset($u->membership_code)){
             $invoicefors->membership_code=$u->membership_code;
