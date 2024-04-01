@@ -64,13 +64,12 @@ class InvoicefromController extends Controller
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
 
-        $Invoicefors =new Invoicefrom();
+        $invoicefors =new Invoicefrom();
         if(isset($u->membership_code)){
-            $invoicefors->membership_code='dasdasd';
+            $invoicefors->membership_code=$u->membership_code;
         }else{
             $invoicefors->membership_code=$u->member_by;
         }
-        return $request;
         $user=User::where('email',$request->email)->first();
         $invoicefors->user_id=$user->id;
         $invoicefors->invoice_for=$request->invoice_for;
@@ -169,7 +168,7 @@ class InvoicefromController extends Controller
 
     public function update(Request $request ,$id)
     {
-        $Invoicefors =Invoicefrom::where('id',$id)->first();
+        $invoicefors =Invoicefrom::where('id',$id)->first();
         $user=User::where('email',$request->email)->first();
         $invoicefors->user_id=$user->id;
         $invoicefors->invoice_for=$request->invoice_for;
