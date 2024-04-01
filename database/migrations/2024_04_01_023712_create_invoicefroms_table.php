@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('email')->nullable();
             $table->text('company_name')->nullable();
             $table->text('address')->nullable();
-            $table->longTect('invoice_details')->nullable();
+            $table->longText('invoice_details')->nullable();
             $table->decimal('amount_total')->default(0);
             $table->decimal('discount')->default(0);
             $table->decimal('payable_amount')->default(0);
