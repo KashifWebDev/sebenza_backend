@@ -249,8 +249,8 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     Route::get('view-suggestion/{id}', [SuggestionController::class,'view']);
 
     // supportticket
-    Route::resource('invoicefroms', InvoicefromController::class);
-    Route::post('invoicefrom/update/{id}', [InvoicefromController::class, 'update']);
+    Route::resource('invoicefors', InvoicefromController::class);
+    Route::post('invoicefor/update/{id}', [InvoicefromController::class, 'update']);
 
 });
 
