@@ -59,7 +59,7 @@ class InvoicefromController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+
         $token = request()->bearerToken();
         $user_id=PersonalAccessToken::findToken($token);
         $u=User::where('id',$user_id->tokenable_id)->first();
@@ -70,6 +70,7 @@ class InvoicefromController extends Controller
         }else{
             $invoicefors->membership_code=$u->member_by;
         }
+        return $request;
         $user=User::where('email',$request->email)->first();
         $invoicefors->user_id=$user->id;
         $invoicefors->invoice_for=$request->invoice_for;
