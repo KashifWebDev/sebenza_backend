@@ -82,7 +82,7 @@ class InvoicefromController extends Controller
             $uploadPath = ('public/images/logo/');
             $logo->move($uploadPath, $name);
             $logoImgUrl = $uploadPath . $name;
-            $invoicefors->file = $logoImgUrl;
+            $invoicefors->logo = $logoImgUrl;
         }
         $invoicefors->name=$request->name;
         $invoicefors->company_name=$request->company_name;
@@ -180,7 +180,7 @@ class InvoicefromController extends Controller
             $uploadPath = ('public/images/logo/');
             $logo->move($uploadPath, $name);
             $logoImgUrl = $uploadPath . $name;
-            $invoicefors->file = $logoImgUrl;
+            $invoicefors->logo = $logoImgUrl;
         }
         $invoicefors->name=$request->name;
         $invoicefors->company_name=$request->company_name;
