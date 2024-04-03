@@ -142,46 +142,56 @@ class InvoicefromController extends Controller
             $estimatequotes =Estimatequote::with(['users','payments','items','termsconditions'])->where('id',$id)->where('membership_code',$u->member_by)->first();
         }
 
-        $invoicefors =new Invoicefrom();
-        if(isset($u->membership_code)){
-            $invoicefors->membership_code=$u->membership_code;
+        if(isset($estimatequotes)){
+            $invoicefors =new Invoicefrom();
+            if(isset($u->membership_code)){
+                $invoicefors->membership_code=$u->membership_code;
+            }else{
+                $invoicefors->membership_code=$u->member_by;
+            }
+            $user=User::where('id',$u->id)->first();
+            $invoicefors->user_id=$user->id;
+            $invoicefors->invoice_for=0;
+            $invoicefors->invoiceID=$this->uniqueID();
+            $invoicefors->invoiceDate=date('Y-m-d');
+
+            $invoicefors->logo='';
+
+            $invoicefors->email=$estimatequotes->customer_email;
+            $invoicefors->name=$estimatequotes->customer_name;
+            $invoicefors->address=$estimatequotes->shipping_address;
+
+            $items=Item::where('estimate_id', '=', $estimatequotes->id)->get();
+
+            $invoicefors->invoice_details=$items;
+            $invoicefors->company_name=$estimatequotes->customer_name;
+
+            $invoicefors->amount_total=$estimatequotes->subTotal;
+            $invoicefors->discount=$estimatequotes->discountCharge;
+            $paid=Estimatepayment::where('estimate_id',$estimatequotes->id)->get()->sum('amount');
+            $invoicefors->payable_amount=$estimatequotes->total-$paid;
+            $invoicefors->paid_amount=$paid;
+
+            $invoicefors->status='Draft';
+            $success=$invoicefors->save();
+
+
+            $response = [
+                'status' => true,
+                'message'=>'Invoices Created Successfully',
+                "data"=> [
+                    'invoiceforss'=> $invoicefors,
+                ]
+            ];
         }else{
-            $invoicefors->membership_code=$u->member_by;
+            $response = [
+                'status' => false,
+                'message'=>'Something went wrong please try again',
+                "data"=> [
+                    'invoiceforss'=> '',
+                ]
+            ];
         }
-        $user=User::where('id',$u->id)->first();
-        $invoicefors->user_id=$user->id;
-        $invoicefors->invoice_for=0;
-        $invoicefors->invoiceID=$this->uniqueID();
-        $invoicefors->invoiceDate=date('Y-m-d');
-
-        $invoicefors->logo='';
-
-        $invoicefors->email=$estimatequotes->customer_email;
-        $invoicefors->name=$estimatequotes->customer_name;
-        $invoicefors->address=$estimatequotes->shipping_address;
-
-        $items=Item::where('estimate_id', '=', $estimatequotes->id)->get();
-
-        $invoicefors->invoice_details=$items;
-        $invoicefors->company_name=$estimatequotes->customer_name;
-
-        $invoicefors->amount_total=$estimatequotes->subTotal;
-        $invoicefors->discount=$estimatequotes->discountCharge;
-        $paid=Estimatepayment::where('estimate_id',$estimatequotes->id)->get()->sum('amount');
-        $invoicefors->payable_amount=$estimatequotes->total-$paid;
-        $invoicefors->paid_amount=$paid;
-
-        $invoicefors->status='Draft';
-        $success=$invoicefors->save();
-
-
-        $response = [
-            'status' => true,
-            'message'=>'Invoices Created Successfully',
-            "data"=> [
-                'invoiceforss'=> $invoicefors,
-            ]
-        ];
 
         return response()->json($response,200);
     }
