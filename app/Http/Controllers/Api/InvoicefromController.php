@@ -148,7 +148,7 @@ class InvoicefromController extends Controller
         }else{
             $invoicefors->membership_code=$u->member_by;
         }
-        $user=User::where('id',$estimatequotes->user_id)->first();
+        $user=User::where('id',$user_id)->first();
         $invoicefors->user_id=$user->id;
         $invoicefors->invoice_for=0;
         $invoicefors->invoiceID=$this->uniqueID();
