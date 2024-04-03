@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoicefrom;
 use App\Models\User;
 use App\Models\Estimatequote;
+use App\Models\Estimatepayment;
 use App\Models\Basicinfo;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -147,7 +148,7 @@ class InvoicefromController extends Controller
         }else{
             $invoicefors->membership_code=$u->member_by;
         }
-        $user=User::where('email',$request->email)->first();
+        $user=User::where('email',$estimatequotes->users->email)->first();
         $invoicefors->user_id=$user->id;
         $invoicefors->invoice_for=0;
         $invoicefors->invoiceID=$this->uniqueID();
