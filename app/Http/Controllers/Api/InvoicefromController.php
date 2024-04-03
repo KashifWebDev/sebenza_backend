@@ -154,16 +154,8 @@ class InvoicefromController extends Controller
         $invoicefors->invoiceID=$this->uniqueID();
         $invoicefors->invoiceDate=date('Y-m-d');
 
-        if($request->logo){
-            $logo = $request->file('logo');
-            $name = time() . "_" . $logo->getClientOriginalName();
-            $uploadPath = ('public/images/logo/');
-            $logo->move($uploadPath, $name);
-            $logoImgUrl = $uploadPath . $name;
-            $invoicefors->logo = $logoImgUrl;
-        }else{
-            $invoicefors->logo='';
-        }
+        $invoicefors->logo='';
+
         $invoicefors->email=$estimatequotes->customer_email;
         $invoicefors->name=$estimatequotes->customer_name;
         $invoicefors->address=$estimatequotes->shipping_address;
