@@ -251,6 +251,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth:sanctum']], function () {
     // supportticket
     Route::resource('invoicefors', InvoicefromController::class);
     Route::post('invoicefor/update/{id}', [InvoicefromController::class, 'update']);
+    Route::get('quotation-to-invoice/{id}', [InvoicefromController::class,'qttoinv']);
 
 });
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Invoicefrom;
 use App\Models\User;
+use App\Models\Estimatequote;
 use App\Models\Basicinfo;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -128,9 +129,66 @@ class InvoicefromController extends Controller
      * @param  \App\Models\Invoicefrom  $invoicefors
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoicefrom $invoicefors)
+    public function qttoinv($id)
     {
-        //
+        $token = request()->bearerToken();
+        $user_id=PersonalAccessToken::findToken($token);
+        $u=User::where('id',$user_id->tokenable_id)->first();
+
+        if(isset($u->membership_code)){
+            $estimatequotes =Estimatequote::with(['users','payments','items','termsconditions'])->where('id',$id)->where('membership_code',$u->membership_code)->first();
+        }else{
+            $estimatequotes =Estimatequote::with(['users','payments','items','termsconditions'])->where('id',$id)->where('membership_code',$u->member_by)->first();
+        }
+
+        $invoicefors =new Invoicefrom();
+        if(isset($u->membership_code)){
+            $invoicefors->membership_code=$u->membership_code;
+        }else{
+            $invoicefors->membership_code=$u->member_by;
+        }
+        $user=User::where('email',$request->email)->first();
+        $invoicefors->user_id=$user->id;
+        $invoicefors->invoice_for=0;
+        $invoicefors->invoiceID=$this->uniqueID();
+        $invoicefors->invoiceDate=date('Y-m-d');
+
+        if($request->logo){
+            $logo = $request->file('logo');
+            $name = time() . "_" . $logo->getClientOriginalName();
+            $uploadPath = ('public/images/logo/');
+            $logo->move($uploadPath, $name);
+            $logoImgUrl = $uploadPath . $name;
+            $invoicefors->logo = $logoImgUrl;
+        }
+        $invoicefors->email=$estimatequotes->customer_email;
+        $invoicefors->name=$estimatequotes->customer_name;
+        $invoicefors->address=$estimatequotes->shipping_address;
+
+        $items=Item::where('estimate_id', '=', $estimatequotes->id)->get();
+
+        $invoicefors->invoice_details=$items;
+        $invoicefors->company_name=$estimatequotes->customer_name;
+
+        $invoicefors->amount_total=$estimatequotes->subTotal;
+        $invoicefors->discount=$estimatequotes->discountCharge;
+        $paid=Estimatepayment::where('estimate_id',$estimatequotes->id)->get()->sum('amount');
+        $invoicefors->payable_amount=$estimatequotes->total-$paid;
+        $invoicefors->paid_amount=$paid;
+
+        $invoicefors->status='Draft';
+        $success=$invoicefors->save();
+
+
+        $response = [
+            'status' => true,
+            'message'=>'Invoices Created Successfully',
+            "data"=> [
+                'invoiceforss'=> $invoicefors,
+            ]
+        ];
+
+        return response()->json($response,200);
     }
 
     /**
