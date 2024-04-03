@@ -161,6 +161,8 @@ class InvoicefromController extends Controller
             $logo->move($uploadPath, $name);
             $logoImgUrl = $uploadPath . $name;
             $invoicefors->logo = $logoImgUrl;
+        }else{
+            $invoicefors->logo='';
         }
         $invoicefors->email=$estimatequotes->customer_email;
         $invoicefors->name=$estimatequotes->customer_name;
